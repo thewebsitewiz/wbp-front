@@ -1,0 +1,22 @@
+@charset 'UTF-8';
+
+// 0. Vendors
+@import "0-vendors/vendors.scss";
+
+// 1. Configuration and helpers
+@import "1-abstracts/abstracts";
+
+// 2. Base stuff
+@import "2-base/base";
+
+// 3. Layout-related sections
+@import "3-layout/layout";
+
+// 4. Page-specific styles
+@import "4-pages/pages";
+
+// 5. Components
+@import "5-components/components";
+
+// 6. Themes
+@import "6-themes/themes";
