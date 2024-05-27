@@ -37,13 +37,16 @@
         "./src/environments/*"
       ],
       "@pageElements/*": [
-        "./src/app/page-elements/*"
+        "./src/app/components/page-elements/*"
       ],
       "@sections/*": [
         "./src/app/sections/*"
       ],
       "@styles/*": [
         "./src/assets/styles/*"
+      ],
+      "@assets/*": [
+        "./src/assets/*"
       ]
     }
   }

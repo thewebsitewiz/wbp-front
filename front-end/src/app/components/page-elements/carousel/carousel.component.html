@@ -4,18 +4,21 @@
   <div id="prev" class="header-image-container header-image-hidden"></div>
 
   <div id="curr" class="header-image-container">
-    <div id="prev-slide" class="carousel-control slide-prev">
-      <img src="assets/images/arrow-left.png" alt="" class="carousel-control" (click)="prevSlide()" />
+    <div id="prev-slide" class="carousel-control slide-prev" (click)="prevSlide()">
+      <img src="assets/images/arrow-left.png" alt="" class="carousel-control" />
     </div>
 
     <div id="currImg" class="header-displayed"></div>
     <div id="typing-text"></div>
     <div id="slide-animation">
-      <div id="slide-animation-container"></div>
+      <div id="slide-animation-content">
+        <h3 id="slide-animation-title"></h3>
+        <div id="slide-animation-body"></div>
+      </div>
     </div>
 
-    <div id="next-slide" class="carousel-control slide-next">
-      <img src="assets/images/arrow-right.png" alt="" class="carousel-control" (click)="nextSlide()" />
+    <div id="next-slide" class="carousel-control slide-next" (click)="nextSlide()">
+      <img src="assets/images/arrow-right.png" alt="" class="carousel-control" />
     </div>
   </div>
 

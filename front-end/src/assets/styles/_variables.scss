@@ -1,3 +1,5 @@
+@import '../../../node_modules/bootstrap/scss/functions';
+
 // -----------------------------------------------------------------------------
 // This file contains all application-wide Sass variables.
 // -----------------------------------------------------------------------------
@@ -15,7 +17,6 @@ $text-font-sans-ex-cond: "Fira Sans Extra Condensed", "Helvetica Neue Light",
 
 --bs-body-font-family {
  font-family: $text-font-sans-cond !important;
-
 }
 
 /// Code (monospace) font family
@@ -65,3 +66,60 @@ $breakpoints: (
 /// @example scss - When using a CDN
 ///   $base-url: 'https://cdn.example.com/assets/';
 $base-url: "/assets/" !default;
+
+$font-family-sans-serif: $text-font-sans-cond; //'Montserrat', sans-serif;
+
+// Colors
+$primary: #f8b547;
+$secondary: #35353a;
+$light: #fbf9f5;
+$body-bg: $light;
+
+// Spacing
+$spacer: 1rem !default;
+$spacers: (
+ 0: 0,
+ 1: $spacer * 0.25,
+ 2: $spacer * 0.5,
+ 3: $spacer,
+ 4: $spacer * 1.5,
+ 5: $spacer * 3,
+ 6: $spacer * 6,
+ 7: $spacer * 8,
+ 8: $spacer * 12,
+ ) !default;
+
+$headings-margin-bottom: $spacer * 1;
+$line-height-base: 1.7;
+
+// Navbar
+$navbar-nav-link-padding-x: 0.8rem;
+$navbar-padding-y: 0; // 1rem;
+$navbar-dark-color: #fff;
+
+// Buttons
+$button-radius: 50px;
+$button-padding-x: 30px;
+$button-padding-y: 10px;
+
+$btn-border-radius: $button-radius;
+$btn-border-radius-sm: $button-radius;
+$btn-border-radius-lg: $button-radius;
+$btn-padding-y: $button-padding-y;
+$btn-padding-y-lg: $button-padding-y;
+$btn-padding-y-sm: $button-padding-y;
+$btn-padding-x: $button-padding-x;
+$btn-padding-x-lg: $button-padding-x;
+$btn-padding-x-sm: $button-padding-x;
+$navbar-toggler-border-radius: 5px;
+
+$headings-font-weight: bold;
+
+.bg-light {
+ background-color: 0 !important;
+ --bs-navbar-color: none !important
+}
+
+:root {
+ --bs-body-font-size: 62.5%;
+}

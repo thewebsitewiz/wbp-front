@@ -1,12 +1,12 @@
-@import'./assets/styles/variables';
+@import"./assets/styles/variables";
 
 html {
    /* 1 */
    -webkit-text-size-adjust: 100%;
    /* 2 */
    font-size: 62.5%;
-   font-family: $text-font-sans-cond !important;
-
+   font-family: $text-font-sans-cond;
+   --bs-body-font-family: $text-font-sans-cond;
 }
 
 
