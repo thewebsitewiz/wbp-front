@@ -1,0 +1,41 @@
+.albums {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
+ margin-top: 20px;
+ margin-bottom: 20px;
+
+ & .album {
+  position: relative;
+  padding: 10px;
+
+  
+
+  & .album-cover {
+   width: 33vw;
+   object-fit: fill;
+  }
+
+  &__title {
+   position: absolute;
+   top: 20px;
+   font-size: 3rem;
+   font-style: italic;
+  }
+
+  &__description {
+   position: absolute;
+   top: 60px;
+   font-size: 1.5rem;
+   font-style: italic;
+  }
+ }
+}
+
+.left {
+ left: 30px;
+}
+
+.right {
+ right: 30px;
+}

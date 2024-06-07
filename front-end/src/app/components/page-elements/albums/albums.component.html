@@ -1,0 +1,9 @@
+<div class="albums">
+
+
+ <div class="album" [ngClass]="'album-'+ i" *ngFor="let album of albums; let i = index">
+  <img src="assets/images/{{album.images[0].src}}" alt="" class="album-cover">
+  <div class="album__title" [ngClass]="titleAlignment(album)">{{album.album}}</div>
+  <div class="album__description" [ngClass]="titleAlignment(album)">{{album.description}}</div>
+ </div>
+</div>

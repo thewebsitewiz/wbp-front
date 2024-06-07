@@ -12,8 +12,8 @@ export class CarouselService {
         src: 'url(assets/images/pics/--155-Edit-Edit.jpg)',
         alt: 'photo 1',
         slider: {
-          width: 225,
-          height: 250,
+          width: 250,
+          height: 300,
           sliderClass: 'coral',
           typingText: 'Professional Photography',
           header: 'Wedding Photography',
@@ -92,6 +92,26 @@ export class CarouselService {
       {
         src: 'url(assets/images/pics/--135-Edit.jpg)',
         alt: 'Sea Turtle Underwater',
+        slider: {
+          width: 250,
+          height: 300,
+          sliderClass: 'coral',
+          header: 'Extoic Underwater Photography',
+          headerColor: '',
+          subHeader: '',
+          subHeaderColor: '',
+          content: `Underwater photography captures a hidden world of 
+          mesmerizing beauty. Beneath the waves, vibrant corals sway 
+          ]and elusive creatures glide with grace. The lens reveals a 
+          kaleidoscope of colors, from the azure depths to the sunlit 
+          shallows. Mastering this art requires skill in buoyancy control, 
+          composition, and understanding light's behavior in water. Each 
+          click immortalizes fleeting moments, preserving the ocean's mystique. 
+          Through these images, we connect with an aquatic realm, inspiring awe 
+           and fostering conservation efforts for its preservation.`,
+          contentColor: '',
+          origin: '200 100 0 0',
+        },
       },
     ]);
   }

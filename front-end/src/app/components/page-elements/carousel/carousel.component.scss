@@ -1,7 +1,7 @@
-@import '../../../../assets/styles/variables';
+@import '../../../../assets/scss/1-abstracts/variables';
 
 header {
-
+ height: 100vh;
  font-family: $text-font-sans-cond;
  --bs-body-font-family: $text-font-sans-cond;
 
@@ -52,7 +52,7 @@ header {
  }
 
  & #slide-animation {
-  background-color: rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 5px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
  }
@@ -60,16 +60,35 @@ header {
  & #slide-animation-content {
   padding: 20px;
 
-  & h3 {
-   font-size: 1.6em;
-   margin-top: -20px;
+  & h1#slide-animation-title {
+   margin-top: 0;
+
+   color: green;
+
   }
+
+
 
   & #slide-animation-body {
    margin-top: 0 !important;
    font-weight: 400;
-   font-size: 1.8em;
+   font-size: 1.3rem;
   }
 
+ }
+}
+
+.fade-out-slider {
+ opacity: 0;
+ animation: fadeOut 1s ease-out;
+}
+
+@keyframes fadeOut {
+ 0% {
+  opacity: 0;
+ }
+
+ 100% {
+  opacity: 1;
  }
 }
