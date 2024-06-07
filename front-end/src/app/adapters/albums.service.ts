@@ -39,6 +39,7 @@ export class AlbumsService {
       },
       {
         album: 'Portraits',
+        albumColor: 'lightgreen',
         description: 'Portraits photography is blah, blah, blah',
         alignment: 'right',
         images: [
@@ -62,6 +63,7 @@ export class AlbumsService {
       },
       {
         album: 'Underwater',
+        albumColor: 'lightblue',
         description: 'Underwater photography is blah, blah, blah',
         images: [
           {
@@ -96,6 +98,7 @@ export class AlbumsService {
       },
       {
         album: 'Landscapes',
+        albumColor: 'lightyellow',
         description: 'Landscapes photography is blah, blah, blah',
         images: [
           {
@@ -107,6 +110,8 @@ export class AlbumsService {
       },
       {
         album: 'Celebrities',
+        alignment: 'right',
+        albumColor: 'white',
         description: 'Celebrities photography is blah, blah, blah',
         images: [
           {

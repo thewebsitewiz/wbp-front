@@ -20,7 +20,11 @@ export class AlbumsComponent {
     });
   }
 
-  titleAlignment(album: any) {
+  titleAlignment(album: any): string {
     return album.alignment === 'right' ? 'right' : 'left';
+  }
+
+  titleColor(album: any): string {
+    return album.albumColor !== undefined ? album.albumColor : 'black';
   }
 }
