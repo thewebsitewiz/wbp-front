@@ -1,21 +1,26 @@
-import { Component, Inject } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit } from '@angular/core';
 import { AlbumsService } from '../../../adapters/albums.service';
 
-import { NgClass, NgForOf, NgStyle } from '@angular/common';
+import { NgClass, NgForOf, NgStyle, NgIf } from '@angular/common';
+
 @Component({
   selector: 'wbp-albums',
   standalone: true,
-  imports: [NgClass, NgForOf, NgStyle],
+  imports: [NgClass, NgForOf, NgStyle, NgIf],
   templateUrl: './albums.component.html',
   styleUrl: './albums.component.scss',
 })
-export class AlbumsComponent {
+export class AlbumsComponent implements OnInit {
+  [x: string]: any;
   albums: any[] = [];
 
-  constructor(@Inject(AlbumsService) private AlbumsService: AlbumsService) {}
+  selectedAlbum!: any;
+  albumSelected: boolean = false;
+
+  constructor(@Inject(AlbumsService) private albumsService: AlbumsService) {}
 
   ngOnInit() {
-    this.AlbumsService.getAlbums().subscribe((albums) => {
+    this.albumsService.getAlbums().subscribe((albums) => {
       this.albums = albums;
     });
   }
@@ -26,5 +31,16 @@ export class AlbumsComponent {
 
   titleColor(album: any): string {
     return album.albumColor !== undefined ? album.albumColor : 'black';
+  }
+
+  openAlbum(album: any) {
+    this.selectedAlbum = album;
+    this.albumSelected = true;
+    console.log(this.selectedAlbum);
+  }
+
+  closeAlbum() {
+    this.albumSelected = false;
+    this.selectedAlbum = undefined;
   }
 }

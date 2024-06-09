@@ -3,4 +3,17 @@
  */
 body {
   color: $text-color;
+  font-family: $text-font-sans-cond;
+}
+
+.island-moments-regular {
+  font-family: "Island Moments", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.allura-regular {
+  font-family: "Allura", cursive;
+  font-weight: 400;
+  font-style: normal;
 }
