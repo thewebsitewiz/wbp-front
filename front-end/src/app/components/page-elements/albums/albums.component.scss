@@ -7,89 +7,9 @@
 
  position: relative;
 
- gap: 3px;
+ gap: 10px;
  border-radius: 5px;
 
- & .albumDisplay {
-  position: absolute;
-  width: 60vw;
-  height: calc(45vw);
-  top: 88px;
-  left: 150px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: white;
-
-  padding: 25px;
-
-  &__close {
-   position: absolute;
-   top: 10px;
-   right: 10px;
-   font-size: 2rem;
-   cursor: pointer;
-  }
-
-  &__title {
-   font-size: 6rem;
-   font-style: italic;
-   text-align: left;
-   line-height: 4rem;
-   margin-bottom: 5px;
-  }
-
-  &__description {
-   font-size: 1.9rem;
-   text-align: left;
-   margin-bottom: 15px;
-  }
-
-  &__content {
-   position: relative;
-   display: flex;
-   justify-content: center;
-   width: 100%;
-
-   &__image {
-    position: relative;
-    width: 100%;
-   }
-  }
- }
-
- & .album {
-  position: relative;
-  background-color: white;
-
-  &:nth-child(odd) {
-   rotate: 2deg;
-  }
-
-  &:nth-child(even) {
-   rotate: -.5deg;
-  }
-
-  & .album-cover {
-   border: 10px solid white;
-   width: 30vw;
-   object-fit: fill;
-
-   opacity: .5;
-
-   &:hover {
-    opacity: 1;
-    cursor: pointer;
-   }
-  }
-
-  &__title {
-   position: absolute;
-   top: 20px;
-   font-size: 6rem;
-   font-style: italic;
-   line-height: 6rem;
-  }
- }
 }
 
 .left {
@@ -98,4 +18,185 @@
 
 .right {
  right: 30px;
+}
+
+// silly styling for "tm"
+.tm {
+ font-size: 1.5rem;
+ line-height: 1.75rem;
+ margin: 0 0.5rem;
+ color: #42d6c3;
+ vertical-align: top;
+}
+
+///////////////////////////////////////////////////////////////
+//
+//   Fancy Border Text Styles
+//
+///////////////////////////////////////////////////////////////
+//
+//   About: This styling method creates borders that are not
+//          "hard-coded", meaning they will respond to the text
+//          size or length of text used in the title.
+//
+
+@mixin fancy-border-text() {
+ // container settings
+ $container-width: 32vw;
+ $container-height: calc($container-width / 1.6);
+
+ // border settings
+ $border-color: #fff;
+ $border-offset: 2rem; // distance of border from text
+ $border-width: 0.25rem; // width of border
+ $inset-padding: 2rem; // inset border and text from edge of image
+
+ // font settings
+ // -- include a fancy font
+ //  @import url('https://fonts.googleapis.com/css?family=Oswald');
+
+ $font-color: #fff;
+ $font-settings: 600 4.5rem/0.95 "Allura", cursive;
+ // adjust line height of each text-line to align text with bottom border
+ $line-spacing: 0.5rem;
+ $text-offset: 0em; // used to line up left side of text with left border
+
+ // set the contstraints for the container and add a background
+ .album {
+  &-container {
+   position: relative;
+   width: $container-width; // allow the box to shrink if the window gets smaller than the container width
+   max-width: $container-width;
+   height: $container-height;
+   // margin: 5rem auto; // add some spacing and center container for display purposes
+   background-color: #333;
+   background-size: cover;
+   background-position: center;
+
+   // optional: fancy shadow
+   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3),
+    0px 5px 10px rgba(0, 0, 0, 0.3),
+    0px 10px 80px rgba(0, 0, 0, 0.8);
+
+
+
+   opacity: .5;
+
+   &:hover {
+    opacity: 1;
+    cursor: pointer;
+   }
+
+   // optional: add a 'lighting edge' to give the card edge a 3d effect
+   &:after {
+    content: '';
+    border: 1px solid rgba(#fff624, 0.6);
+    mix-blend-mode: overlay;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+   }
+
+   &:nth-child(odd) {
+    rotate: 2deg;
+   }
+
+   &:nth-child(even) {
+    rotate: -.5deg;
+   }
+  }
+
+  &-title {
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   padding: 0;
+   margin: 0;
+   color: $font-color;
+
+   // left border
+   &:before {
+    content: '';
+    width: $border-width;
+    background-color: $border-color;
+    position: absolute;
+    bottom: calc(100% + #{$border-offset});
+    left: 0;
+    height: $container-height;
+   }
+  }
+
+  // hide overflow of title borders and draw other borders on the sides that don't intersect the text
+  &-borders {
+   overflow: hidden;
+   position: absolute;
+   // inset all of the borders from the edge of the image
+   top: $inset-padding;
+   left: $inset-padding;
+   right: $inset-padding;
+   bottom: $inset-padding;
+
+   // top border
+   &:before {
+    content: '';
+    height: $border-width;
+    background-color: $border-color;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+   }
+
+   // right border
+   &:after {
+    content: '';
+    width: $border-width;
+    background-color: $border-color;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+   }
+  }
+ }
+
+ // position the title to the bottom left and set the default color
+
+ .text-line {
+  font: $font-settings; // reduce line height so text lines up with borders
+  text-indent: $text-offset; // move text to the left so it lines up with borders
+  display: table;
+  position: relative;
+  margin-bottom: $line-spacing; // add some line spacing to make up for reduced line height
+  // text-transform: uppercase;
+  white-space: nowrap;
+
+  &:last-child {
+   margin-bottom: 0;
+
+   // bottom border: add border relative to the last text line so that longer lines above it don't affect the border position
+   &:after {
+    content: '';
+    height: $border-width;
+    background-color: $border-color;
+    position: absolute;
+    left: calc(100% + #{$border-offset});
+    bottom: 0;
+    width: $container-width;
+   }
+  }
+ }
+
+}
+
+@include fancy-border-text();
+
+.belize-stamp {
+ position: absolute;
+ rotate: 3deg;
+ width: 150px;
+ top: 2.2rem;
+ left: 2.2rem;
 }

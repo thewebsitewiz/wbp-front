@@ -1,27 +1,27 @@
 <div class="albums">
 
- <!--  <a class="c-preview">
-  <div class="c-preview__img"></div>
-  <h2 class="c-preview__title">Gradient Hover Effect</h2>
- </a> -->
- <div class="album" *ngFor="let album of albums">
-  <img src="assets/images/{{album.images[0].src}}" alt="" class="album-cover c-preview" (click)="openAlbum(album)">
-  <div class="album__title allura-regular" [ngClass]="titleAlignment(album)" [ngStyle]="{'color': titleColor(album)}">
-   {{album.album}}
+  <div class="album-container c-preview" *ngFor="let album of albums"
+    [ngStyle]="{'background-image':'url(assets/images/' + album.images[0].src + ')'}">
+    <div class="album-borders">
+      <img src="assets/images/logos/StampArtwork/BZStamp1.png" alt="" class="belize-stamp">
+      <div class="album-title" [ngClass]="titleAlignment(album)" [ngStyle]="{'color': titleColor(album)}">''
+        <span class="text-line">{{album.album}}</span>
+      </div>
+    </div>
   </div>
- </div>
 
- <div class="albumDisplay" [ngStyle]="{'display': albumSelected === false ? 'none' : 'block' }">
-  <div class="albumDisplay__title allura-regular">{{selectedAlbum?.album}}</div>
-  <div class="albumDisplay__description" *ngIf="selectedAlbum?.description">{{selectedAlbum?.description}}</div>
-  <div class="albumDisplay__close" (click)="closeAlbum()">
-   <i class="fas fa-times"></i>
-  </div>
-  <div class="albumDisplay__content">
-   <img src="assets/images/{{image.src}}" alt="" class="albumDisplay__content__image"
-    *ngFor="let image of selectedAlbum?.images">
 
+  <div class="albumDisplay" [ngStyle]="{'display': albumSelected === false ? 'none' : 'block' }">
+    <div class="albumDisplay__title allura-regular">{{selectedAlbum?.album}}</div>
+    <div class="albumDisplay__description" *ngIf="selectedAlbum?.description">{{selectedAlbum?.description}}</div>
+    <div class="albumDisplay__close" (click)="closeAlbum()">
+      <i class="fas fa-times"></i>
+    </div>
+    <div class="albumDisplay__content">
+      <img src="assets/images/{{image.src}}" alt="" class="albumDisplay__content__image"
+        *ngFor="let image of selectedAlbum?.images">
+
+    </div>
   </div>
- </div>
 
 </div>
