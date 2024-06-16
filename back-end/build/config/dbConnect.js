@@ -1,9 +1,10 @@
+"use strict";
 /* /* const { default: mongoose } = require("mongoose")
 
 const dbConnect = () => {
     try {
         const  conn = mongoose.connect(process.env.MONGODB_URL, {
-            useNewUrlParser: true, 
+            useNewUrlParser: true,
             useUnifiedTopology: true
         })
         console.log('connected')
@@ -17,7 +18,7 @@ module.exports = dbConnect;
 
 
  */
-
+Object.defineProperty(exports, "__esModule", { value: true });
 /*
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const mongoUri =
@@ -49,4 +50,4 @@ async function run() {
   }
 }
 run().catch(console.dir);
- */
+ */ 
