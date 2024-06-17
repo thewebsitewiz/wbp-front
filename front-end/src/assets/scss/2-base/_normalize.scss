@@ -25,8 +25,19 @@ html {
 
 body {
    margin: 0;
+
+}
+
+body .sand {
    background-image: url(../../images/sand-bkgrd.jpg);
-   background-repeat: repeat;
+}
+
+body .beach {
+   background-image: url(../../images/admin-background.jpeg);
+   background-repeat: no-repeat;
+   background-size: cover;
+   height: 100vh;
+
 }
 
 /**
