@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 
 import { routes } from './app.routes';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
       provide: DATE_PIPE_DEFAULT_OPTIONS,
       useValue: { dateFormat: 'longDate' },
     },
-    importProvidersFrom(HttpClientModule),
+    provideHttpClient(),
     provideRouter(
       routes,
       withPreloading(PreloadAllModules),

@@ -9,14 +9,20 @@ import { WeatherService } from '../../../adapters/weather.service';
   styleUrl: './weather.component.scss',
 })
 export class WeatherComponent implements OnInit {
-  constructor(
-    @Inject('WeatherService')
-    private weatherService: WeatherService
-  ) {}
+  constructor(private weatherService: WeatherService) {}
 
   ngOnInit() {
-    this.weatherService.getWeather('London').then((data) => {
-      console.log(data);
+    /*  this.weatherService.getWeather().subscribe((weather: any) => {
+      console.log(weather);
+    });
+    this.weatherService.getMarine().subscribe((marineData: any) => {
+      console.log(marineData);
+    });
+    this.weatherService.getAstro().subscribe((astroData: any) => {
+      console.log(astroData);
+    }); */
+    this.weatherService.getMoonPhase().subscribe((moonPhaseData: any) => {
+      console.log(moonPhaseData);
     });
   }
 }

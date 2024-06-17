@@ -19,7 +19,7 @@
     "skipLibCheck": true,
     "paths": {
       "@controllers/*": [
-        "./src/controller/*"
+        "src/controllers/*"
       ],
       "@models/*": [
         "./src/models/*"
