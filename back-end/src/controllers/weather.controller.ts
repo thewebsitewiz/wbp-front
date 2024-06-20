@@ -442,7 +442,7 @@ const _getMoonPhase = async (req, res) => {
   // Retrieve a unix timestamp for date
   const time = new Date();
   const timestamp = time.getTime();
-  console.log("timestamp: ", timestamp, typeof timestamp);
+
   const date = Math.round(timestamp / 1000); //Returns a unix timestamp ie. 1572958651
 
   const DBdate = moment().format("MMM Do YY");

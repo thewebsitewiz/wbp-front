@@ -1,22 +1,21 @@
-/* /* const { default: mongoose } = require("mongoose")
+const { default: mongoose } = require("mongoose")
 
-const dbConnect = () => {
-    try {
-        const  conn = mongoose.connect(process.env.MONGODB_URL, {
-            useNewUrlParser: true, 
-            useUnifiedTopology: true
-        })
-        console.log('connected')
-    }
-    catch (error) {
-        console.log('error')
-    }
-}
+mongoose
+  .connect(process.env.WBP_MONGO_DEV_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: process.env.WBP_MONGO_DEV_DBNM,
+  })
+  .then(() => {
+    console.log("Database Connection is ready...");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
 
 module.exports = dbConnect;
 
-
- */
 
 /*
 const { MongoClient, ServerApiVersion } = require("mongodb");

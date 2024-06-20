@@ -1,4 +1,6 @@
-require("dotenv/config");
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, ".env") });
+
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -11,10 +13,15 @@ const cors = require("cors");
 
 const ENV: string = "dev";
 
-let DB_CONN = process.env.NJPS_DEV_CONN;
+let DB_CONN = process.env.WBP_MONGO_DEV_URI;
+let DB_NAME = process.env.WBP_MONGO_DB_NAME;
 
 if (ENV === "prod") {
-  DB_CONN = process.env.NJPS_PRD_CONN;
+  // REPLACE WITH PROD URI
+  DB_CONN = process.env.WBP_MONGO_DEV_URI;
+
+  // REPLACE WITH PROD DB NAME
+  DB_NAME = process.env.WBP_MONGO_DB_NAME;
 }
 
 app.use(function (req, res, next) {
@@ -46,32 +53,31 @@ app.use(express.static(__dirname + "/public"));
 
 //Routes
 const weatherRouter = require("./routes/weather.routes");
-
+const imageRouter = require("./routes/image.routes");
 
 const api = process.env.API_URL;
 
 app.get("/", function (req, res) {
-  console.log("Root Route");
   res.json({
     message: "hello world",
   });
 });
 
 app.use("/api/weather", weatherRouter);
+app.use("/api/images", imageRouter);
 
-/* //Database
 mongoose
   .connect(DB_CONN, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: "projectgreen-database",
+    dbName: DB_NAME,
   })
   .then(() => {
     console.log("Database Connection is ready...");
   })
   .catch((err) => {
     console.log(err);
-  }); */
+  });
 
 //Server
 const port = 3000;

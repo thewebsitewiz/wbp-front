@@ -60,4 +60,4 @@ moonSchema.set("toJSON", {
   virtuals: true,
 });
 
-exports.MoonInfo = mongoose.model("MoonInfo", moonSchema);
+exports.Moon = mongoose.model("Moon", moonSchema);

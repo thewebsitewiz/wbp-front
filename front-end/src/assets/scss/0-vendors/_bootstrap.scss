@@ -59,3 +59,21 @@ $headings-font-weight: bold;
 :root {
   --bs-body-font-size: 62.5%;
 }
+
+
+.navbar {
+
+  & .nav-item {
+    padding: 0 1.8rem;
+  }
+
+  & .nav-link {
+    font-weight: 500;
+    font-size: 2.5rem !important;
+    color: black;
+  }
+
+  & .dropdown-item {
+    font-size: 1.8rem !important;
+  }
+}

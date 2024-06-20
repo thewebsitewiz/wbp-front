@@ -18,20 +18,20 @@
     ],
     "skipLibCheck": true,
     "paths": {
+      "@utils/*": [
+        "src/utils/*"
+      ],
       "@controllers/*": [
         "src/controllers/*"
       ],
       "@models/*": [
-        "./src/models/*"
+        "src/models/*"
       ],
       "@routes/*": [
-        "./src/routes/*"
+        "src/routes/*"
       ],
       "@middleware/*": [
         "src/middleware/*"
-      ],
-      "@utils/*": [
-        "./src/utils/*"
       ]
     }
   },
