@@ -54,6 +54,7 @@ app.use(express.static(__dirname + "/public"));
 //Routes
 const weatherRouter = require("./routes/weather.routes");
 const imageRouter = require("./routes/image.routes");
+const tagsRouter = require("./routes/tag.routes");
 
 const api = process.env.API_URL;
 
@@ -65,6 +66,7 @@ app.get("/", function (req, res) {
 
 app.use("/api/weather", weatherRouter);
 app.use("/api/images", imageRouter);
+app.use("/api/tags", tagsRouter);
 
 mongoose
   .connect(DB_CONN, {

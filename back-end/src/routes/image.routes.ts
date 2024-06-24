@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { imageUpload } = require("../controllers/image.controller");
 
-router.get(`/upload`, async (req, res) => {
+router.post(`/upload`, async (req, res) => {
   try {
     const data = await imageUpload(req, res);
     return res.status(200).send(data);
@@ -15,5 +15,7 @@ router.get(`/upload`, async (req, res) => {
     });
   }
 });
+
+router.get(`/list`, async (req, res) => {});
 
 module.exports = router;

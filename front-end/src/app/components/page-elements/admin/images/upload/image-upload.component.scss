@@ -1,0 +1,27 @@
+:host ::ng-deep {
+ & .p-autocomplete {
+  display: inline-block;
+  width: 100% !important;
+
+  &-input {
+   display: block;
+   width: 100% !important;
+  }
+ }
+
+ & .label {
+  display: inline-block;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  font-weight: 600;
+ }
+
+ & .label.calendar-label {
+  display: block;
+ }
+
+ & .label.image-label {
+  display: block;
+ }
+
+}

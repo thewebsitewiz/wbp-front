@@ -22,32 +22,38 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@env/*": [
+        "src/environments/*"
+      ],
+      "@pageElements/*": [
+        "src/app/components/page-elements/*"
+      ],
+      "@interfaces/*": [
+        "src/app/interfaces/*"
+      ],
+      "@sections/*": [
+        "src/app/sections/*"
+      ],
+      "@styles/*": [
+        "src/assets/styles/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@adapters/*": [
+        "src/app/adapters/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
-    "paths": {
-      "@app/*": [
-        "./src/app/*"
-      ],
-      "@env/*": [
-        "./src/environments/*"
-      ],
-      "@pageElements/*": [
-        "./src/app/components/page-elements/*"
-      ],
-      "@sections/*": [
-        "./src/app/sections/*"
-      ],
-      "@styles/*": [
-        "./src/assets/styles/*"
-      ],
-      "@assets/*": [
-        "./src/assets/*"
-      ]
-    }
   }
 }

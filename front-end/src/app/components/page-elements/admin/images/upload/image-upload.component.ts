@@ -1,13 +1,28 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
+
+import { Subject, takeUntil, timer } from 'rxjs';
 
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 
-import { PrimeNGConfig } from 'primeng/api';
+import { DomainService } from '@adapters/domain.service';
+import { ImageService } from '@adapters/image.service';
+
+import { Image } from '@interfaces/image.interface';
+
+import { MessageService, FilterService, PrimeNGConfig } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
+import {
+  AutoCompleteCompleteEvent,
+  AutoCompleteModule,
+} from 'primeng/autocomplete';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @Component({
   selector: 'wbp-image-upload',
@@ -18,13 +33,21 @@ import { ButtonModule } from 'primeng/button';
     CardModule,
     ToolbarModule,
     ButtonModule,
+    CalendarModule,
+    InputTextModule,
+    ToastModule,
+    AutoCompleteModule,
+    FileUploadModule,
   ],
+  providers: [MessageService, FilterService, DomainService],
   templateUrl: './image-upload.component.html',
-  styleUrl: './image-upload.component.scss',
+  styleUrls: ['./image-upload.component.scss'],
 })
 export class ImageUploadComponent implements OnInit {
   editmode: boolean = false;
   isSubmitted: boolean = false;
+
+  uploadedFiles: any[] = [];
 
   imageForm = new FormGroup({
     title: new FormControl('', Validators.required),
@@ -33,13 +56,24 @@ export class ImageUploadComponent implements OnInit {
     comments: new FormControl(''),
     dateTaken: new FormControl(''),
     tags: new FormControl('', Validators.required),
-    image: new FormControl(null, Validators.required),
+    image: new FormControl<File | null | undefined>(null, Validators.required),
   });
   @Input() id!: string;
 
+  imageDisplay!: string | ArrayBuffer | null | undefined;
+  currentImageId!: number;
+  endsubs$: Subject<any> = new Subject();
+
+  filteredTags: any[] = [];
+  selectedTags: any[] = [];
+
   constructor(
     private primengConfig: PrimeNGConfig,
-    private formBuilder: FormBuilder
+    private location: Location,
+    private messageService: MessageService,
+    private filterService: FilterService,
+    @Inject(ImageService) private imageService: ImageService,
+    @Inject(DomainService) private domainService: DomainService
   ) {}
 
   ngOnInit() {
@@ -51,17 +85,142 @@ export class ImageUploadComponent implements OnInit {
       menu: 1000, // overlay menus
       tooltip: 1100, // tooltip
     };
+
+    this.domainService.getDomain('tags').subscribe((data: any) => {
+      this.filteredTags = data;
+      console.log('tags', this.filteredTags);
+    });
+
+    this._checkEditMode();
   }
 
-  onImagePicked(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0]; // Here we use only the first file (single file)
-    this.imageForm.patchValue({ image: file });
+  filterTags(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+
+    console.log('event', event.query);
+    let query = event.query;
+    for (let i = 0; i < this.filteredTags.length; i++) {
+      let tag = this.filteredTags[i];
+      console.log(tag);
+      if (tag.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(tag);
+      }
+    }
+    this.filteredTags = [];
+    this.filteredTags = filtered;
+  }
+
+  onImageUpload(event: any) {
+    const file = event.target.files[0];
+    if (file && this.imageForm !== null) {
+      this.imageForm.patchValue({ image: file });
+      if (this.imageForm.get('image')) {
+        this.imageForm.get('image')!.updateValueAndValidity();
+      }
+
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        this.imageDisplay = fileReader.result;
+      };
+      fileReader.readAsDataURL(file);
+    }
   }
 
   private _checkEditMode() {
-    if (this.id) this.editmode = true;
+    if (this.id !== null && this.id !== undefined) {
+      this.editmode = true;
+    } else {
+      this.editmode = false;
+    }
   }
 
-  onSubmit() {}
-  onCancel() {}
+  onSubmit() {
+    this.isSubmitted = true;
+    if (this.imageForm.invalid) return;
+
+    const imageFormData: any = {};
+
+    const skipFields = ['tags', 'image'];
+
+    for (const field in this.imageForm.controls) {
+      if (
+        this.imageForm.controls.hasOwnProperty(field) &&
+        !skipFields.includes(field)
+      ) {
+        imageFormData[field] = this.imageForm.get(field)?.value;
+      }
+    }
+
+    if (this.selectedTags.length > 0) {
+      imageFormData.tags = this.selectedTags;
+    }
+
+    if (this.editmode) {
+      this._updateImage(imageFormData);
+    } else {
+      this._addImage(imageFormData);
+    }
+  }
+
+  onCancel() {
+    this.location.back();
+  }
+
+  private _addImage(imageData: FormData) {
+    this.imageService
+      .uploadImage(imageData)
+      .pipe(takeUntil(this.endsubs$))
+      .subscribe(
+        (image: Image) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: `Image ${image.title} is created!`,
+          });
+          timer(2000)
+            .toPromise()
+            .then(() => {
+              this.location.back();
+            });
+        },
+        () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Product is not created!',
+          });
+        }
+      );
+  }
+
+  private _updateImage(imageData: FormData) {
+    this.imageService
+      .updateImage(imageData, this.currentImageId)
+      .pipe(takeUntil(this.endsubs$))
+      .subscribe(
+        () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Product is updated!',
+          });
+          timer(2000)
+            .toPromise()
+            .then(() => {
+              this.location.back();
+            });
+        },
+        () => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Product is not updated!',
+          });
+        }
+      );
+  }
+
+  get prodForm() {
+    return this.imageForm.controls;
+  }
 }

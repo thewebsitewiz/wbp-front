@@ -1,155 +1,100 @@
 <!-- Flexbox container for aligning the toasts -->
-<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
+<p-toast></p-toast>
+<div class="admin-page">
+  <p-card class="main-card" [header]="editmode ? 'Edit Image' : 'Add Image'"
+    subheader="You can add or edit images here">
+    <div class="grid p-mb-5">
+      <div class="col-12">
+        <p-toolbar>
+          <div class="p-toolbar-group-left"></div>
+          <div class="p-toolbar-group-right">
+            <p-button styleClass="p-button-primary p-mr-2" [label]="editmode ? 'Update' : 'Create'" icon="pi pi-plus"
+              (click)="onSubmit()"></p-button>
+            <p-button styleClass="p-button-secondary" label="Cancel" icon="pi pi-arrow-circle-left"
+              (click)="onCancel()"></p-button>
+          </div>
+        </p-toolbar>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-12">
+        <form [formGroup]="imageForm">
+          <!-- title -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="title">Title<span class="required">*</span></label>
+              <input formControlName="title" id="title" type="text" class="inputfield w-full" pInputText />
+              <small *ngIf="imageForm.get('title')?.invalid && isSubmitted" class="p-error">Title is required</small>
+            </div>
+          </div>
+          <!-- description -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="description">Description</label>
+              <input formControlName="description" id="description" type="text" class="inputfield w-full" pInputText />
+            </div>
+          </div>
+          <!-- caption -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="caption">Caption</label>
+              <input formControlName="caption" id="caption" type="text" class="inputfield w-full" pInputText />
+            </div>
+          </div>
+          <!-- comments -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="comments">Comments</label>
+              <input formControlName="comments" id="comments" type="text" class="inputfield w-full" pInputText />
+            </div>
+          </div>
+          <!-- dateTaken -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label calendar-label" for="dateTaken">Date Taken</label>
+              <p-calendar formControlName="dateTaken" id="dateTaken" inputId="dateTaken" showButtonBar="true"
+                dateFormat="yy-mm-dd" inline="false" [showIcon]="true" showButtonBar="true" [showIcon]="true"
+                [firstDayOfWeek]="1" [monthNavigator]="true" [yearNavigator]="true" [numberOfMonths]="1"
+                selectOtherMonths="true" field="name" />
+            </div>
 
- <!-- Then put toasts within -->
- <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="toast-header">
-   <img src="..." class="rounded me-2" alt="...">
-   <strong class="me-auto">Bootstrap</strong>
-   <small>11 mins ago</small>
-   <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-  </div>
-  <div class="toast-body">
-   Hello, world! This is a toast message.
-  </div>
- </div>
+          </div>
+
+
+          <!-- tags:  -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="tags">Tags</label>
+              <p-autoComplete formControlName="selectedTags" inputId="tags" id="tags"
+                styleClass="image-upload__autocomplete" [suggestions]="filteredTags"
+                (completeMethod)="filterTags($event)" [dropdown]="true" [multiple]="true">
+                <ng-template let-tags pTemplate="item">
+                  <div class="tags-item">
+                    <div>{{tags.name}}</div>
+                  </div>
+                </ng-template>
+              </p-autoComplete>
+            </div>
+          </div>
+          <!-- image:  -->
+          <div class="grid">
+            <div class="p-field col-12">
+              <label for="image" class="label image-label">Image<span class="required">*</span></label>
+              <input id="image" type="file" class="p-inputtext" accept="image/*" (change)="onImageUpload($event)" />
+              <small *ngIf="imageForm.get('image')
+            ?.invalid && isSubmitted" class="p-error">Image is required</small>
+              <div class="col-2 p-mt-2 p-pl-0">
+                <img style="width: 100%" [src]="imageDisplay" alt="" />
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+        </form>
+      </div>
+    </div>
+  </p-card>
 </div>
-
-<p-card class="main-card" [header]="editmode ? 'Edit Product' : 'Add Product'"
- subheader="You can add or edit products here">
- <div class="grid p-mb-5">
-  <div class="col-12">
-   <p-toolbar>
-    <div class="p-toolbar-group-left"></div>
-    <div class="p-toolbar-group-right">
-     <p-button styleClass="p-button-primary p-mr-2" [label]="editmode ? 'Update' : 'Create'" icon="pi pi-plus"
-      (click)="onSubmit()"></p-button>
-     <p-button styleClass="p-button-secondary" label="Cancel" icon="pi pi-arrow-circle-left"
-      (click)="onCancel()"></p-button>
-    </div>
-   </p-toolbar>
-  </div>
- </div>
- <div class="grid">
-  <div class="col-12">
-   <form [formGroup]="imageForm">
-    <div class="grid">
-     <div class="p-field col-12 md:col-5">
-      <label class="label" for="title">Title<span class="required">*</span></label>
-      <input formControlName="title" id="title" type="text" class="inputfield w-full" pInputText />
-      <small *ngIf="imageForm.get('title')?.invalid && isSubmitted" class="p-error">Title is required</small>
-     </div>
-    </div>
-    <div class="grid">
-     <div class="p-field col-12 md:col-5">
-      <label class="label" for="title">Title<span class="required">*</span></label>
-      <input formControlName="title" id="title" type="text" class="inputfield w-full" pInputText />
-      <small *ngIf="imageForm.get('title')?.invalid && isSubmitted" class="p-error">Title is required</small>
-     </div>
-    </div>
-    <div class="grid">
-     <div class="p-field col-12 md:col-4">
-      <label class="label" for="brand">Brand</label>
-      <input formControlName="brand" id="brand" type="text" class="inputfield w-full" pInputText />
-     </div>
-     <div class="p-field col-12 md:col-4">
-      <label class="label" for="flavor">Flavor</label>
-      <input formControlName="flavor" id="flavor" type="text" class="inputfield w-full" pInputText />
-     </div>
-     <div class="p-field col-12 md:col-4">
-      <label class="label" for="flavor">Strain</label><span (click)="clearStrain()"
-       class="clear-button small ml-2">clear</span>
-      <p-selectButton [options]="strains" (onOptionClick)="strainSelected($event)" optionLabel="label"
-       optionValue="value">
-      </p-selectButton><br /> selected: {{selectedStrain}} - {{productForm.controls['flavor'].value}}
-     </div>
-    </div>
-    <div class="grid">
-     <div class="p-field  col-12 md:col-4" *ngIf="inStockSimple">
-      <label class="label" for="countInStock">Count In Stock<span class="required">*</span></label><br />
-      <p-inputNumber formControlName="countInStock" mode="decimal" [useGrouping]="false">
-      </p-inputNumber>
-
-      <small *ngIf="prodForm['countInStock'].invalid && isSubmitted" class="p-error">Count In Stock is
-       required</small>
-     </div>
-     <div class="p-field  col-12 md:col-6" *ngIf="inStockPounds">
-      <label class="label" for="pounds">Weight In Stock<span class="required">*</span></label><br />
-      <div class="p-field grid in-stock">
-       <div class="col">
-        <div class="p-inputgroup">
-         <input id="pounds" formControlName="pounds" (change)="updateAmt('pounds')" type="texture" class="inputfield"
-          value="{{enteredLbs}}">
-         <span class="p-inputgroup-addon">LBS</span>
-        </div>
-       </div>
-      </div>
-      <div class="p-field grid in-stock">
-       <div class="col">
-        <div class="p-inputgroup">
-         <input id="ounces" formControlName="ounces" (change)="updateAmt('ounces')" type="text" class="inputfield"
-          value="{{(+enteredOzs)}}">
-         <span class="p-inputgroup-addon">OZ</span>
-        </div>
-       </div>
-      </div>
-      <div class="p-field grid in-stock">
-       <div class="col">
-        <div class="p-inputgroup">
-         <input id="grams" formControlName="grams" (change)="updateAmt('grams')" type="text" class="inputfield"
-          value="{{(+enteredGms)}}">
-         <span class="p-inputgroup-addon">g</span>
-        </div>
-       </div>
-      </div>
-      <div class="totalInGrams"> <span style="font-weight: 700;">Total in grams:</span> {{(+totalInGrams)}}g
-      </div>
-     </div>
-     <div class="p-field col-12 md:col-3" *ngIf="priceField === true">
-      <label class="label" for="price">Price<span class="required">*</span></label><br />
-      <p-inputNumber formControlName="price" mode="decimal" [useGrouping]="false" class="inputfield w-full">
-      </p-inputNumber>
-      <small *ngIf="prodForm['price']?.invalid && isSubmitted" class="p-error">Price is required</small>
-     </div>
-     <div class="p-field col-12 md:col-3" *ngIf="pricesField === true">
-      <label class="label">Prices</label><br />
-      <div class="field grid product-prices" *ngFor="let priceItem of priceList">
-       <div class="col">
-        <div class="p-inputgroup">
-         <span class="p-inputgroup-addon">$</span>
-         <input id="{{priceItem.name}}" formControlName="{{priceItem.name}}" type="text" class="inputfield"
-          placeholder="Price" value="{{amtPrices[priceItem.name]}}">
-         <span class="p-inputgroup-addon">{{priceItem.displayName}}</span>
-        </div>
-       </div>
-      </div>
-     </div>
-     <div class="grid">
-      <div class="p-field col-12">
-       <label class="label" for="description">Description<span class="required">*</span></label><br />
-       <textarea pInputTextarea formControlName="description" [rows]="7" [cols]="60"></textarea>
-       <small *ngIf="prodForm['description'].invalid && isSubmitted" class="p-error">Description is
-        required</small>
-      </div>
-     </div>
-     <div class="grid">
-      <div class="p-field col-12">
-       <label for="image">Main Image<span class="required">*</span></label>
-       <input id="image" type="file" class="p-inputtext" accept="image/*" (change)="onImageUpload($event)" />
-       <small *ngIf="prodForm['image'].invalid && isSubmitted" class="p-error">Image is required</small>
-       <div class="col-2 p-mt-2 p-pl-0">
-        <img style="width: 100%" [src]="imageDisplay" alt="" />
-       </div>
-      </div>
-     </div>
-     <div class="grid">
-      <div class="p-field col-12">
-       <label class="label" for="richDescription">Product Details</label><br />
-       <p-editor formControlName="richDescription" [style]="{ height: '320px' }"></p-editor>
-      </div>
-     </div>
-    </div>
-   </form>
-  </div>
- </div>
-</p-card>
