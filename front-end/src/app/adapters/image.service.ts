@@ -19,27 +19,49 @@ export class ImageService {
 
   uploadImage(imageData: FormData): Observable<Image> {
     return this.http.post<Image>(
-      `${this.baseAPIUrl}/${this.imagesAPI}/upload`,
+      `${this.baseAPIUrl}/${this.imagesAPI}/upload-image`,
       imageData
     );
   }
 
+  uploadFile(file: File): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+
+    formData.append('file', file);
+
+    const req = new HttpRequest(
+      'POST',
+      `${this.baseAPIUrl}/upload-file`,
+      formData,
+      {
+        reportProgress: true,
+        responseType: 'json',
+      }
+    );
+
+    return this.http.request(req);
+  }
+
+  getImages(): Observable<any> {
+    return this.http.get(`${this.baseAPIUrl}/get-images`);
+  }
+
   getImage(imageId: number): Observable<Image> {
     return this.http.get<Image>(
-      `${this.baseAPIUrl}/${this.imagesAPI}/get/${imageId}`
+      `${this.baseAPIUrl}/${this.imagesAPI}/get-image/${imageId}`
     );
   }
 
   updateImage(imageData: FormData, imageId: number): Observable<Image> {
     return this.http.put<Image>(
-      `${this.baseAPIUrl}/${this.imagesAPI}/update/${imageId}`,
+      `${this.baseAPIUrl}/${this.imagesAPI}/update-image/${imageId}`,
       imageData
     );
   }
 
   deleteImage(imageId: string): Observable<Image> {
     return this.http.delete<Image>(
-      `${this.baseAPIUrl}/${this.imagesAPI}/delete/${imageId}`
+      `${this.baseAPIUrl}/${this.imagesAPI}/delete-image/${imageId}`
     );
   }
 }

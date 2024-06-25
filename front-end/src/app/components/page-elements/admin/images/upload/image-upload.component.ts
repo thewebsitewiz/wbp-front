@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 
-import { Subject, takeUntil, timer } from 'rxjs';
+import { Observable, Subject, takeUntil, timer } from 'rxjs';
 
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, Validators } from '@angular/forms';
@@ -23,6 +23,7 @@ import {
   AutoCompleteModule,
 } from 'primeng/autocomplete';
 import { FileUploadModule } from 'primeng/fileupload';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'wbp-image-upload',
@@ -64,6 +65,11 @@ export class ImageUploadComponent implements OnInit {
   currentImageId!: number;
   endsubs$: Subject<any> = new Subject();
 
+  currentFile?: File;
+  progress = 0;
+  message = '';
+  fileInfos?: Observable<any>;
+
   filteredTags: any[] = [];
   selectedTags: any[] = [];
 
@@ -91,7 +97,9 @@ export class ImageUploadComponent implements OnInit {
       console.log('tags', this.filteredTags);
     });
 
-    this._checkEditMode();
+    this.fileInfos = this.imageService.getImages();
+
+    this.checkEditMode();
   }
 
   filterTags(event: AutoCompleteCompleteEvent) {
@@ -110,7 +118,7 @@ export class ImageUploadComponent implements OnInit {
     this.filteredTags = filtered;
   }
 
-  onImageUpload(event: any) {
+  /*   onImageUpload(event: any) {
     const file = event.target.files[0];
     if (file && this.imageForm !== null) {
       this.imageForm.patchValue({ image: file });
@@ -124,9 +132,9 @@ export class ImageUploadComponent implements OnInit {
       };
       fileReader.readAsDataURL(file);
     }
-  }
+  } */
 
-  private _checkEditMode() {
+  checkEditMode() {
     if (this.id !== null && this.id !== undefined) {
       this.editmode = true;
     } else {
@@ -167,30 +175,56 @@ export class ImageUploadComponent implements OnInit {
   }
 
   private _addImage(imageData: FormData) {
-    this.imageService
-      .uploadImage(imageData)
-      .pipe(takeUntil(this.endsubs$))
-      .subscribe(
-        (image: Image) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: `Image ${image.title} is created!`,
-          });
-          timer(2000)
-            .toPromise()
-            .then(() => {
-              this.location.back();
-            });
+    // this.uploadFile();
+  }
+
+  selectFile(event: any): void {
+    this.progress = 0;
+    this.message = '';
+    this.currentFile = event.target.files.item(0);
+
+    if (this.currentFile && this.imageForm !== null) {
+      this.imageForm.patchValue({ image: this.currentFile });
+      if (this.imageForm.get('image')) {
+        this.imageForm.get('image')!.updateValueAndValidity();
+      }
+
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        this.imageDisplay = fileReader.result;
+      };
+      fileReader.readAsDataURL(this.currentFile);
+    }
+  }
+
+  uploadFile(): void {
+    if (this.currentFile) {
+      this.imageService.uploadFile(this.currentFile).subscribe({
+        next: (event: any) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            this.progress = Math.round((100 * event.loaded) / event.total);
+          } else if (event instanceof HttpResponse) {
+            this.message = event.body.message;
+            this.fileInfos = this.imageService.getImages();
+          }
         },
-        () => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Product is not created!',
-          });
-        }
-      );
+        error: (err: any) => {
+          console.log(err);
+
+          if (err.error && err.error.message) {
+            this.message = err.error.message;
+          } else {
+            this.message = 'Could not upload the file!';
+          }
+
+          this.currentFile = undefined;
+          this.progress = 0;
+        },
+        complete: () => {
+          this.currentFile = undefined;
+        },
+      });
+    }
   }
 
   private _updateImage(imageData: FormData) {

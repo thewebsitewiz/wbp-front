@@ -23,10 +23,12 @@ const  multerFilter = (req, file, cb) => {
     }
 }
 
+const maxSize = 40 * 1024 * 1024; // 40MB
+
 const uploadPhoto = multer({
-    storage: multerStorage,
-    fileFilter: multerFilter,
-    limits: { fieldSize: 200000}
+  storage: multerStorage,
+  fileFilter: multerFilter,
+  limits: { fileSize: maxSize },
 });
 
 
