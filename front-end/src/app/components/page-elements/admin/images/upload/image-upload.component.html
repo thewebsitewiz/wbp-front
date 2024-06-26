@@ -59,25 +59,23 @@
             </div>
 
           </div>
-
           <!-- tags:  -->
           <div class="grid">
             <div class="p-field col-12 md:col-5">
-              <label class="label" for="tags">Tags</label>
-              <p-autoComplete formControlName="selectedTags" inputId="tags" id="tags"
-                styleClass="image-upload__autocomplete" [suggestions]="filteredTags"
-                (completeMethod)="filterTags($event)" [dropdown]="true" [multiple]="true">
-                <ng-template let-tags pTemplate="item">
-                  <div class="tags-item">
-                    <div>{{tags.name}}</div>
-                  </div>
-                </ng-template>
-              </p-autoComplete>
+              <label class="label" for="tags" style="margin-bottom: 6px;">Tags</label>
+              <div class="grid">
+                <div class="p-field col-12 md:col-5 field-border tag-field" id="selected-tags">
+                </div>
+              </div>
+
+              <div class="grid">
+                <div class="p-field col-12 md:col-5 field-border tag-field" id="tag-list">
+                </div>
+              </div>
             </div>
           </div>
           <!-- image:  -->
           <div class="grid field-border">
-
             <div class="p-field col-8">
               <label class="btn btn-default p-0">
                 <input type="file" (change)="selectFile($event)" />
@@ -93,7 +91,6 @@
                 Upload
               </button>
             </div>
-
           </div>
           @if (progress || message) {
           <div class="grid">

@@ -1,21 +1,36 @@
-const { default: mongoose } = require("mongoose")
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
-mongoose
-  .connect(process.env.WBP_MONGO_DEV_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    dbName: process.env.WBP_MONGO_DEV_DBNM,
-  })
-  .then(() => {
-    console.log("Database Connection is ready...");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+const { mongoose } = require("mongoose");
+
+
+const ENV = "dev";
+
+
+let DB_CONN = process.env.WBP_MONGO_DEV_URI;
+let DB_NAME = process.env.WBP_MONGO_DB_NAME;
+
+if (ENV === "prod") {
+  // REPLACE WITH PROD URI
+  DB_CONN = process.env.WBP_MONGO_DEV_URI;
+
+  // REPLACE WITH PROD DB NAME
+  DB_NAME = process.env.WBP_MONGO_DB_NAME;
+}
+
+const dbConnect = async () => {
+  try {
+    mongoose.set("debug", true);
+    const conn = await mongoose.connect(DB_CONN);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
+};
 
 
 module.exports = dbConnect;
-
 
 /*
 const { MongoClient, ServerApiVersion } = require("mongodb");

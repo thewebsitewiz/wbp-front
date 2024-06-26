@@ -1,20 +1,20 @@
-import { Decimal128 } from "mongodb";
-
 const mongoose = require("mongoose");
-
-const moonName = mongoose.Schema({
-  name: String,
-});
 
 const tagSchema = mongoose.Schema(
   {
     tag: {
-      type: Date,
+      type: String,
       required: true,
+      unique: true,
     },
     description: {
       type: String,
       required: false,
+    },
+    count: {
+      type: Number,
+      required: false,
+      default: 0,
     },
   },
   {
@@ -30,4 +30,4 @@ tagSchema.set("toJSON", {
   virtuals: true,
 });
 
-exports.Tags = mongoose.model("Tags", tagSchema);
+exports.Tags = mongoose.model("Tag", tagSchema, "tags");

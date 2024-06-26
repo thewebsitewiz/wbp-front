@@ -6,7 +6,7 @@ import { Observable, Subject, takeUntil, timer } from 'rxjs';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, Validators } from '@angular/forms';
 
-import { DomainService } from '@adapters/domain.service';
+import { TagService } from '@adapters/tag.service';
 import { ImageService } from '@adapters/image.service';
 
 import { Image } from '@interfaces/image.interface';
@@ -18,10 +18,6 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-import {
-  AutoCompleteCompleteEvent,
-  AutoCompleteModule,
-} from 'primeng/autocomplete';
 import { FileUploadModule } from 'primeng/fileupload';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 
@@ -37,10 +33,9 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
     CalendarModule,
     InputTextModule,
     ToastModule,
-    AutoCompleteModule,
     FileUploadModule,
   ],
-  providers: [MessageService, FilterService, DomainService],
+  providers: [MessageService, FilterService, TagService, ImageService],
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.scss'],
 })
@@ -79,7 +74,7 @@ export class ImageUploadComponent implements OnInit {
     private messageService: MessageService,
     private filterService: FilterService,
     @Inject(ImageService) private imageService: ImageService,
-    @Inject(DomainService) private domainService: DomainService
+    @Inject(TagService) private tagService: TagService
   ) {}
 
   ngOnInit() {
@@ -92,47 +87,12 @@ export class ImageUploadComponent implements OnInit {
       tooltip: 1100, // tooltip
     };
 
-    this.domainService.getDomain('tags').subscribe((data: any) => {
-      this.filteredTags = data;
-      console.log('tags', this.filteredTags);
-    });
+    this._getTags();
 
     this.fileInfos = this.imageService.getImages();
 
     this.checkEditMode();
   }
-
-  filterTags(event: AutoCompleteCompleteEvent) {
-    let filtered: any[] = [];
-
-    console.log('event', event.query);
-    let query = event.query;
-    for (let i = 0; i < this.filteredTags.length; i++) {
-      let tag = this.filteredTags[i];
-      console.log(tag);
-      if (tag.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(tag);
-      }
-    }
-    this.filteredTags = [];
-    this.filteredTags = filtered;
-  }
-
-  /*   onImageUpload(event: any) {
-    const file = event.target.files[0];
-    if (file && this.imageForm !== null) {
-      this.imageForm.patchValue({ image: file });
-      if (this.imageForm.get('image')) {
-        this.imageForm.get('image')!.updateValueAndValidity();
-      }
-
-      const fileReader = new FileReader();
-      fileReader.onload = () => {
-        this.imageDisplay = fileReader.result;
-      };
-      fileReader.readAsDataURL(file);
-    }
-  } */
 
   checkEditMode() {
     if (this.id !== null && this.id !== undefined) {
@@ -140,6 +100,13 @@ export class ImageUploadComponent implements OnInit {
     } else {
       this.editmode = false;
     }
+  }
+
+  private _getTags() {
+    this.tagService.getTags().subscribe((tags: any) => {
+      this.filteredTags = tags;
+      console.log('filteredTags: ', this.filteredTags);
+    });
   }
 
   onSubmit() {

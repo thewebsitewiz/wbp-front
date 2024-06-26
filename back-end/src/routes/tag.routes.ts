@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { getTags } = require("../controllers/tag.controller");
 
-router.get(`/`, async (req, res) => {
+router.get(`/get-tags`, async (req, res) => {
   try {
     const data = await getTags(req, res);
     return res.status(200).send(data);

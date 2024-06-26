@@ -5,24 +5,19 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const mongoose = require("mongoose");
 const cors = require("cors");
+
+const dbConnect = require("./config/dbConnect");
+const { Tags } = require("./models/tag.model");
 
 // const authJwt = require("./helpers/jwt");
 // const errorHandler = require("./helpers/error-handler");
 
-const ENV: string = "dev";
-
-let DB_CONN = process.env.WBP_MONGO_DEV_URI;
-let DB_NAME = process.env.WBP_MONGO_DB_NAME;
-
-if (ENV === "prod") {
-  // REPLACE WITH PROD URI
-  DB_CONN = process.env.WBP_MONGO_DEV_URI;
-
-  // REPLACE WITH PROD DB NAME
-  DB_NAME = process.env.WBP_MONGO_DB_NAME;
-}
+dbConnect().then(() => {
+  Tags.find().then((tags) => {
+    console.log("tags: ", tags);
+  });
+});
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -67,19 +62,6 @@ app.get("/", function (req, res) {
 app.use("/api/weather", weatherRouter);
 app.use("/api/images", imageRouter);
 app.use("/api/tags", tagsRouter);
-
-mongoose
-  .connect(DB_CONN, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    dbName: DB_NAME,
-  })
-  .then(() => {
-    console.log("Database Connection is ready...");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 
 //Server
 const port = 3000;

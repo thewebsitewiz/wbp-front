@@ -2,4 +2,32 @@
  "workbench.tree.enableStickyScroll": false,
  "editor.experimental.StikyScroll.enabled": false,
  "editor.scrollBeyondLastLine": false,
-}x
+ "material-icon-theme.files.associations": {
+  "*.adapter.ts": "capacitor",
+  "*.config.ts": "tune",
+  "*.class.ts": "raml",
+  "*.dto.ts": "raml",
+  "*.entity.ts": "raml",
+  "*.enum.ts": "tune",
+  "*.environment.ts": "tune",
+  "*.index.ts": "lib",
+  "*.interface.ts": "raml",
+  "*.port.ts": "capacitor",
+  "*.repository.ts": "database",
+  "*.router.ts": "routing",
+  "*.settings.ts": "tune",
+  "*.store.ts": "redux-store",
+  "*.type.ts": "raml",
+  "*.use-case.ts": "purescript",
+  "*.utils.ts": "purescript",
+  "*.validation.ts": "document",
+  "CLI.md": "console",
+  "TASKS.md": "todo"
+ },
+ "material-icon-theme.folders.associations": {
+  "domain": "core",
+  "shell": "stack",
+  "state": "redux-store",
+  "ui": "views"
+ }
+}

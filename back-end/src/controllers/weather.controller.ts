@@ -479,8 +479,6 @@ const _getMoonPhase = async (req, res) => {
         SunAngularDiameter: 0.5246928164334679,
       },
     ]; */
-
-    return data;
   }
 
   /*
