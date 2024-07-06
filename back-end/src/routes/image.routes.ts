@@ -1,32 +1,22 @@
-// // @ts-ignore
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+
 const express = require("express");
 const router = express.Router();
 
-const { imageUpload } = require("../controllers/image.controller");
+const {
+  imageUpload,
+  uploadMulter,
+} = require("../controllers/image.controller");
 
-router.post(`/upload-image`, async (req, res) => {
-  try {
-    const data = await imageUpload(req, res);
-    return res.status(200).send(data);
-  } catch (e) {
-    return res.status(500).json({
-      success: false,
-      message: `error in catch for IMAGES UPLOAD: ${e}`,
-    });
-  }
+router.post(`/upload-image`, uploadMulter, async (req, res, next) => {
+  await imageUpload(req, res, next);
 });
 
-router.post(`/upload-file`, async (req, res) => {
-  try {
-    const data = await imageUpload(req, res);
-    return res.status(200).send(data);
-  } catch (e) {
-    return res.status(500).json({
-      success: false,
-      message: `error in catch for IMAGES UPLOAD: ${e}`,
-    });
-  }
+router.post(`/upload-file`, uploadMulter, async (req, res, next) => {
+  console.log("file uploaded: ", req.file);
 });
+
 
 router.get(`/get-images`, async (req, res) => {});
 

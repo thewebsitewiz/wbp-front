@@ -30,4 +30,4 @@ tagSchema.set("toJSON", {
   virtuals: true,
 });
 
-exports.Tags = mongoose.model("Tag", tagSchema, "tags");
+exports.Tag = mongoose.model("Tag", tagSchema, "tags");

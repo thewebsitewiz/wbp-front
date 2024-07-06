@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpRequest,
+  HttpEvent,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
 import { Image } from '../interfaces/image.interface';
@@ -14,54 +19,46 @@ interface Environment {
 export class ImageService {
   private baseAPIUrl = (env as Environment).baseAPIUrl;
   private imagesAPI = '/api/images';
+  private imageAPIUrl = `${this.baseAPIUrl}${this.imagesAPI}`;
 
-  constructor(private http: HttpClient) {}
+  // private _headers = new HttpHeaders();
 
-  uploadImage(imageData: FormData): Observable<Image> {
-    return this.http.post<Image>(
-      `${this.baseAPIUrl}/${this.imagesAPI}/upload-image`,
+  constructor(private http: HttpClient) {
+    // this._headers.set('Content-Type', 'application/json; charset=utf-8');
+  }
+
+  createImage(imageData: FormData): Observable<FormData> {
+    return this.http.post<FormData>(
+      `${this.imageAPIUrl}/upload-image`,
       imageData
     );
   }
 
-  uploadFile(file: File): Observable<HttpEvent<any>> {
-    const formData: FormData = new FormData();
-
-    formData.append('file', file);
-
-    const req = new HttpRequest(
-      'POST',
-      `${this.baseAPIUrl}/upload-file`,
-      formData,
-      {
-        reportProgress: true,
-        responseType: 'json',
-      }
+  updateImage(imageUpdateData: FormData, id: string) {
+    return this.http.put(
+      `${this.imageAPIUrl}/update-image/` + id,
+      imageUpdateData
     );
-
-    return this.http.request(req);
   }
 
   getImages(): Observable<any> {
-    return this.http.get(`${this.baseAPIUrl}/get-images`);
+    return this.http.get(`${this.imageAPIUrl}/get-images`);
   }
 
   getImage(imageId: number): Observable<Image> {
-    return this.http.get<Image>(
-      `${this.baseAPIUrl}/${this.imagesAPI}/get-image/${imageId}`
-    );
+    return this.http.get<Image>(`${this.imageAPIUrl}/get-image/${imageId}`);
   }
 
-  updateImage(imageData: FormData, imageId: number): Observable<Image> {
+  OLDupdateImage(imageData: FormData, imageId: number): Observable<Image> {
     return this.http.put<Image>(
-      `${this.baseAPIUrl}/${this.imagesAPI}/update-image/${imageId}`,
+      `${this.imageAPIUrl}/update-image/${imageId}`,
       imageData
     );
   }
 
   deleteImage(imageId: string): Observable<Image> {
     return this.http.delete<Image>(
-      `${this.baseAPIUrl}/${this.imagesAPI}/delete-image/${imageId}`
+      `${this.imageAPIUrl}/delete-image/${imageId}`
     );
   }
 }

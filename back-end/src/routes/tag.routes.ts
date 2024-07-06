@@ -2,18 +2,14 @@
 const express = require("express");
 const router = express.Router();
 
-const { getTags } = require("../controllers/tag.controller");
+const Tag = require("../controllers/tag.controller");
+const { Tags } = require("../models/tag.model");
 
-router.get(`/get-tags`, async (req, res) => {
-  try {
-    const data = await getTags(req, res);
-    return res.status(200).send(data);
-  } catch (e) {
-    return res.status(500).json({
-      success: false,
-      message: `error in catch for GET TAGS: ${e}`,
-    });
-  }
+router.get(`/get-tags`, Tag.getTags);
+
+router.post(`/add-tag`, (req, res) => {
+  console.log(req.body);
+  Tag.addTag(req, res);
 });
 
 module.exports = router;

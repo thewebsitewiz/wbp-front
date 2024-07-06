@@ -8,4 +8,6 @@ import { provideRouter, Route, RouterLink } from '@angular/router';
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss',
 })
-export class AdminNavBarComponent {}
+export class AdminNavBarComponent {
+  constructor() {}
+}

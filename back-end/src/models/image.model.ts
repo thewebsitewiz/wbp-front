@@ -36,10 +36,6 @@ const imagesSchema = mongoose.Schema(
       type: Decimal128,
       required: false,
     },
-    fileType: {
-      type: String,
-      required: false,
-    },
     mimeType: {
       type: String,
       required: false,
@@ -64,18 +60,10 @@ const imagesSchema = mongoose.Schema(
     ],
     height: {
       type: Number,
-      required: true,
+      required: false,
     },
     width: {
       type: Number,
-      required: true,
-    },
-    resolution: {
-      type: Number,
-      required: true,
-    },
-    colorDepth: {
-      type: String,
       required: false,
     },
   },
@@ -92,4 +80,4 @@ imagesSchema.set("toJSON", {
   virtuals: true,
 });
 
-exports.Images = mongoose.model("Images", imagesSchema);
+exports.Image = mongoose.model("Image", imagesSchema);

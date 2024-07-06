@@ -7,13 +7,9 @@ const maxNumberOfFilesInDirectory = 100;
 
 module.exports.getNewDirPath = () => {
   const currentScriptPath = path.join(__dirname);
-
-  const srcPath = currentScriptPath.replace(/helpers$/, "");
-
+  const srcPath = currentScriptPath.replace(/src\/utils/, "");
   const imgPath = `${srcPath}public/images`;
-
   const currentImgPath = getCurrentDirPath(imgPath);
-
   return currentImgPath;
 };
 

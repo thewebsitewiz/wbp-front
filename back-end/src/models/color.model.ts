@@ -33,4 +33,4 @@ colorSchema.virtual("id").get(function () {
 colorSchema.set("toJSON", {
   virtuals: true,
 });
-exports.Colors = mongoose.model("Colors", colorSchema);
+exports.Color = mongoose.model("Color", colorSchema);

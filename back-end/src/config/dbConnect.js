@@ -23,6 +23,7 @@ const dbConnect = async () => {
     mongoose.set("debug", true);
     const conn = await mongoose.connect(DB_CONN);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log("mongoose.connection.readyState: ",mongoose.connection.readyState);
   } catch (error) {
     console.error(error.message);
     process.exit(1);
