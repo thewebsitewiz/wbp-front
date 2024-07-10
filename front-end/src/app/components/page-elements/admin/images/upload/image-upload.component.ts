@@ -5,6 +5,7 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
+  OnDestroy,
 } from '@angular/core';
 
 import { CommonModule, Location } from '@angular/common';
@@ -13,8 +14,14 @@ import { Observable, Subject, pipe, takeUntil, timer } from 'rxjs';
 
 import { orderBy } from 'lodash';
 
-import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { FormGroup, Validators } from '@angular/forms';
+import * as ExifReader from 'exifreader';
+
+import {
+  FormControl,
+  ReactiveFormsModule,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 import { TagService } from '@adapters/tag.service';
 import { ImageService } from '@adapters/image.service';
@@ -40,7 +47,6 @@ import { ProgressComponent } from './progress/progress.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule,
     CardModule,
     ToolbarModule,
     ButtonModule,
@@ -57,7 +63,7 @@ import { ProgressComponent } from './progress/progress.component';
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.scss'],
 })
-export class ImageUploadComponent implements OnInit {
+export class ImageUploadComponent implements OnInit, OnDestroy {
   editmode: boolean = false;
   isSubmitted: boolean = false;
 
@@ -92,7 +98,11 @@ export class ImageUploadComponent implements OnInit {
   badgeValue: any = {};
   badgeSeverity: any = {};
 
-  uploadDisabled: boolean = true;
+  md!: any;
+
+  dateTakenRequired: boolean = false;
+  defaultDate!: Date;
+  todaysDate!: Date;
 
   @ViewChild('newTag', { static: false }) newTag!: ElementRef<HTMLInputElement>;
 
@@ -120,14 +130,6 @@ export class ImageUploadComponent implements OnInit {
     this.fileInfos = this.imageService.getImages();
 
     this.checkEditMode();
-
-    this.imageForm.get('image')?.valueChanges.subscribe((value) => {
-      if (value) {
-        this.uploadDisabled = false;
-      } else {
-        this.uploadDisabled = true;
-      }
-    });
   }
 
   private _setBadgeSettings() {
@@ -302,8 +304,71 @@ export class ImageUploadComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       this.imagePreview = reader.result as string;
+      this._getMetadata(this.imagePreview);
     };
     reader.readAsDataURL(file);
+  }
+
+  private _getMetadata = async (file: any) => {
+    this.md = await ExifReader.load(file);
+
+    this._setDateTaken();
+  };
+
+  private _setDateTaken(): void {
+    let dateTaken = null;
+    if (this.md !== undefined) {
+      if (
+        this.md['DateCreated'] !== undefined &&
+        (this.md['DateCreated'].description !== undefined || null)
+      ) {
+        dateTaken = this.md['DateTime'].description;
+        
+      }
+
+      if (
+        this.md['DateTimeOriginal'] !== undefined &&
+        (this.md['DateTimeOriginal']['description'] !== undefined || null)
+      ) {
+        dateTaken = this._formatMongoDate(
+          this.md['DateTimeOriginal'].description,
+        );
+      
+      }
+
+      if (
+        dateTaken === null &&
+        this.md['DateTimeCreated'] !== undefined &&
+        (this.md['DateTimeCreated'].description !== undefined || null)
+      ) {
+        dateTaken = this._formatMongoDate(
+          this.md['DateTimeOriginal'].description,
+        );
+        
+      }
+    }
+
+    if (dateTaken) {
+      this.defaultDate = new Date(dateTaken);
+      this.dateTakenRequired = false;
+      this.formControls['dateTaken'].removeValidators(Validators.required);
+      this.formControls['dateTaken'].updateValueAndValidity();
+    } else {
+      this.dateTakenRequired = true;
+      this.formControls['dateTaken'].setValidators(Validators.required);
+      this.formControls['dateTaken'].updateValueAndValidity();
+    }
+  }
+
+  private _formatMongoDate(dateString: string) {
+    // in 2022:03:27 15:35:03
+    // out 2007-06-02T16:00:00
+    let [date, time] = dateString.split(' ');
+    date = date.replaceAll(':', '-');
+
+    let stringDate = `${date}T${time}`;
+    let dateObj = new Date(stringDate);
+    return dateObj;
   }
 
   onSubmit() {
@@ -406,5 +471,9 @@ export class ImageUploadComponent implements OnInit {
 
   get formControls() {
     return this.imageForm.controls;
+  }
+  ngOnDestroy() {
+    this.endsubs$.next(null);
+    this.endsubs$.complete();
   }
 }

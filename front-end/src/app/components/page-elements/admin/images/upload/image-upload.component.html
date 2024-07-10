@@ -96,11 +96,15 @@
           <!-- dateTaken -->
           <div class="grid">
             <div class="p-field col-12 md:col-5">
-              <label class="label calendar-label" for="dateTaken">Date Taken</label>
-              <p-calendar formControlName="dateTaken" id="dateTaken" inputId="dateTaken" showButtonBar="true"
-                dateFormat="yy-mm-dd" inline="false" [showIcon]="true" showButtonBar="true" [showIcon]="true"
-                [firstDayOfWeek]="1" [monthNavigator]="true" [yearNavigator]="true" [numberOfMonths]="1"
-                selectOtherMonths="true" field="name" />
+              <label class="label calendar-label" for="dateTaken">Date Taken
+                @if(dateTakenRequired) {
+                <sup class="required" aria-hidden="true">*</sup>
+                }
+              </label>
+              <p-calendar [(ngModel)]="defaultDate" formControlName="dateTaken" id="dateTaken" inputId="dateTaken"
+                showButtonBar="true" dateFormat="yy-mm-dd" inline="false" [showIcon]="true" showButtonBar="true"
+                [showIcon]="true" [firstDayOfWeek]="1" [defaultDate]="defaultDate" [showTime]="true"
+                [yearNavigator]="true" [numberOfMonths]="1" selectOtherMonths="true" field="dateTaken" />
             </div>
           </div>
           <!-- title -->
