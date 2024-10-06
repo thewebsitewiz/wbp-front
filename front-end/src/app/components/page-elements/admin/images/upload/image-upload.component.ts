@@ -33,13 +33,11 @@ import { MessageService, FilterService, PrimeNGConfig } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TagModule } from 'primeng/tag';
 import { BadgeModule } from 'primeng/badge';
-import { ProgressComponent } from './progress/progress.component';
 
 @Component({
   selector: 'wbp-image-upload',
@@ -50,13 +48,11 @@ import { ProgressComponent } from './progress/progress.component';
     CardModule,
     ToolbarModule,
     ButtonModule,
-    CalendarModule,
     InputTextModule,
     ToastModule,
     FileUploadModule,
     TagModule,
     BadgeModule,
-    ProgressComponent,
   ],
 
   providers: [MessageService, FilterService, TagService],
@@ -70,12 +66,12 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   uploadedFiles: any[] = [];
 
   imageForm: FormGroup = new FormGroup({
-    title: new FormControl('Fathers Day Stealie - Test', Validators.required),
-    description: new FormControl('SYF with Grateful Dad'),
-    caption: new FormControl('Happy Fathers Day to all of you  Grateful Dads'),
-    comments: new FormControl('Created by Daryl Johnson'),
+    title: new FormControl('', Validators.required),
+    description: new FormControl(''),
+    caption: new FormControl(''),
+    comments: new FormControl(''),
     dateTaken: new FormControl(''),
-    tags: new FormControl('Parties,Fathers Day,Weddings', Validators.required),
+    tags: new FormControl('', Validators.required),
     image: new FormControl<File | null>(null, Validators.required),
   });
   @Input() id!: string;
@@ -100,10 +96,10 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   md!: any;
 
-  dateTakenRequired: boolean = false;
   defaultDate!: Date;
-  todaysDate!: Date;
 
+  @ViewChild('tagInput', { static: false })
+  tagInput!: ElementRef<HTMLInputElement>;
   @ViewChild('newTag', { static: false }) newTag!: ElementRef<HTMLInputElement>;
 
   constructor(
@@ -136,7 +132,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     for (let tag in this.tagsLookup) {
       if (
         this.tagsLookup[tag] !== undefined ||
-        (null && this.tagsLookup[tag]['count'] !== undefined) ||
+        this.tagsLookup[tag]['count'] !== undefined ||
         null
       ) {
         const tagCount = this.tagsLookup[tag]['count'] || 0;
@@ -181,19 +177,9 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     });
   }
 
-  _addTagToForm() {
-    let tags: string[] = [];
-    this.selectedTags.forEach((tag: Tag) => {
-      tags.push(tag.tag);
-    });
-
-    const tagIdList = this.selectedTags.map((tag: Tag) => tag._id).join(',');
-
-    this.imageForm.patchValue({ tags: tagIdList });
-  }
-
   addNewTag(event: any) {
     const value = event.value;
+    console.log('addNewTag - value', value);
     this.tagService.addTag(value).subscribe((result: any) => {
       const resultTag = {
         tag: value,
@@ -201,14 +187,20 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
         id: result.id,
         count: 0,
       };
-      this.tagsLookup[value] = resultTag;
-      this.filteredTags.push(resultTag);
 
+      console.log('addNewTag - resultTag', resultTag);
+      this.tagsLookup[value] = resultTag;
+      console.log('addNewTag - tagsLookup', this.tagsLookup);
+      /*
+      this.filteredTags.push(resultTag);
+ 
       this.filteredTags = orderBy(
         this.filteredTags,
         ['count', 'tag'],
         ['desc', 'asc'],
       );
+ */
+      this.selectTag(value);
 
       this.newTag.nativeElement.value = '';
       this._setBadgeSettings();
@@ -216,7 +208,13 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   }
 
   selectTag(selectedTag: string) {
+    console.log(
+      'selectTag - selectedTag',
+      selectedTag,
+      this.tagsLookup[selectedTag],
+    );
     this.selectedTags.push(this.tagsLookup[selectedTag]);
+    console.log('selectTag - selectedTags', this.selectedTags);
     this.selectedTags = orderBy(
       this.selectedTags,
       ['count', 'tag'],
@@ -225,7 +223,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
     this._addTagsToForm();
 
-    const tempTags = [...this.filteredTags];
+    /*     const tempTags = [...this.filteredTags];
     const newFilteredTags: any[] = [];
 
     tempTags.forEach((tag: Tag) => {
@@ -238,9 +236,10 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       newFilteredTags,
       ['count', 'tag'],
       ['desc', 'asc'],
-    );
-
+    ); 
+    */
     this._addTagToForm();
+
     this._setBadgeSettings();
   }
 
@@ -277,7 +276,18 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     this._setBadgeSettings();
   }
 
-  _addTagsToForm() {
+  private _addTagToForm() {
+    let tags: string[] = [];
+    this.selectedTags.forEach((tag: Tag) => {
+      tags.push(tag.tag);
+    });
+
+    const tagIdList = this.selectedTags.map((tag: Tag) => tag._id).join(',');
+
+    this.imageForm.patchValue({ tags: tagIdList });
+  }
+
+  private _addTagsToForm() {
     let tagIdsList: string[] = [];
     this.selectedTags.forEach((tag: Tag) => {
       tagIdsList.push(tag._id);
@@ -323,7 +333,6 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
         (this.md['DateCreated'].description !== undefined || null)
       ) {
         dateTaken = this.md['DateTime'].description;
-        
       }
 
       if (
@@ -333,7 +342,6 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
         dateTaken = this._formatMongoDate(
           this.md['DateTimeOriginal'].description,
         );
-      
       }
 
       if (
@@ -344,19 +352,11 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
         dateTaken = this._formatMongoDate(
           this.md['DateTimeOriginal'].description,
         );
-        
       }
     }
 
     if (dateTaken) {
       this.defaultDate = new Date(dateTaken);
-      this.dateTakenRequired = false;
-      this.formControls['dateTaken'].removeValidators(Validators.required);
-      this.formControls['dateTaken'].updateValueAndValidity();
-    } else {
-      this.dateTakenRequired = true;
-      this.formControls['dateTaken'].setValidators(Validators.required);
-      this.formControls['dateTaken'].updateValueAndValidity();
     }
   }
 
@@ -372,22 +372,28 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log('this.imageForm', this.imageForm);
+    console.log('this.imageForm -  submit', this.imageForm.value);
     if (this.imageForm.invalid) return;
 
     //this.isLoading = true;
-    let skippedFields = ['tags'];
+    let skippedFields: any[] = [];
     let imageFormData: FormData = new FormData();
     for (const field in this.imageForm.controls) {
       if (
-        this.imageForm.controls.hasOwnProperty(field) &&
+        this.imageForm.value.hasOwnProperty(field) &&
         !skippedFields.includes(field)
       ) {
         imageFormData.append(field, this.imageForm.get(field)?.value);
+        console.log('imageFormData', imageFormData);
       }
     }
 
+    if (this.selectedTags.length > 0) {
+      this._addTagsToForm();
+    }
+
     if (this.editmode === false) {
+      console.log('imageFormData - final', imageFormData);
       this._addImage(imageFormData);
     } else {
       this._updateImage(imageFormData, this.id);

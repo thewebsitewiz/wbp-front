@@ -7,13 +7,14 @@ export const routes: Routes = [
     path: 'admin',
     loadComponent: () =>
       import('./components/sections/admin/admin.component').then(
-        (m) => m.AdminComponent
+        (m) => m.AdminComponent,
       ), // Lazy loading
     loadChildren: () =>
       import('./components/sections/admin/admin.routes').then(
-        (m) => m.AuthRoutes
+        (m) => m.AuthRoutes,
       ),
   },
+  { path: '**', component: HomePageComponent },
 ];
 
 /*

@@ -6,6 +6,7 @@ const ExifReader = require("exifreader");
 const multer = require("multer");
 
 const imgPathUtils = require("@utils/imagePath.utils");
+// const { getColorAnalysis } = require("../utils/pixels.util");
 
 const { Image } = require("../models/image.model");
 const { Tag } = require("../models/tag.model");
@@ -63,26 +64,16 @@ const _getMetadata = async (file) => {
   return await ExifReader.load(file);
 };
 
+// const _pixelGetter = async (req, res) => {};
+
 const _imageUpload = async (req, res) => {
   const file = req.file;
   if (!file) return res.status(400).send("No image in the request");
 
   let tagIds = [];
   if (req.body.tags !== undefined || null) {
-    const passedTags = req.body.tags.split(",");
-    passedTags.forEach(async (tag) => {
-      const foundTag = await Tag.findById(tag.tag);
-      if (foundTag) {
-        tagIds.push(foundTag._id);
-      } else {
-        let tagPayload = new Tag({
-          tag: tag.tag,
-          description: tag.description,
-        });
-        const tagResult = await tagPayload.save();
-        tagIds.push(tagResult._id);
-      }
-    });
+    tagIds = req.body.tags.split(",");
+    console.log("tagIds: ", tagIds);
   }
 
   let colorIds = [];
@@ -107,31 +98,15 @@ const _imageUpload = async (req, res) => {
   } */
 
   const md = await _getMetadata(`${imageDirPath}/${newFileName}`);
-
-  console.log("md: ", md);
-  let mdDateTaken = null;
-  if (
-    (md["DateTimeOriginal"] !== undefined &&
-      md["DateTimeOriginal"]["value"] !== undefined &&
-      md["DateTimeOriginal"]["value"][0] !== undefined) ||
-    null
-  ) {
-    mdDateTaken = md["DateTimeOriginal"]["value"][0];
-    mdDateTaken = mdDateTaken.replace(" ", "T");
-  }
-  let dateTaken = null;
-  if (req.body.dateTaken !== undefined || null) {
-    dateTaken = req.body.dateTaken;
-  }
-
-  console.log("req.body.dateTaken: ", req.body.dateTaken);
-  console.log("mdDateTaken: ", mdDateTaken);
-
-  let mongoDate = null;
-  if (mdDateTaken) mongoDate = new Date(mdDateTaken);
-  if (dateTaken) mongoDate = new Date(dateTaken);
-
-  console.log("mongoDate: ", mongoDate);
+  /*
+  const pixelData = await getColorAnalysis(
+    `${imageDirPath}/${newFileName}`,
+    md["Image Width"]["value"],
+    md["Image Height"]["value"]
+  );
+  console.log("pixelData: ", pixelData);
+  // console.log("md: ", md);
+*/
 
   try {
     let image = new Image({
@@ -143,7 +118,6 @@ const _imageUpload = async (req, res) => {
       comments: req.body.comments,
       fileSize: file.size,
       mimeType: file.mimeType,
-      dateTaken: mongoDate,
       height: md["Image Height"]["value"],
       width: md["Image Width"]["value"],
     });
