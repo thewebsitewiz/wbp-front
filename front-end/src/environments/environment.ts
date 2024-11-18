@@ -1,4 +1,4 @@
 export const environment = {
-  baseAPIUrl: 'http://localhost:3000',
+  baseAPIUrl: 'http://api.thewebsitewiz.com',
   API: '/api',
 };

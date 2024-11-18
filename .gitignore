@@ -7,9 +7,14 @@
 /bazel-out
 
 # Node
-/node_modules
+/front-end/node_modules
+/back-end/node_modules
 npm-debug.log
 yarn-error.log
+/front-end/dist
+/front-end/.angular/cache
+/front-end/src/stories
+
 
 # IDEs and editors
 .idea/
