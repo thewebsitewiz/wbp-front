@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { WeatherService } from '../../../adapters/weather.service';
+import { WeatherService } from '../../../services/weather.service';
 
 @Component({
   selector: 'wbp-weather',

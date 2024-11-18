@@ -2,47 +2,66 @@
 
 .navbar {
 
- width: 100vw;
- height: 80px;
- background-color: rgba(255, 255, 255, 0.3);
- font-family: "Fira Sans Condensed",
-  "Helvetica Neue Light",
-  "Helvetica Neue",
-  "Helvetica",
-  "Arial",
-  sans-serif !important;
+  width: 100vw;
+  height: 80px;
+  background-color: rgba(255, 255, 255, 0.3);
+  font-family: "Fira Sans Condensed",
+    "Helvetica Neue Light",
+    "Helvetica Neue",
+    "Helvetica",
+    "Arial",
+    sans-serif !important;
 
- & .nav-animation {
-  animation: navBarDrop 0.8s ease-in-out;
- }
+  & .nav-animation {
+    animation: navBarDrop 0.8s ease-in-out;
+  }
 
- &__logo {
-  position: relative;
-  top: 30px;
-  width: 200px;
- }
+  &__logo {
+    width: 200px;
+  }
 
- & .nav-link {
-  font-weight: 500;
-  font-size: 2rem !important;
-  color: black;
- }
+  & .nav-link {
+    font-weight: 500;
+    font-size: 2rem !important;
+    color: black;
+  }
 
- & .nav-item {
-  padding: 0 1.8rem;
- }
+  & .nav-item {
+    padding: 0 1.8rem;
+  }
 
 
 }
 
-@media (max-width: 992px) {}
+@media (min-width: 993px) {
+  .navbar {
+    &>.container {
+      position: relative;
+      top: 34px;
+    }
+
+  }
+}
+
+@media (max-width: 992px) {
+  .navbar {
+    &>.container {
+      flex-wrap: nowrap;
+    }
+
+    &__logo {
+      align-self: flex-start;
+
+    }
+  }
+}
 
 @keyframes navBarDrop {
- from {
-  top: -170px;
- }
+  from {
+    top: -170px;
+  }
 
- to {
-  top: 0px;
- }
+  to {
+    top: 0px;
+  }
 }

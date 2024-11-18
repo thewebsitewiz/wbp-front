@@ -1,18 +1,17 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from './components/sections/home/home-page/home-page.component';
+import { HomePageComponent } from './components/pages/home-page/home-page.component';
 
 export const routes: Routes = [
   { path: '', component: HomePageComponent },
   {
     path: 'admin',
     loadComponent: () =>
-      import('./components/sections/admin/admin.component').then(
-        (m) => m.AdminComponent,
-      ), // Lazy loading
-    loadChildren: () =>
-      import('./components/sections/admin/admin.routes').then(
-        (m) => m.AuthRoutes,
+      import('./components/pages/admin/dashboard/dashboard.component').then(
+        (m) => m.AdminDashboardComponent
       ),
+      // Lazy loading
+    loadChildren: () =>
+      import('./components/pages/admin/admin.routes').then((m) => m.AuthRoutes),
   },
   { path: '**', component: HomePageComponent },
 ];

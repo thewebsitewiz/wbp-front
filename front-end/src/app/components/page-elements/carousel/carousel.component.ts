@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit } from '@angular/core';
-import { CarouselService } from '../../../adapters/carousel.service';
+import { CarouselService } from '../../../services/carousel.service';
 
 @Component({
   selector: 'wbp-carousel',

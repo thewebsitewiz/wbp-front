@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { Album } from '../interfaces/album.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -7,17 +8,27 @@ import { Observable, of } from 'rxjs';
 export class AlbumsService {
   constructor() {}
 
-  getAlbums(): Observable<any[]> {
+  getAlbums(): Observable<Album[]> {
     return of([
       {
         album: 'Destinations',
         description: 'Destination photography is blah, blah, blah',
+        postmark: {
+          src: 'postmarks/postmark-9.png',
+          top: 15,
+          left: 15,
+        },
         images: [{ src: 'pics/--215-Edit.jpg', title: '', description: '' }],
       },
       {
         album: 'Proposals',
-        alignment: 'right',
         description: '',
+        postmark: {
+          src: 'postmarks/postmark-1.png',
+          top: 10,
+          right: 8,
+          width: 60,
+        },
         images: [
           {
             src: 'pics/8-Edit.jpg',
@@ -29,6 +40,11 @@ export class AlbumsService {
       {
         album: 'Families',
         description: 'Families photography is blah, blah, blah',
+        postmark: {
+          src: 'postmarks/postmark-2.png',
+          top: 15,
+          right: 15,
+        },
         images: [
           {
             src: 'pics/23-Edit.jpg',
@@ -42,6 +58,11 @@ export class AlbumsService {
         albumColor: 'lightgreen',
         description: 'Portraits photography is blah, blah, blah',
         alignment: 'right',
+        postmark: {
+          src: 'postmarks/postmark-3.png',
+          top: 15,
+          right: 15,
+        },
         images: [
           {
             src: 'pics/16-Edit.jpg',
@@ -53,6 +74,11 @@ export class AlbumsService {
       {
         album: 'Weddings',
         description: 'Weddings photography is blah, blah, blah',
+        postmark: {
+          src: 'postmarks/postmark-4.png',
+          top: 15,
+          right: 15,
+        },
         images: [
           {
             src: 'pics/208-Edit.jpg',
@@ -65,6 +91,11 @@ export class AlbumsService {
         album: 'Underwater',
         albumColor: 'lightblue',
         description: 'Underwater photography is blah, blah, blah',
+        postmark: {
+          src: 'postmarks/postmark-5.png',
+          top: 15,
+          right: 15,
+        },
         images: [
           {
             src: 'pics/--P3120194-Edit-Edit-Edit-Edit.jpg',
@@ -85,9 +116,14 @@ export class AlbumsService {
       },
 
       {
-        album: 'Special Announcements',
+        album: 'Announcements',
         alignment: 'right',
         description: 'Special Occasions photography is blah, blah, blah',
+        postmark: {
+          src: 'postmarks/postmark-6.png',
+          top: 15,
+          right: 15,
+        },
         images: [
           {
             src: 'pics/0050-Edit.jpg',
@@ -100,6 +136,11 @@ export class AlbumsService {
         album: 'Landscapes',
         albumColor: 'lightyellow',
         description: 'Landscapes photography is blah, blah, blah',
+        postmark: {
+          src: 'postmarks/postmark-7.png',
+          top: 15,
+          right: 15,
+        },
         images: [
           {
             src: 'pics/dxthm1000.CM7P7336-Edit.jpg',
@@ -113,6 +154,11 @@ export class AlbumsService {
         alignment: 'right',
         albumColor: 'white',
         description: 'Celebrities photography is blah, blah, blah',
+        postmark: {
+          src: 'postmarks/postmark-8.png',
+          top: 15,
+          right: 15,
+        },
         images: [
           {
             src: 'pics/dxthm1000.003work.jpg',

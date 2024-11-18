@@ -46,7 +46,7 @@
         "src/assets/*"
       ],
       "@adapters/*": [
-        "src/app/adapters/*"
+        "src/app/services/*"
       ]
     }
   },

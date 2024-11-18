@@ -1,13 +1,18 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit } from '@angular/core';
-import { AlbumsService } from '../../../adapters/albums.service';
+import { AlbumsService } from '../../../services/albums.service';
 
 import { NgClass, NgForOf, NgStyle, NgIf } from '@angular/common';
-import { OnCreate } from '../../../directives/onCreate.directive';
+import {
+  Postmark,
+  PostmarkPosition,
+  Album,
+} from '../../../interfaces/album.interface';
 
 @Component({
   selector: 'wbp-albums',
   standalone: true,
-  imports: [NgClass, NgForOf, NgStyle, NgIf, OnCreate],
+  imports: [CommonModule, NgClass, NgForOf, NgStyle, NgIf],
   templateUrl: './albums.component.html',
   styleUrl: './albums.component.scss',
 })
@@ -29,20 +34,40 @@ export class AlbumsComponent implements OnInit {
     });
   }
 
-  setBackgroundImage(album: any): void {
-    console.log(album);
+  setBackgroundImage(album: Album): void {
     this.ref.nativeElement.style.backgroundImage = `url('assets/images/${album.images[0].src}')`;
   }
 
-  titleAlignment(album: any): string {
+  getPostmarkPosition(postmark: Postmark): PostmarkPosition {
+    const position: { [key: string]: string } = {};
+    if (postmark.top) {
+      position['top'] = `${postmark.top}px`;
+    }
+    if (postmark.bottom) {
+      position['bottom'] = `${postmark.bottom}px`;
+    }
+    if (postmark.left) {
+      position['left'] = `${postmark.left}px`;
+    }
+    if (postmark.right) {
+      position['right'] = `${postmark.right}px`;
+    }
+    if (postmark.width) {
+      position['width'] = `${postmark.width}px`;
+    }
+
+    return position;
+  }
+
+  titleAlignment(album: Album): string {
     return album.alignment === 'right' ? 'right' : 'left';
   }
 
-  titleColor(album: any): string {
+  titleColor(album: Album): string {
     return album.albumColor !== undefined ? album.albumColor : 'white';
   }
 
-  openAlbum(album: any) {
+  openAlbum(album: Album) {
     this.selectedAlbum = album;
     this.albumSelected = true;
     console.log(this.selectedAlbum);

@@ -23,8 +23,8 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { TagService } from '@adapters/tag.service';
-import { ImageService } from '@adapters/image.service';
+import { TagService } from '@app/services/tag.service';
+import { ImageService } from '@app/services/image.service';
 
 import { Image } from '@interfaces/image.interface';
 import { Tag } from '@interfaces/tag.interface';
@@ -108,7 +108,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private filterService: FilterService,
     @Inject(ImageService) private imageService: ImageService,
-    @Inject(TagService) private tagService: TagService,
+    @Inject(TagService) private tagService: TagService
   ) {}
 
   ngOnInit() {
@@ -193,7 +193,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       console.log('addNewTag - tagsLookup', this.tagsLookup);
       /*
       this.filteredTags.push(resultTag);
- 
+
       this.filteredTags = orderBy(
         this.filteredTags,
         ['count', 'tag'],
@@ -211,14 +211,14 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     console.log(
       'selectTag - selectedTag',
       selectedTag,
-      this.tagsLookup[selectedTag],
+      this.tagsLookup[selectedTag]
     );
     this.selectedTags.push(this.tagsLookup[selectedTag]);
     console.log('selectTag - selectedTags', this.selectedTags);
     this.selectedTags = orderBy(
       this.selectedTags,
       ['count', 'tag'],
-      ['desc', 'asc'],
+      ['desc', 'asc']
     );
 
     this._addTagsToForm();
@@ -236,7 +236,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       newFilteredTags,
       ['count', 'tag'],
       ['desc', 'asc'],
-    ); 
+    );
     */
     this._addTagToForm();
 
@@ -256,7 +256,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     this.selectedTags = orderBy(
       newSelectedTags,
       ['count', 'tag'],
-      ['desc', 'asc'],
+      ['desc', 'asc']
     );
 
     this._addTagsToForm();
@@ -265,12 +265,12 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     this.filteredTags = orderBy(
       this.filteredTags,
       ['count', 'tag'],
-      ['desc', 'asc'],
+      ['desc', 'asc']
     );
     this.filteredTags = orderBy(
       this.filteredTags,
       ['count', 'tag'],
-      ['desc', 'asc'],
+      ['desc', 'asc']
     );
 
     this._setBadgeSettings();
@@ -340,7 +340,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
         (this.md['DateTimeOriginal']['description'] !== undefined || null)
       ) {
         dateTaken = this._formatMongoDate(
-          this.md['DateTimeOriginal'].description,
+          this.md['DateTimeOriginal'].description
         );
       }
 
@@ -350,7 +350,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
         (this.md['DateTimeCreated'].description !== undefined || null)
       ) {
         dateTaken = this._formatMongoDate(
-          this.md['DateTimeOriginal'].description,
+          this.md['DateTimeOriginal'].description
         );
       }
     }
@@ -455,7 +455,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
             summary: 'Error',
             detail: 'Image is not updated!',
           });
-        },
+        }
       );
   }
 
