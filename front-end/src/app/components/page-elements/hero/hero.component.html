@@ -1,1 +1,24 @@
- 
+<section class="carousel hero-carousel">
+
+  <div id="hero-prev" class="header-image-container header-image-hidden"></div>
+
+  <div id="hero-curr" #heroCurr class="header-image-container header-displayed">
+    <div id="hero-prev-slide" class="carousel-control slide-prev" (click)="prevSlide()">
+      <i class="pi pi-angle-left" style="color: white;font-size: 7rem"></i>
+    </div>
+
+
+    <div id="typing-text"></div>
+    <!-- <div id="slide-animation">
+   <div id="slide-animation-content">
+    <h1 id="slide-animation-title"></h1>
+    <div id="slide-animation-body"></div>
+   </div> -->
+
+    <div id="hero-next-slide" class="carousel-control slide-next" (click)="nextSlide()">
+      <i class="pi pi-angle-right" style="color: white;font-size: 7rem"></i>
+    </div>
+
+    <div id="hero-next" class="header-image-container header-image-hidden"></div>
+  </div>
+</section>

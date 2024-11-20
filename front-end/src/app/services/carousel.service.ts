@@ -19,7 +19,7 @@ export class CarouselService {
   constructor() {}
 
   initCarousel(ref: ElementRef, prefix: string, slides: Slide[]) {
-    console.log('initCarousel: ', prefix, slides);
+    console.log('initCarousel: ', prefix,ref, slides);
 
     this.ref = ref;
     this.prefix = prefix;

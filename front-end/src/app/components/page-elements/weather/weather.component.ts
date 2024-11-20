@@ -12,7 +12,7 @@ export class WeatherComponent implements OnInit {
   constructor(private weatherService: WeatherService) {}
 
   ngOnInit() {
-    /*  this.weatherService.getWeather().subscribe((weather: any) => {
+    this.weatherService.getWeather().subscribe((weather: any) => {
       console.log(weather);
     });
     this.weatherService.getMarine().subscribe((marineData: any) => {
@@ -20,7 +20,7 @@ export class WeatherComponent implements OnInit {
     });
     this.weatherService.getAstro().subscribe((astroData: any) => {
       console.log(astroData);
-    }); */
+    });
     this.weatherService.getMoonPhase().subscribe((moonPhaseData: any) => {
       console.log(moonPhaseData);
     });
