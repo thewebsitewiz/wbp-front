@@ -1,0 +1,41 @@
+.album-carousel {
+
+  & #album-curr {
+    background-image: var(--album-curr);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100%
+  }
+
+
+
+  & .carousel-control {
+    color: white;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 40%;
+    cursor: pointer;
+
+    &.slide-prev {
+      left: 10px;
+    }
+
+    &.slide-next {
+      right: 10px;
+    }
+  }
+
+  & .p-dialog-title {
+    font: 500 4rem / 0.5 "Allura", cursive !important;
+  }
+
+  & .p-dialog-content {
+    height: 90%;
+  }
+
+  & #album-curr {
+    height: 70vh;
+  }
+}

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { provideRouter, Route, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'wbp-admin-nav',
   standalone: true,

@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
 import { NavBarComponent } from '../../layout/nav-bar/nav-bar.component';
 import { FooterComponent } from '../../layout/footer/footer.component';
 
-//Page Elemeents Components
-import { CarouselComponent } from '../../page-elements/carousel/carousel.component';
+//Page Elements Components
+import { HeroComponent } from '../../page-elements/hero/hero.component';
 import { WillsBioComponent } from '../../page-elements/wills-bio/wills-bio.component';
 import { AlbumsComponent } from '../../page-elements/albums/albums.component';
 import { WeatherComponent } from '../../page-elements/weather/weather.component';
@@ -15,7 +15,7 @@ import { WeatherComponent } from '../../page-elements/weather/weather.component'
   imports: [
     NavBarComponent,
     FooterComponent,
-    CarouselComponent,
+    HeroComponent,
     WillsBioComponent,
     AlbumsComponent,
     WeatherComponent,

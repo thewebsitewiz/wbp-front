@@ -7,24 +7,25 @@
         [ngStyle]="getPostmarkPosition(album.postmark)">
       <div class="album-title" [ngClass]="titleAlignment(album)" [ngStyle]="{'color': titleColor(album)}">
         <span class="text-line">{{album.album}}</span>
-        <!-- <pre>{{album | json}}</pre> -->
       </div>
     </div>
   </div>
-
-
-
-
 </div>
-<div class="albumDisplay" [ngStyle]="{'display': albumSelected === false ? 'none' : 'block' }">
-  <div class="albumDisplay__title allura-regular">{{selectedAlbum?.album}}</div>
-  <div class="albumDisplay__description" *ngIf="selectedAlbum?.description">{{selectedAlbum?.description}}</div>
-  <div class="albumDisplay__close" (click)="closeAlbum()">
-    <i class="fas fa-times"></i>
-  </div>
-  <div class="albumDisplay__content">
-    <img src="assets/images/{{image.src}}" alt="" class="albumDisplay__content__image"
-      *ngFor="let image of selectedAlbum?.images">
 
-  </div>
-</div>
+<p-dialog class="carousel album-carousel" [header]="albumHeader" [(visible)]="albumSelected" [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [draggable]="true" [resizable]="true">
+  <section class="carousel">
+    <div id="album-prev"></div>
+    <div id="album-curr" #albumCurr>
+      <div id="album-prev-slide" class="carousel-control slide-prev" (click)="prevSlide()">
+        <!-- <img src="assets/images/arrow-left.png" alt="" class="carousel-control" /> -->
+        <i class="pi pi-angle-left" style="color: white;font-size: 7rem"></i>
+      </div>
+      <div id="album-next-slide" class="carousel-control slide-next" (click)="nextSlide()">
+        <!--  <img src="assets/images/arrow-right.png" alt="" class="carousel-control" /> -->
+        <i class="pi pi-angle-right" style="color: white;font-size: 7rem"></i>
+      </div>
+    </div>
+    <div id="album-next"></div>
+  </section>
+</p-dialog>

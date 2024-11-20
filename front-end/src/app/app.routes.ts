@@ -9,7 +9,7 @@ export const routes: Routes = [
       import('./components/pages/admin/dashboard/dashboard.component').then(
         (m) => m.AdminDashboardComponent
       ),
-      // Lazy loading
+    // Lazy loading
     loadChildren: () =>
       import('./components/pages/admin/admin.routes').then((m) => m.AuthRoutes),
   },

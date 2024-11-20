@@ -1,7 +1,18 @@
+import { CarouselService } from './../../../services/carousel.service';
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Inject, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { AlbumsService } from '../../../services/albums.service';
 
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { PrimeIcons, MenuItem } from 'primeng/api';
 import { NgClass, NgForOf, NgStyle, NgIf } from '@angular/common';
 import {
   Postmark,
@@ -12,30 +23,44 @@ import {
 @Component({
   selector: 'wbp-albums',
   standalone: true,
-  imports: [CommonModule, NgClass, NgForOf, NgStyle, NgIf],
+  imports: [
+    CommonModule,
+    NgClass,
+    NgForOf,
+    NgStyle,
+    NgIf,
+    DialogModule,
+    ButtonModule,
+  ],
+  providers: [CarouselService, AlbumsService],
   templateUrl: './albums.component.html',
   styleUrl: './albums.component.scss',
 })
 export class AlbumsComponent implements OnInit {
-  [x: string]: any;
-  albums: any[] = [];
+  @ViewChild('albumCurr', { static: true }) albumCurr!: ElementRef;
+  slides: any[] = [];
+  prefix: string = 'album';
 
-  selectedAlbum!: any;
+  [x: string]: any;
+  albums!: Album[];
+
+  selectedAlbum!: Album | null;
   albumSelected: boolean = false;
+  albumHeader!: string;
 
   constructor(
-    private ref: ElementRef,
-    @Inject(AlbumsService) private albumsService: AlbumsService
+    private albumsService: AlbumsService,
+    private carouselService: CarouselService
   ) {}
 
   ngOnInit() {
-    this.albumsService.getAlbums().subscribe((albums) => {
+    this.albumsService.getAlbums().subscribe((albums: Album[]) => {
       this.albums = albums;
     });
   }
 
   setBackgroundImage(album: Album): void {
-    this.ref.nativeElement.style.backgroundImage = `url('assets/images/${album.images[0].src}')`;
+    this.albumCurr.nativeElement.style.backgroundImage = `url('assets/images/${album.images[0].src}')`;
   }
 
   getPostmarkPosition(postmark: Postmark): PostmarkPosition {
@@ -67,14 +92,29 @@ export class AlbumsComponent implements OnInit {
     return album.albumColor !== undefined ? album.albumColor : 'white';
   }
 
-  openAlbum(album: Album) {
+  openAlbum(album: Album): void {
     this.selectedAlbum = album;
     this.albumSelected = true;
-    console.log(this.selectedAlbum);
+    this.albumHeader = album.album;
+
+    console.log('openAlbum: ', this.albumCurr, this.prefix, album.images);
+    this.carouselService.initCarousel(
+      this.albumCurr,
+      this.prefix,
+      album.images
+    );
   }
 
   closeAlbum() {
     this.albumSelected = false;
-    this.selectedAlbum = undefined;
+    this.selectedAlbum = null;
+  }
+
+  prevSlide() {
+    this.carouselService.prevSlide();
+  }
+
+  nextSlide() {
+    this.carouselService.nextSlide();
   }
 }

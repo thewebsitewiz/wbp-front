@@ -3,7 +3,7 @@
    * @param bytes (File size in bytes)
    * @param decimals (Decimals point)
    */
-  export formatBytes(bytes: number, decimals: number = 2): string {
+  export function formatBytes(bytes: number, decimals: number = 2): string {
     if (bytes === 0) {
       return '0 Bytes';
     }

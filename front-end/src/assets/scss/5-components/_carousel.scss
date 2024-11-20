@@ -1,0 +1,50 @@
+.carousel {
+
+  & .header-image-hidden {
+    display: none;
+  }
+
+  & .current-slide {
+    background-image: var(--curr);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+
+  & .carousel-control {
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 50%;
+    cursor: pointer;
+
+    &.slide-prev {
+      left: 50px;
+    }
+
+    &.slide-next {
+      right: 50px;
+    }
+  }
+
+  & .p-dialog-header-close-icon {
+    height: 20px !important;
+    width: 20px !important;
+  }
+}
+
+
+.fade-out-slider {
+  opacity: 0;
+  animation: fadeOut 1s ease-out;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
