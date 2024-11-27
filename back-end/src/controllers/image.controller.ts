@@ -5,7 +5,7 @@ const mongoose = require("mongoose"); // for put and patch
 const ExifReader = require("exifreader");
 const multer = require("multer");
 
-const imgPathUtils = require("@utils/imagePath.utils");
+const imgPathUtils = require("../utils/imagePath.util");
 // const { getColorAnalysis } = require("../utils/pixels.util");
 
 const { Image } = require("../models/image.model");

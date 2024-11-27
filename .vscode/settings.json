@@ -29,5 +29,9 @@
   "shell": "stack",
   "state": "redux-store",
   "ui": "views"
- }
+ },
+ "cSpell.words": [
+  "generationtime",
+  "Hrly"
+ ]
 }

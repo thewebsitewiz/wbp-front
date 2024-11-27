@@ -19,7 +19,7 @@ export class CarouselService {
   constructor() {}
 
   initCarousel(ref: ElementRef, prefix: string, slides: Slide[]) {
-    console.log('initCarousel: ', prefix,ref, slides);
+    // console.log('initCarousel: ', prefix,ref, slides);
 
     this.ref = ref;
     this.prefix = prefix;
@@ -33,7 +33,7 @@ export class CarouselService {
   }
 
   async updateSlides(): Promise<void> {
-    console.log('updateSlides: ', this.prefix, this.slides);
+    // console.log('updateSlides: ', this.prefix, this.slides);
     await this.resetCallout();
 
     if (

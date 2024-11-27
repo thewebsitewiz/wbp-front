@@ -50,15 +50,7 @@ app.use(
   })
 );
 
-/* app.use(
-  cors({
-    origin: [domain],
-    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-    optionsSuccessStatus: 200,
-  })
-); */
+
 //Routes
 const weatherRouter = require("./routes/weather.routes");
 const imageRouter = require("./routes/image.routes");
@@ -75,37 +67,6 @@ app.get("/", function (req, res) {
 app.use("/api/weather", weatherRouter);
 app.use("/api/images", imageRouter);
 app.use("/api/tags", tagsRouter);
-
-/* 
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-}); 
-*/
-
-/*
-let origin;
-app.options( '',function (req, res, next) {
-  origin = req.headers.origin;
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  res.header("Access-Control-Allow-Credentials", true);
-  next();
-});
-console.log("origin", origin); */
-
-/* res.header(
-  "Access-Control-Allow-Origin",
-  req.headers.host.indexOf("localhost") > -1 ? "http://localhost:3000" : origin
-); */
 
 //Server
 const port = 3000;

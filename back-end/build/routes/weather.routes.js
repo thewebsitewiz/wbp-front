@@ -3,7 +3,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // // @ts-ignore
 const express = require("express");
 const router = express.Router();
-const { getWeather, getMarine, getAstro, } = require("../controllers/weather.controller");
+const { getEnvironmentalData, getWeather, getMarine, getAstro, getMoonPhase, } = require("../controllers/weather.controller");
+router.get(`/getEnvironmentalData`, async (req, res) => {
+    try {
+        const data = await getEnvironmentalData(req, res);
+        return res.status(200).send(data);
+    }
+    catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `error in catch for getEnvironmentalData: ${e}`,
+        });
+    }
+});
 router.get(`/forecast`, async (req, res) => {
     try {
         const data = await getWeather(req, res);
@@ -12,7 +24,7 @@ router.get(`/forecast`, async (req, res) => {
     catch (e) {
         return res.status(500).json({
             success: false,
-            message: `error in catch for forcast: ${e}`,
+            message: `error in catch for forecast: ${e}`,
         });
     }
 });
@@ -31,6 +43,18 @@ router.get(`/marine`, async (req, res) => {
 router.get(`/astro`, async (req, res) => {
     try {
         const data = await getAstro(req, res);
+        return res.status(200).send(data);
+    }
+    catch (e) {
+        return res.status(500).json({
+            success: false,
+            message: `error in catch for getAstro: ${e}`,
+        });
+    }
+});
+router.get(`/moon`, async (req, res) => {
+    try {
+        const data = await getMoonPhase(req, res);
         return res.status(200).send(data);
     }
     catch (e) {

@@ -1,61 +1,56 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-require("dotenv/config");
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, ".env") });
+const ENV = process.env.WBP_ENV;
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const dbConnect = require("./config/dbConnect");
+const { Tags } = require("./models/tag.model");
 // const authJwt = require("./helpers/jwt");
 // const errorHandler = require("./helpers/error-handler");
-const ENV = "dev";
-let DB_CONN = process.env.NJPS_DEV_CONN;
-if (ENV === "prod") {
-    DB_CONN = process.env.NJPS_PRD_CONN;
+dbConnect();
+let domain = "http://localhost:4200";
+let hostname = "localhost";
+if (ENV === "PROD") {
+    domain = "http://wbp.thewebsitewiz.com";
+    hostname = "0.0.0.0";
 }
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
-const domain = "http://localhost:4200";
-app.use(cors({
-    origin: [domain],
-    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
-}));
 //middleware
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(morgan('combined'));
 app.use(morgan("tiny"));
 // app.use(authJwt());
 app.use(express.static(__dirname + "/public"));
 // app.use(errorHandler);
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+app.use(cors({
+    origin: [domain],
+    methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
+}));
 //Routes
 const weatherRouter = require("./routes/weather.routes");
+const imageRouter = require("./routes/image.routes");
+const tagsRouter = require("./routes/tag.routes");
 const api = process.env.API_URL;
 app.get("/", function (req, res) {
-    console.log("Root Route");
     res.json({
         message: "hello world",
     });
 });
 app.use("/api/weather", weatherRouter);
-/* //Database
-mongoose
-  .connect(DB_CONN, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    dbName: "projectgreen-database",
-  })
-  .then(() => {
-    console.log("Database Connection is ready...");
-  })
-  .catch((err) => {
-    console.log(err);
-  }); */
+app.use("/api/images", imageRouter);
+app.use("/api/tags", tagsRouter);
 //Server
 const port = 3000;
-app.listen(3000, () => {
+app.listen(3000, hostname, () => {
     console.log(`Server is running on  ${port}`);
 });

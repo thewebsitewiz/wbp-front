@@ -3,11 +3,24 @@ const express = require("express");
 const router = express.Router();
 
 const {
+  getEnvironmentalData,
   getWeather,
   getMarine,
   getAstro,
   getMoonPhase,
 } = require("../controllers/weather.controller");
+
+router.get(`/getEnvironmentalData`, async (req, res) => {
+  try {
+    const data = await getEnvironmentalData(req, res);
+    return res.status(200).send(data);
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+      message: `error in catch for getEnvironmentalData: ${e}`,
+    });
+  }
+});
 
 router.get(`/forecast`, async (req, res) => {
   try {
@@ -16,7 +29,7 @@ router.get(`/forecast`, async (req, res) => {
   } catch (e) {
     return res.status(500).json({
       success: false,
-      message: `error in catch for forcast: ${e}`,
+      message: `error in catch for forecast: ${e}`,
     });
   }
 });

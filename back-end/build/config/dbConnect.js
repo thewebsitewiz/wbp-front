@@ -1,53 +1,36 @@
 "use strict";
-/* /* const { default: mongoose } = require("mongoose")
-
-const dbConnect = () => {
+Object.defineProperty(exports, "__esModule", { value: true });
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+const { mongoose } = require("mongoose");
+const ENV = "dev";
+let DB_CONN = process.env.WBP_MONGO_DEV_URI;
+let DB_NAME = process.env.WBP_MONGO_DB_NAME;
+if (ENV === "prod") {
+    // REPLACE WITH PROD URI
+    DB_CONN = process.env.WBP_MONGO_DEV_URI;
+    // REPLACE WITH PROD DB NAME
+    DB_NAME = process.env.WBP_MONGO_DB_NAME;
+}
+// If the Node process ends, close the Mongoose connection
+const gracefulExit = () => {
+    console.log("Mongoose connection is disconnecting.");
+    mongoose.connection.close().then(() => {
+        console.log("Mongoose connection is disconnected.");
+        process.exit(0);
+    });
+};
+// Connect to MongoDB
+const dbConnect = async (db_connect = DB_CONN) => {
     try {
-        const  conn = mongoose.connect(process.env.MONGODB_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        })
-        console.log('connected')
+        mongoose.set("debug", false);
+        const conn = await mongoose.connect(db_connect);
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+        console.log("mongoose.connection.readyState: ", mongoose.connection.readyState);
     }
     catch (error) {
-        console.log('error')
+        console.error(error.message);
+        process.exit(1);
     }
-}
-
-module.exports = dbConnect;
-
-
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/*
-const { MongoClient, ServerApiVersion } = require("mongodb");
-const mongoUri =
-  process.env.MONGO_URI;
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(mongoUri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
-
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-
-    module.exports = client;
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
- */ 
+};
+module.exports = { gracefulExit, dbConnect };
