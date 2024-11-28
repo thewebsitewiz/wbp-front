@@ -1,5 +1,7 @@
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
+
+import { gracefulExit, dbConnect } from "./config/dbConnect";
 const ENV = process.env.WBP_ENV;
 
 const express = require("express");
@@ -7,9 +9,6 @@ const app = express();
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
-
-const dbConnect = require("./config/dbConnect");
-const { Tags } = require("./models/tag.model");
 
 // const authJwt = require("./helpers/jwt");
 // const errorHandler = require("./helpers/error-handler");
@@ -49,7 +48,6 @@ app.use(
     methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
   })
 );
-
 
 //Routes
 const weatherRouter = require("./routes/weather.routes");

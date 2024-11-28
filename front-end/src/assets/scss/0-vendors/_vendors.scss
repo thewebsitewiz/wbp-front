@@ -1,7 +1,5 @@
 @import "font-awesome.scss";
 @import "bootstrap.scss";
 
-@import "primeicons/primeicons.css";
-
-@import "weather-icons.min.css";
-@import "weather-icons-wind.min.css"
+@import "weather/weather-icons.min.scss";
+@import "weather/weather-icons-wind.min.scss";
