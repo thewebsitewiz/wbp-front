@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { WeatherService } from '../../../services/weather.service';
-import { WeatherIcons } from '../../../interfaces/weather.interface';
+import { WeatherDayNightIcons } from '../../../interfaces/weather.interface';
 
 @Component({
   selector: 'wbp-weather-widget',
@@ -10,7 +10,7 @@ import { WeatherIcons } from '../../../interfaces/weather.interface';
   styleUrl: './weather-widget.component.scss',
 })
 export class WeatherWidgetComponent implements OnInit {
-  currentWeatherIcons!: WeatherIcons;
+  currentWeatherIcons!: WeatherDayNightIcons;
   currentWeatherDescription!: string;
 
   constructor(private weatherService: WeatherService) {}

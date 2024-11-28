@@ -1,6 +1,6 @@
 import { fetchWeatherApi } from "openmeteo";
 import moment from "moment";
-import { forkJoin } from "rxjs";
+import { combineLatest, forkJoin, from, take } from "rxjs";
 
 import { CurrWeather } from "../models/currentWeather.model";
 import { DlyWeather } from "../models/dailyWeather.model";
@@ -83,78 +83,29 @@ const weatherCodes = {
   99: { description: "Thunderstorm with Heavy Hail", icon: "" },
 };
 
-const _getCurrentWeather = async (req, res) => {
+const _getCurrentWeather = (req, res) => {
+  console.log("getCurrentWeather");
   try {
-    await CurrWeather.findOne()
-      .sort({ created_at: -1 })
-      .exec(function (err, currentWeather) {
-        if (err) {
-          console.error(`Error fetching current weather data: ${err}`);
-        } else {
-          // console.log("Current Weather: ", currentWeather);
-          return currentWeather;
-        }
-      });
+    return CurrWeather.findOne().sort({ created_at: -1 });
   } catch (e) {
     console.error(`Error in catch for getCurrentWeather: ${e}`);
   }
 };
-
-const _getDailyWeather = async (req, res) => {
+const _getDailyWeather = (req, res) => {
+  console.log("getDailyWeather");
   try {
-    await DlyWeather.find()
-      .sort({ created_at: -1 })
-      .exec(function (err, dailyWeather) {
-        if (err) {
-          console.error(`Error fetching daily weather data: ${err}`);
-        } else {
-          // console.log("daily Weather: ", dailyWeather);
-          return dailyWeather;
-        }
-      });
+    return DlyWeather.find().sort({ created_at: -1 });
   } catch (e) {
     console.error(`Error in catch for getDailyWeather: ${e}`);
   }
 };
-
-const _getHourlyWeather = async (req, res) => {
+const _getHourlyWeather = (req, res) => {
+  console.log("getHourlyWeather");
   try {
-    await HrlyWeather.find()
-      .sort({ created_at: -1 })
-      .exec(function (err, hourlyWeather) {
-        if (err) {
-          console.error(`Error fetching hourly weather data: ${err}`);
-        } else {
-          // console.log("hourly Weather: ", hourlyWeather);
-          return hourlyWeather;
-        }
-      });
+    return HrlyWeather.find().sort({ created_at: -1 });
   } catch (e) {
     console.error(`Error in catch for getHourlyWeather: ${e}`);
   }
-};
-
-const _getWeather = async (req, res) => {
-  const observable = forkJoin({
-    currentWeather: _getCurrentWeather(req, res),
-    dailyWeather: _getDailyWeather(req, res),
-    hourlyWeather: _getHourlyWeather(req, res),
-  });
-
-  observable.subscribe({
-    next: (value) => {
-      console.log(value);
-      return value;
-    },
-    error: (e) => {
-      console.error(`Error in catch for getEnvironmentalData: ${e}`);
-      return res.status(500).json({
-        success: false,
-        message: `error in catch for getWeather: ${e}`,
-      });
-    },
-    complete: () => {},
-  });
 };
 
 const _getMarine = async (req, res) => {
@@ -361,25 +312,32 @@ New Moon: 5993902651
 module.exports.getMoonPhase = _getMoonPhase;
 
 const _getEnvironmentalData = async (req, res) => {
-  const observable = forkJoin({
-    weatherData: _getWeather(req, res),
-    moonPhaseData: _getMoonPhase(req, res),
-  });
-
-  observable.subscribe({
-    next: (value) => {
-      console.log(value);
+  Promise.all([
+    _getMoonPhase(req, res),
+    _getCurrentWeather(req, res),
+    _getDailyWeather(req, res),
+    _getHourlyWeather(req, res),
+  ])
+    .then((values) => {
+      const value = {
+        moon: values[0],
+        current: values[1],
+        daily: values[2],
+        hourly: values[3],
+      };
       return res.status(200).send(value);
-    },
-    error: (e) => {
-      console.error(`Error in catch for getEnvironmentalData: ${e}`);
+    })
+    .catch((error) => {
       return res.status(500).json({
         success: false,
-        message: `error in catch for getWeather: ${e}`,
+        message: `error in catch for getTags: ${error}`,
       });
-    },
-    complete: () => {},
-  });
+    });
 };
 
 module.exports.getEnvironmentalData = _getEnvironmentalData;
+function takeAll(
+  arg0: number
+): import("rxjs").OperatorFunction<[unknown, unknown, unknown], unknown> {
+  throw new Error("Function not implemented.");
+}

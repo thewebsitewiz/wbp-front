@@ -1,4 +1,4 @@
-export interface WeatherIcons {
+export interface WeatherDayNightIcons {
   day?: string;
   night?: string;
 }
