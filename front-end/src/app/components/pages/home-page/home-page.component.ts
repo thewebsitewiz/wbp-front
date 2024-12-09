@@ -9,6 +9,7 @@ import { HeroComponent } from '../../page-elements/hero/hero.component';
 import { WillsBioComponent } from '../../page-elements/wills-bio/wills-bio.component';
 import { AlbumsComponent } from '../../page-elements/albums/albums.component';
 import { WeatherWidgetComponent } from '../../page-elements/weather-widget/weather-widget.component';
+
 @Component({
   selector: 'wbp-home-page',
   standalone: true,

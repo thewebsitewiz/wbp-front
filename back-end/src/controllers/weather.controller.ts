@@ -10,83 +10,10 @@ const API_KEYs = {
   ipgeolocation: "8d906c8091124716b1ed301a05162b3c",
 };
 
-const weatherCodes = {
-  0: {
-    description: "Clear sky",
-    icon: { day: "-clear-day.svg", night: "-clear-night.svg" },
-  },
-  1: { description: "Mainly clear", icon: "" },
-  2: {
-    description: "Partly Cloudy",
-    icon: { day: "-partly-cloudy-day.svg", night: "-partly-cloudy-night.svg" },
-  },
-  3: { description: "Overcast", icon: { day: "-cloudy.svg" } },
-  45: {
-    description: "Fog",
-    icon: {
-      day: "-partly-cloudy-day-fog.svg",
-      night: "-partly-cloudy-night-fog.svg",
-    },
-  },
-  48: { description: "Depositing rime fog", icon: { day: "-fog.svg" } },
-  51: {
-    description: "Light Drizzle",
-    icon: {
-      day: "-overcast-day-drizzle.svg",
-      night: "-overcast-night-drizzle.svg",
-    },
-  },
-  53: {
-    description: "Moderate Drizzle",
-    icon: {
-      day: "-partly-cloudy-day-drizzle.svg",
-      night: "-overcast-night-drizzle.svg",
-    },
-  },
-  55: {
-    description: "Dense Intensity Drizzle",
-    icon: {
-      day: "-extreme-day-drizzle.svg",
-      night: "-extreme-night-drizzle.svg",
-    },
-  },
-  56: { description: "Light Freezing Drizzle", icon: "" },
-  57: { description: "Dense Intensity Freezing Drizzle", icon: "" },
-  61: { description: "Slight Rain", icon: { day: "-overcast-rain.svg" } },
-  63: {
-    description: "Moderate Rain",
-    icon: {
-      day: "-extreme-day-rain.svg",
-      night: "-partly-cloudy-night-rain.svg",
-    },
-  },
-  65: {
-    description: "Heavy Intensity Rain",
-    icon: { day: "-overcast-day-rain.svg", night: "-overcast-night-rain.svg" },
-  },
-  66: { description: "Light Freezing Rain", icon: "" },
-  67: { description: "Heavy Intensity Freezing Rain", icon: "" },
-  71: { description: "Slight Snow Fall", icon: "" },
-  73: { description: "Moderate Snow Fall", icon: "" },
-  75: { description: "Heavy Intensity Snow Fall", icon: "" },
-  77: { description: "Snow Grains", icon: "" },
-  80: { description: "Slight Rain Showers", icon: "" },
-  81: { description: "Moderate Rain Showers", icon: "" },
-  82: { description: "Violent Rain Showers", icon: "" },
-  85: { description: "Slight Snow Showers", icon: "" },
-  86: { description: "Heavy Snow Showers", icon: "" },
-  95: {
-    description: "Thunderstorms",
-    icon: { day: "-thunderstorms-day.svg", night: "-thunderstorms-night.svg" },
-  },
-  96: { description: "Thunderstorm with Slight Hail", icon: "" },
-  99: { description: "Thunderstorm with Heavy Hail", icon: "" },
-};
-
 const _getCurrentWeather = (req, res) => {
   console.log("getCurrentWeather");
   try {
-    return CurrWeather.findOne().sort({ created_at: -1 });
+    return CurrWeather.findOne().sort({ createdAt: -1 }).limit(1);
   } catch (e) {
     console.error(`Error in catch for getCurrentWeather: ${e}`);
   }
@@ -94,7 +21,7 @@ const _getCurrentWeather = (req, res) => {
 const _getDailyWeather = (req, res) => {
   console.log("getDailyWeather");
   try {
-    return DlyWeather.find().sort({ created_at: -1 });
+    return DlyWeather.find().sort({});
   } catch (e) {
     console.error(`Error in catch for getDailyWeather: ${e}`);
   }
@@ -102,7 +29,7 @@ const _getDailyWeather = (req, res) => {
 const _getHourlyWeather = (req, res) => {
   console.log("getHourlyWeather");
   try {
-    return HrlyWeather.find().sort({ created_at: -1 });
+    return HrlyWeather.find().sort({ time: 1 });
   } catch (e) {
     console.error(`Error in catch for getHourlyWeather: ${e}`);
   }

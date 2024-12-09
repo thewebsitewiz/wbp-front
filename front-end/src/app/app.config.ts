@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
       provide: DATE_PIPE_DEFAULT_OPTIONS,
       useValue: { dateFormat: 'longDate' },
     },
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     provideAnimationsAsync(),
     provideRouter(
       routes,

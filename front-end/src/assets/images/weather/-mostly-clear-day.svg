@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 64 64">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+        stroke: #fbbf24;
+        stroke-linecap: round;
+        stroke-width: 2px;
+      }
+
+      .st0, .st1, .st2 {
+        stroke-miterlimit: 10;
+      }
+
+      .st1 {
+        fill: url(#linear-gradient1);
+        stroke: #f8af18;
+      }
+
+      .st1, .st2 {
+        stroke-width: .5px;
+      }
+
+      .st2 {
+        fill: url(#linear-gradient);
+        stroke: #e6effc;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="25.6" y1="-707.6" x2="40.5" y2="-733.6" gradientTransform="translate(0 -680.7) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f3f7fe"/>
+      <stop offset=".5" stop-color="#f3f7fe"/>
+      <stop offset="1" stop-color="#deeafb"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient1" x1="18.1" y1="-706.2" x2="24.9" y2="-718" gradientTransform="translate(0 -680.7) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fbbf24"/>
+      <stop offset=".5" stop-color="#fbbf24"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+  <path class="st2" d="M49.1,35.8h-.3c1.5-4.2-2.2-8.5-8.2-9.5-4.7-.8-9.6.6-12.2,3.5-3.5-1.5-8.1-.7-10.3,1.9-.6.8-1.1,1.7-1.1,2.6s0,.6.1.8c-4.4.6-7.2,3.5-6.3,6.6.7,2.6,4,4.5,7.8,4.6h30.5c4.2,0,7.5-2.3,7.5-5.2s-3.3-5.2-7.5-5.2h0Z"/>
+  <g>
+    <circle class="st1" cx="21.5" cy="31.4" r="6.7"/>
+    <path class="st0" d="M21.5,20v-4.3M21.5,47v-4.3M29.5,23.4l3-3M10.6,42.3l3-3M13.7,23.4l-3-3M32.6,42.3l-3-3M6,31.4h4.3M37,31.4h-4.3"/>
+  </g>
+</svg>

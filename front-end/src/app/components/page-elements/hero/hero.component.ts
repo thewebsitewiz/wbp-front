@@ -10,7 +10,7 @@ import { Slides } from '../../../interfaces/carousel.interface';
   providers: [CarouselService],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss',
-})
+})   
 export class HeroComponent implements OnInit {
   @ViewChild('heroCurr', { static: true }) heroCurr!: ElementRef;
   slides: any[] = [];

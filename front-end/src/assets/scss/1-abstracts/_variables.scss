@@ -24,12 +24,16 @@ $text-color: rgb(34, 34, 34) !default;
 
 /// Main brand color
 /// @type Color
+
 $brand-color: #001f60 !default;
-$water: #9df6e6 !default;
-$leaves: #8bc541 !default;
-$wood: #ad8e75 !default;
-$sand: #f5c3c4 !default;
-$coral: #d76d7b !default;
+$sky: rgb(70, 154, 219) !default;
+$water: rgb(157, 246, 230) !default;
+$leaves: rgb(139, 197, 65) !default;
+$wood: rgb(173, 142, 117) !default;
+$sand: rgb(245, 195, 196) !default;
+$coral: rgb(215, 109, 123) !default;
+$sun: rgb(249, 209, 153) !default;
+$red: rgb(237, 79, 70) !default;
 /// Light grey
 /// @type Color
 $light-grey: rgb(237, 237, 237) !default;

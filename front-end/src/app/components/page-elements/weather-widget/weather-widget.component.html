@@ -1,6 +1,209 @@
 <div class="weather-widget">
+  <div class="container">
+    <!-- Current Weather -->
+    <div class="row">
+      <div class="col-12">
+        <h3>Weather in <span>San Pedro, Belize</span></h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-5">
+        <div class="weather-widget__date">
+          <h4>{{currWeatherTime}}</h4>
+        </div>
+        <div class="weather-widget__description">
+          <h4>{{codes[currentCode].description}}</h4>
+        </div>
+      </div>
+      <div class="col-7">
+        <div class="current-conditions">
+          <div class="weather_icon current_weather_icon"><img src="{{currentIconSrc}}"></div>
+          <div class="current-temp">{{currWeather.apparent_temperature}}<sup>{{units.apparent_temperature}}</sup></div>
+          <div class="condition-details">
+            <div class="condition-detail__item precipitation">
+              <span class="condition-details__heading">Precipitation:</span><span
+                class="condition-details__value">{{currWeather.precipitation}} {{units.precipitation}}</span>
+            </div>
+            <div class="condition-detail__item humidity">
+              <span class="condition-details__heading">Humidity:</span><span
+                class="condition-details__value">{{currWeather.relative_humidity_2m}}{{units.relative_humidity_2m}}</span>
+            </div>
+            <div class="condition-detail__item wind">
+              <span class="condition-details__heading">Wind:</span>{{currWeather.wind_speed_10m}}
+              {{units.wind_speed_10m}} {{windDirection}} (Gusts:
+              {{currWeather.wind_gusts_10m}} {{units.wind_gusts_10m}})
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hourly Forecast -->
+    <div class="row">
+      <div class="col-12">
+        <div class="weather-info__tabs">
+          <div class="weather-info__tab" [ngClass]="{'active': hourlyDisplay === 'Temperature'}"
+            (click)="changeHourlyDisplay('Temperature')">Temperature</div>
+          <div class="weather-info__tab" [ngClass]="{'active': hourlyDisplay === 'Precipitation'}"
+            (click)="changeHourlyDisplay('Precipitation')">Precipitation</div>
+          <div class="weather-info__tab" [ngClass]="{'active': hourlyDisplay === 'Wind'}"
+            (click)="changeHourlyDisplay('Wind')">Wind</div>
+          <div class="weather-info__tab" [ngClass]="{'active': hourlyDisplay === 'Humidity'}"
+            (click)="changeHourlyDisplay('Humidity')">Humidity</div>
+          <div class="weather-info__tab" [ngClass]="{'active': hourlyDisplay === 'UV Index'}"
+            (click)="changeHourlyDisplay('UV Index')">UV Index</div>
+          <div class="weather-info__tab" [ngClass]="{'active': hourlyDisplay === 'Visibility'}"
+            (click)="changeHourlyDisplay('Visibility')">Visibility</div>
+          <div class="weather-info__tab" [ngClass]="{'active': hourlyDisplay === 'Cloud Cover'}"
+            (click)="changeHourlyDisplay('Cloud Cover')">Cloud Cover</div>
+        </div>
+      </div>
+      <!-- </div> -->
 
 
+      <div class="row ">
+        <div class="col-12">
+          @switch (hourlyDisplay){
+          @case ('Temperature') {
+          <div class="hourly-items  border-bottom"
+            [ngStyle]="{'height': hourlyRangeValues['temp'] + hourlyMinTemp + 'px','min-height':  hourlyRangeValues['temp'] + hourlyMinTemp + 'px'}">
+            @for (hf of hourlyFC; track hf) {
+            <div class="hourly-item">
+              <div class="hourly-item__label">{{hf.temp + units['temperature_2m']}}</div>
+              <div class="hourly-item__percentage temperature" [ngStyle]="{'min-height': hf.tempDisplay + '%'}">
+                <span></span>
+              </div>
+              <div class="hourly-item__time">
+                {{hf.time}}
+              </div>
+            </div>
+            }
+          </div>
+          }
+          @case ('Precipitation') {
+          <div class="hourly-items  border-bottom"
+            [ngStyle]="{'height': hourlyRangeValues['precipitation']   +  (7 * hourlyMinPrecipitation) + 'px','min-height': hourlyRangeValues['temp'] +  (7 * hourlyMinPrecipitation)  + 'px'}">
+            @for (hf of hourlyFC; track hf) {.
+            <div class="hourly-item">
+              <div class="hourly-item__label">{{hf.precipitation + ' ' + units['precipitation']}}</div>
+              <div class="hourly-item__percentage precipitation" [ngStyle]="{'min-height': hf.precipitation + '%'}">
+                <span></span>
+              </div>
+              <div class="hourly-item__time">
+                {{hf.time}}
+              </div>
+            </div>
+            }
+          </div>
+          }
+          @case ('Wind') {
+          <div class="hourly-items  border-bottom"
+            [ngStyle]="{'height': hourlyRangeValues['wind'] + (7 * hourlyMinWind)  + 'px','min-height': hourlyRangeValues['wind']  + (7 * hourlyMinWind)  + 'px'}">
+            @for (hf of hourlyFC; track hf) {
+            <div class="hourly-item">
+              <div class="hourly-item__label">{{hf.wind + ' ' + units['wind_speed_10m_max']}}</div>
+              <div class="hourly-item__label">{{hf.direction}}</div>
+              <div class="hourly-item__percentage wind" [ngStyle]="{'min-height': hf.wind + '%'}">
+                <div class="hourly-item__label gusts">
+                  ({{hf.gusts + ' ' + units['wind_gusts_10m_max']}})</div>
+              </div>
+              <div class="hourly-item__time">
+                {{hf.time}}
+              </div>
+            </div>
+            }
+          </div>
+          }
+          @case ('Humidity') {
+          <div class="hourly-items  border-bottom"
+            [ngStyle]="{'height': hourlyRangeValues['humidity'] + (1 * hourlyMinHumidity) + 'px','min-height': hourlyRangeValues['humidity']  +  ( 1 * hourlyMinHumidity) + 'px'}">
+            @for (hf of hourlyFC; track hf) {
+            <div class="hourly-item">
+              <div class="hourly-item__label">{{hf.humidity + ' ' + units['relative_humidity_2m']}}</div>
+              <div class="hourly-item__percentage humidity" [ngStyle]="{'min-height': hf.humidity + '%'}">
+                <span></span>
+              </div>
+              <div class="hourly-item__time">
+                {{hf.time}}
+              </div>
+            </div>
+            }
+          </div>
+          }
+          @case ('UV Index') {
+          <div class="hourly-items  border-bottom"
+            [ngStyle]="{'height': hourlyRangeValues['uvIndex'] + hourlyMinUvIndex + 'px','min-height': hourlyRangeValues['uvIndex']  +  (10 * hourlyMinUvIndex) + 'px'}">
+            @for (hf of hourlyFC; track hf) {
+            <div class="hourly-item">
+              <div class="hourly-item__label">{{hf.uvIndex}}</div>
+              <div class="hourly-item__percentage uv-index" [ngStyle]="{'min-height': hf.uvIndex + '%'}">
+                <span></span>
+              </div>
+              <div class="hourly-item__time">
+                {{hf.time}}
+              </div>
+            </div>
+            }
+          </div>
+          }
+          @case ('Visibility') {
+          <div class="hourly-items  border-bottom"
+            [ngStyle]="{'height': hourlyRangeValues['visibility'] + (10 * hourlyMinVisibility) + 'px','min-height': hourlyRangeValues['visibility'] + (10 * hourlyMinVisibility) + 'px'}">
+            @for (hf of hourlyFC; track hf) {
+            <div class="hourly-item">
+              <div class="hourly-item__label">{{hf.visibility}} mi</div>
+              <div class="hourly-item__percentage visibility" [ngStyle]="{'min-height': hf.visibility + '%'}">
+                <span></span>
+              </div>
+              <div class="hourly-item__time">
+                {{hf.time}}<br />{{hf.visibility}} mi
+              </div>
+            </div>
+            }
+          </div>
+          }
+          @case ('Cloud Cover') {
+          <div class="hourly-items  border-bottom"
+            [ngStyle]="{'height': hourlyRangeValues['cloudCover'] + (1 * hourlyMinCloudCover) + 'px','min-height': hourlyRangeValues['cloudCover'] + (1 * hourlyMinCloudCover) + 'px'}">
+            @for (hf of hourlyFC; track hf) {
+            <div class="hourly-item">
+              <div class="hourly-item__label">{{hf.cloudCover + ' ' + units['cloud_cover']}}</div>
+              <div class="hourly-item__percentage cloud-cover" [ngStyle]="{'min-height': hf.cloudCover + '%'}">
+                <span></span>
+              </div>
+              <div class="hourly-item__time">
+                {{hf.time}}<br />{{hf.cloudCover}} mi
+              </div>
+            </div>
+            }
+          </div>
+          }
 
 
-</div>
+          }
+        </div>
+      </div>
+
+
+    </div>
+    <!-- Daily Forecast -->
+    <div class="row ">
+      <div class="col-12 forcast ">
+        <div class="forecast-items">
+          @for( df of dailyFC; track df) {
+          <div class="forecast-item">
+            <div class="forecast-item__date">{{df.date}}</div>
+            <div class="forecast-item__icon"><img src="{{df.icon}}"></div>
+            <div class="forecast-item__description">{{df.description}}</div>
+            <div class="forecast-item__temp">
+              <span class="temp-max">{{df.maxTemp}}<sup>{{df.tempUnit}}</sup></span><span
+                class="temp-min">{{df.minTemp}}<sup>{{df.tempUnit}}</sup></span>
+            </div>
+          </div>
+          }
+        </div>
+
+
+      </div>
+    </div>
+  </div>
