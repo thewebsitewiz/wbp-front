@@ -54,7 +54,7 @@ export class WeatherWidgetComponent implements OnInit {
   forecastStart: number = 1;
   forecastOffset: number = 10;
 
-  hourlyDisplay: string = 'Wind';
+  hourlyDisplay: string = 'Temperature';
   hourlyMaxTemp!: number;
   hourlyMinTemp!: number;
   hourlyRangeValues: HourlyRangeValues = {

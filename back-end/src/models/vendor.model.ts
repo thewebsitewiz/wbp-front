@@ -2,7 +2,7 @@ import { Decimal128 } from "mongodb";
 
 const mongoose = require("mongoose");
 
-const imagesSchema = mongoose.Schema(
+const vendorsSchema = mongoose.Schema(
   {
     fileName: {
       type: String,
@@ -12,15 +12,35 @@ const imagesSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    title: {
+    name: {
       type: String,
-      required: false,
+      required: true,
     },
     description: {
       type: String,
       required: false,
     },
-    caption: {
+    website: {
+      type: String,
+      required: false,
+    },
+    address: {
+      type: String,
+      required: false,
+    },
+    city: {
+      type: String,
+      required: false,
+    },
+    phone: {
+      type: String,
+      required: false,
+    },
+    email: {
+      type: String,
+      required: false,
+    },
+    category: {
       type: String,
       required: false,
     },
@@ -36,8 +56,8 @@ const imagesSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    dateTaken: {
-      type: Date,
+    status: {
+      type: String,
       required: false,
     },
     tags: [
@@ -47,33 +67,18 @@ const imagesSchema = mongoose.Schema(
         required: false,
       },
     ],
-    colors: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Colors",
-        required: false,
-      },
-    ],
-    height: {
-      type: Number,
-      required: false,
-    },
-    width: {
-      type: Number,
-      required: false,
-    },
   },
   {
     timestamps: true,
   }
 );
 
-imagesSchema.virtual("id").get(function () {
+vendorsSchema.virtual("id").get(function () {
   return this._id.toHexString();
 });
 
-imagesSchema.set("toJSON", {
+vendorsSchema.set("toJSON", {
   virtuals: true,
 });
 
-exports.Image = mongoose.model("Image", imagesSchema);
+exports.Vendor = mongoose.model("Vendor", vendorsSchema);

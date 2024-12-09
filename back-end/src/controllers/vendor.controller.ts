@@ -8,19 +8,16 @@ const multer = require("multer");
 const imgPathUtils = require("../utils/imagePath.util");
 // const { getColorAnalysis } = require("../utils/pixels.util");
 
-const { Image } = require("../models/image.model");
-const { Tag } = require("../models/tag.model");
-const { Color } = require("../models/color.model");
-
 import {
   UPLOAD_FILE_SIZE_LIMIT,
   FILE_TYPE_MAP,
   multerFilter,
 } from "../utils/image.util";
 
+const { Vendor } = require("../models/vendor.model");
+
 let newFileName = "";
 let imageDirPath = "";
-
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     imageDirPath = imgPathUtils.getNewDirPath();
@@ -47,7 +44,7 @@ const _getMetadata = async (file) => {
   return await ExifReader.load(file);
 };
 
-const _imageUpload = async (req, res) => {
+const _addVendor = async (req, res) => {
   const file = req.file;
   if (!file) return res.status(400).send("No image in the request");
 
@@ -57,36 +54,38 @@ const _imageUpload = async (req, res) => {
     console.log("tagIds: ", tagIds);
   }
 
-  const md = await _getMetadata(`${imageDirPath}/${newFileName}`);
-
   try {
-    let image = new Image({
+    let vendor = new Vendor({
       fileName: newFileName,
       filePath: imageDirPath,
-      title: req.body.title,
+      name: req.body.title,
       description: req.body.description,
-      caption: req.body.caption,
+      website: req.body.website,
+      address: req.body.address,
+      city: req.body.city,
+      phone: req.body.phone,
+      email: req.body.email,
+      category: req.body.category,
       comments: req.body.comments,
       fileSize: file.size,
       mimeType: file.mimeType,
-      height: md["Image Height"]["value"],
-      width: md["Image Width"]["value"],
+      status: req.body.status,
     });
 
-    if (tagIds.length > 0) image.tags = tagIds;
+    if (tagIds.length > 0) vendor.tags = tagIds;
 
-    const imageResult = await image.save();
+    const vendorResult = await vendor.save();
 
-    if (!imageResult)
-      return res.status(400).send("The image cannot be created");
+    if (!vendorResult)
+      return res.status(400).send("The vendor cannot be created");
 
-    return res.send(imageResult);
+    return res.send(vendorResult);
   } catch (e) {
     return res.status(500).json({
       success: false,
-      message: `error in catch for images: ${e}`,
+      message: `error in catch for vendor: ${e}`,
     });
   }
 };
 
-module.exports.imageUpload = _imageUpload;
+module.exports.addVendor = _addVendor;

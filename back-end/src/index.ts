@@ -53,6 +53,7 @@ app.use(
 const weatherRouter = require("./routes/weather.routes");
 const imageRouter = require("./routes/image.routes");
 const tagsRouter = require("./routes/tag.routes");
+const vendorsRouter = require("./routes/vendor.routes");
 
 const api = process.env.API_URL;
 
@@ -65,6 +66,7 @@ app.get("/", function (req, res) {
 app.use("/api/weather", weatherRouter);
 app.use("/api/images", imageRouter);
 app.use("/api/tags", tagsRouter);
+app.use("/api/vendors", vendorsRouter);
 
 //Server
 const port = 3000;
