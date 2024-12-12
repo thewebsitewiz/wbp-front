@@ -14,8 +14,10 @@ export class TagService {
 
   constructor(private http: HttpClient) {}
 
-  getTags(): Observable<Tag[]> {
-    const url = `${this.tagsAPIUrl}/get-tags`;
+  getTags(options: { type: string } = { type: 'all' }): Observable<Tag[]> {
+    const url = `${this.tagsAPIUrl}/get-tags/${
+      options.type === 'all' ? '' : `${options.type}`
+    }`;
     return this.http.get(url) as Observable<Tag[]>;
   }
 

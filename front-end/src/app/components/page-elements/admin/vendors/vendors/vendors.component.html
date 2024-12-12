@@ -1,0 +1,144 @@
+<!-- Flexbox container for aligning the toasts -->
+<p-toast></p-toast>
+<div class="admin-page">
+  <p-card class="main-card" [header]="editmode ? 'Edit Image' : 'Add Image'"
+    subheader="You can add or edit images here">
+    <div class="grid p-mb-5">
+      <div class="col-12">
+        <p-toolbar>
+          <div class="p-toolbar-group-left"></div>
+          <div class="p-toolbar-group-right">
+            <p-button styleClass="p-button-primary p-mr-2" [label]="editmode ? 'Update' : 'Create'" icon="pi pi-plus"
+              (click)="onSubmit()"></p-button>
+            <p-button styleClass="p-button-secondary" label="Cancel" icon="pi pi-arrow-circle-left"
+              (click)="onCancel()"></p-button>
+          </div>
+        </p-toolbar>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-12">
+        <form [formGroup]="imageForm" (submit)="onSubmit()">
+          <!-- image:  -->
+          <div class="grid field-border mt-4">
+            <div class="p-field col-12">
+              <div>
+                <button class="button btn mb-2" type="button" (click)="filePicker.click()">Pick Image</button>
+                <input type="file" #filePicker (change)="onImagePicked($event)">
+              </div>
+
+              @if (imagePreview) {
+              <div class="grid">
+                <div class="p-field col-12">
+                  <img [src]="imagePreview" alt="" class="preview-image" />
+                </div>
+              </div>
+              }
+              <small *ngIf="imageForm.get('image')
+                                              ?.invalid && isSubmitted" class="p-error">Image is required</small>
+            </div>
+
+          </div>
+          @if (progress || message) {
+          <div class="grid">
+            <div class="p-field col-12">
+              @if (progress) {
+              <div class="progress my-3">
+                <div class="progress-bar progress-bar-info" role="progressbar" attr.aria-valuenow="{{ progress }}"
+                  aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: progress + '%' }">
+                  {{ progress }}%
+                </div>
+              </div>
+              }
+
+              @if (message) {
+              <div class="alert alert-secondary" role="alert">{{ message }}</div>
+              }
+            </div>
+          </div>
+          }
+
+          <!-- tags:  -->
+          <div class="grid mt-4 ">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="tags" style="margin-bottom: 6px;">Tags</label>
+              <div class="grid mb-4">
+                <div class="p-field col-12 md:col-5 field-border tag-field" id="selected-tags">
+                  @if (selectedTags && selectedTags.length > 0) {
+                  <button *ngFor="let tag of selectedTags" class="pill selected-pill" role="button"
+                    (click)="deSelectTag(tag['tag'])"><i class="pi pi-times mr-2"></i>
+                    {{tag['tag']}} <p-badge [value]="badgeValue[tag.tag]" [severity]="badgeSeverity[tag.tag]"
+                      severity="success"></p-badge></button>
+                  }
+                </div>
+              </div>
+
+              <div class="grid mb-4">
+                <div class="p-field col-12 md:col-5 field-border tag-field" id="tag-list">
+                  @if (filteredTags && filteredTags.length > 0) {
+                  <button *ngFor="let tag of filteredTags" class="pill" role="button" (click)="selectTag(tag['tag'])">
+                    {{tag.tag}}<p-badge [value]="badgeValue[tag.tag]" [severity]="badgeSeverity[tag.tag]"
+                      severity="success"></p-badge></button>
+                  }
+                </div>
+              </div>
+
+              <div class="grid mb-4">
+                <div class="p-field col-12 md:col-5 field-border tag-field" id="selected-tags">
+                  <input type="text" class="new-tag mr-2" #newTag><button class="button" role="button"
+                    (click)="addNewTag(newTag)">Add
+                    Tag</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- dateTaken -->
+          <!--           <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label calendar-label" for="dateTaken">Date Taken
+                @if(dateTakenRequired) {
+                <sup class="required" aria-hidden="true">*</sup>
+                }
+              </label>
+              <p-calendar [(ngModel)]="defaultDate" formControlName="dateTaken" id="dateTaken" inputId="dateTaken"
+                showButtonBar="true" dateFormat="yy-mm-dd" inline="false" [showIcon]="true" showButtonBar="true"
+                [showIcon]="true" [firstDayOfWeek]="1" [defaultDate]="defaultDate" [showTime]="true"
+                [yearNavigator]="true" [numberOfMonths]="1" selectOtherMonths="true" field="dateTaken" />
+            </div>
+          </div> -->
+          <!-- title -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="title">Title<span class="required">*</span></label>
+              <input formControlName="title" id="title" type="text" class="inputfield w-full" pInputText />
+              <small *ngIf="imageForm.get('title')?.invalid && isSubmitted" class="p-error">Title is required</small>
+            </div>
+          </div>
+          <!-- description -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="description">Description</label>
+              <input formControlName="description" id="description" type="text" class="inputfield w-full" pInputText />
+            </div>
+          </div>
+          <!-- caption -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="caption">Caption</label>
+              <input formControlName="caption" id="caption" type="text" class="inputfield w-full" pInputText />
+            </div>
+          </div>
+          <!-- comments -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="comments">Comments</label>
+              <input formControlName="comments" id="comments" type="text" class="inputfield w-full" pInputText />
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </p-card>
+</div>

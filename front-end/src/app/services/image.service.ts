@@ -36,7 +36,7 @@ export class ImageService {
 
   updateImage(imageUpdateData: FormData, id: string) {
     return this.http.put(
-      `${this.imageAPIUrl}/update-image/` + id,
+      `${this.imageAPIUrl}/update-image/${id}`,
       imageUpdateData
     );
   }
