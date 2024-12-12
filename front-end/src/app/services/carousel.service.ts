@@ -1,10 +1,10 @@
 import { ElementRef, Injectable, ViewChild } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Slide, Slides } from '../interfaces/carousel.interface';
+import { ISlide, ISlides } from '../interfaces/carousel.interface';
 
 @Injectable()
 export class CarouselService {
-  slides: Slides = [];
+  slides: ISlides = [];
 
   p!: number;
   c: number = 0;
@@ -18,7 +18,7 @@ export class CarouselService {
 
   constructor() {}
 
-  initCarousel(ref: ElementRef, prefix: string, slides: Slide[]) {
+  initCarousel(ref: ElementRef, prefix: string, slides: ISlide[]) {
     // console.log('initCarousel: ', prefix,ref, slides);
 
     this.ref = ref;
@@ -106,7 +106,7 @@ export class CarouselService {
     this.updateSlides();
   }
 
-  getSlides(): Observable<Slide[]> {
+  getSlides(): Observable<ISlide[]> {
     return of([
       {
         src: 'pics/--155-Edit-Edit.jpg',

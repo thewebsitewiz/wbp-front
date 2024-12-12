@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { WeatherService } from '../../../services/weather.service';
 import {
-  EnvData,
-  WeatherCodes,
-  WeatherConfig,
-  WeatherUnits,
-  CurrentWeather,
-  DailyWeather,
-  DailyForecast,
-  HourlyWeather,
-  HourlyForecast,
-  HourlyDisplayEnum,
-  HourlyRanges,
-  HourlyRangeValues,
+  IEnvData,
+  IWeatherCodes,
+  IWeatherConfig,
+  IWeatherUnits,
+  ICurrentWeather,
+  IDailyWeather,
+  IDailyForecast,
+  IHourlyWeather,
+  IHourlyForecast,
+  IHourlyDisplayEnum,
+  IHourlyRanges,
+  IHourlyRangeValues,
 } from '../../../interfaces/weather.interface';
 import { weatherConfig } from '../../../../assets/json/weather.data';
 import moment from 'moment';
@@ -32,13 +32,13 @@ import {
 })
 export class WeatherWidgetComponent implements OnInit {
   icons!: any;
-  weatherConfig!: WeatherConfig;
-  codes!: WeatherCodes;
-  units!: WeatherUnits;
+  weatherConfig!: IWeatherConfig;
+  codes!: IWeatherCodes;
+  units!: IWeatherUnits;
 
-  envData!: EnvData;
+  envData!: IEnvData;
 
-  currWeather!: CurrentWeather;
+  currWeather!: ICurrentWeather;
   currWeatherTime!: string;
 
   currentCode!: number;
@@ -50,14 +50,14 @@ export class WeatherWidgetComponent implements OnInit {
 
   windDirection!: string;
 
-  dailyFC: DailyForecast[] = [];
+  dailyFC: IDailyForecast[] = [];
   forecastStart: number = 1;
   forecastOffset: number = 10;
 
   hourlyDisplay: string = 'Temperature';
   hourlyMaxTemp!: number;
   hourlyMinTemp!: number;
-  hourlyRangeValues: HourlyRangeValues = {
+  hourlyRangeValues: IHourlyRangeValues = {
     cloudCover: 0,
     gusts: 0,
     humidity: 0,
@@ -67,7 +67,7 @@ export class WeatherWidgetComponent implements OnInit {
     visibility: 0,
     wind: 0,
   };
-  hourlyData!: HourlyForecast[];
+  hourlyData!: IHourlyForecast[];
   hourlyMinCloudCover!: number;
   hourlyMinGusts!: number;
   hourlyMinHumidity!: number;
@@ -76,12 +76,12 @@ export class WeatherWidgetComponent implements OnInit {
   hourlyMinVisibility!: number;
   hourlyMinWind!: number;
 
-  hourlyFC: HourlyForecast[] = [];
+  hourlyFC: IHourlyForecast[] = [];
 
   constructor(private weatherService: WeatherService) {}
 
   ngOnInit() {
-    this.weatherConfig = weatherConfig as WeatherConfig;
+    this.weatherConfig = weatherConfig as IWeatherConfig;
     console.log('weatherConfig: ', weatherConfig);
 
     this.codes = this.weatherConfig.weatherCodes;
@@ -92,53 +92,55 @@ export class WeatherWidgetComponent implements OnInit {
       metric: this.units.temperature_2m_metric,
       standard: this.units.temperature_2m,
     };
-    this.weatherService.getEnvironmentalData().subscribe((envData: EnvData) => {
-      console.log('envData: ', envData);
-      this.envData = envData;
-      this.currWeather = this.envData.current;
+    this.weatherService
+      .getEnvironmentalData()
+      .subscribe((envData: IEnvData) => {
+        console.log('envData: ', envData);
+        this.envData = envData;
+        this.currWeather = this.envData.current;
 
-      this.currentCode = this.envData.current.weather_code;
-      this.currentIconSrc = `/assets/images/weather/${
-        this.codes[this.currentCode].icon.day
-      }`;
-      if (
-        this.envData.current.is_day !== 1 &&
-        this.codes[this.currentCode].icon.night !== undefined
-      ) {
+        this.currentCode = this.envData.current.weather_code;
         this.currentIconSrc = `/assets/images/weather/${
-          this.codes[this.currentCode].icon.night
+          this.codes[this.currentCode].icon.day
         }`;
-      }
+        if (
+          this.envData.current.is_day !== 1 &&
+          this.codes[this.currentCode].icon.night !== undefined
+        ) {
+          this.currentIconSrc = `/assets/images/weather/${
+            this.codes[this.currentCode].icon.night
+          }`;
+        }
 
-      const date = new Date(this.envData.current.time);
-      date.setUTCHours(date.getUTCHours() + 6);
-      const formattedDate = date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'short',
+        const date = new Date(this.envData.current.time);
+        date.setUTCHours(date.getUTCHours() + 6);
+        const formattedDate = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          weekday: 'short',
+        });
+
+        const formattedTime = date.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          timeZoneName: 'short',
+          timeZone: 'America/Chicago',
+        });
+        this.currWeatherTime = `${formattedDate} ${formattedTime}`;
+
+        this.windDirection = this.getWindDirection(
+          this.currWeather.wind_direction_10m
+        );
+
+        this.getForecastItems();
+
+        this.getHourlyRange();
       });
-
-      const formattedTime = date.toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        timeZoneName: 'short',
-        timeZone: 'America/Chicago',
-      });
-      this.currWeatherTime = `${formattedDate} ${formattedTime}`;
-
-      this.windDirection = this.getWindDirection(
-        this.currWeather.wind_direction_10m
-      );
-
-      this.getForecastItems();
-
-      this.getHourlyRange();
-    });
   }
 
   getHourlyRange() {
-    let ranges: HourlyRanges = {
+    let ranges: IHourlyRanges = {
       cloudCover: [],
       gusts: [],
       humidity: [],
@@ -158,7 +160,7 @@ export class WeatherWidgetComponent implements OnInit {
     let avgWindDirection: number = 0;
     let avgHumidity: number = 0;
     let avgVisibility: number = 0;
-    this.envData.hourly.forEach((hour: HourlyWeather) => {
+    this.envData.hourly.forEach((hour: IHourlyWeather) => {
       ranges.temp.push(hour.temperature_2m);
       ranges.precipitation.push(hour.precipitation);
       ranges.wind.push(hour.wind_speed_10m);
@@ -280,7 +282,7 @@ export class WeatherWidgetComponent implements OnInit {
 
     console.log('ranges: ', this.hourlyMinWind, this.hourlyRangeValues['wind']);
 
-    this.hourlyFC.forEach((hour: HourlyForecast) => {
+    this.hourlyFC.forEach((hour: IHourlyForecast) => {
       hour.tempDisplay = Math.round(
         (hour.temp / (this.hourlyRangeValues['temp'] + this.hourlyMinTemp)) *
           100
@@ -319,7 +321,7 @@ export class WeatherWidgetComponent implements OnInit {
   getForecastItems(): void {
     let count = 0;
 
-    this.envData.daily.forEach((day: DailyWeather) => {
+    this.envData.daily.forEach((day: IDailyWeather) => {
       count++;
       if (
         count >= this.forecastStart &&

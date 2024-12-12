@@ -1,4 +1,4 @@
-export interface Slide {
+export interface ISlide {
   src: string;
   title?: string;
   description?: string;
@@ -19,4 +19,4 @@ export interface Slide {
   };
 }
 
-export interface Slides extends Array<Slide> {}
+export interface ISlides extends Array<ISlide> {}

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Tag } from '../interfaces/tag.interface';
+import { ITag } from '../interfaces/tag.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -14,15 +14,17 @@ export class TagService {
 
   constructor(private http: HttpClient) {}
 
-  getTags(options: { type: string } = { type: 'all' }): Observable<Tag[]> {
+  getTags(options: { type: string } = { type: 'all' }): Observable<ITag[]> {
     const url = `${this.tagsAPIUrl}/get-tags/${
       options.type === 'all' ? '' : `${options.type}`
     }`;
-    return this.http.get(url) as Observable<Tag[]>;
+    return this.http.get(url) as Observable<ITag[]>;
   }
 
-  getTag(id: string): Observable<any> {
-    return this.http.get(`${this.tagsAPIUrl}/get-tag/:${id}`);
+  getTag(id: string): Observable<ITag> {
+    return this.http.get(
+      `${this.tagsAPIUrl}/get-tag/:${id}`
+    ) as Observable<ITag>;
   }
 
   addTag(tag: string): Observable<any> {

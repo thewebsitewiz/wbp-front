@@ -1,6 +1,6 @@
-import { WeatherConfig } from '../../app/interfaces/weather.interface';
+import { IWeatherConfig } from '../../app/interfaces/weather.interface';
 
-export const weatherConfig: WeatherConfig = {
+export const weatherConfig: IWeatherConfig = {
   weatherCodes: {
     0: {
       description: 'Clear Sky',

@@ -7,7 +7,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { AlbumsService } from '../../../services/albums.service';
 
 import { DialogModule } from 'primeng/dialog';
@@ -15,9 +14,9 @@ import { ButtonModule } from 'primeng/button';
 import { PrimeIcons, MenuItem } from 'primeng/api';
 import { NgClass, NgForOf, NgStyle, NgIf } from '@angular/common';
 import {
-  Postmark,
-  PostmarkPosition,
-  Album,
+  IPostmark,
+  IPostmarkPosition,
+  IAlbum,
 } from '../../../interfaces/album.interface';
 
 @Component({
@@ -42,9 +41,9 @@ export class AlbumsComponent implements OnInit {
   prefix: string = 'album';
 
   [x: string]: any;
-  albums!: Album[];
+  albums!: IAlbum[];
 
-  selectedAlbum!: Album | null;
+  selectedAlbum!: IAlbum | null;
   albumSelected: boolean = false;
   albumHeader!: string;
 
@@ -54,16 +53,16 @@ export class AlbumsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.albumsService.getAlbums().subscribe((albums: Album[]) => {
+    this.albumsService.getAlbums().subscribe((albums: IAlbum[]) => {
       this.albums = albums;
     });
   }
 
-  setBackgroundImage(album: Album): void {
+  setBackgroundImage(album: IAlbum): void {
     this.albumCurr.nativeElement.style.backgroundImage = `url('assets/images/${album.images[0].src}')`;
   }
 
-  getPostmarkPosition(postmark: Postmark): PostmarkPosition {
+  getPostmarkPosition(postmark: IPostmark): IPostmarkPosition {
     const position: { [key: string]: string } = {};
     if (postmark.top) {
       position['top'] = `${postmark.top}px`;
@@ -84,15 +83,15 @@ export class AlbumsComponent implements OnInit {
     return position;
   }
 
-  titleAlignment(album: Album): string {
+  titleAlignment(album: IAlbum): string {
     return album.alignment === 'right' ? 'right' : 'left';
   }
 
-  titleColor(album: Album): string {
+  titleColor(album: IAlbum): string {
     return album.albumColor !== undefined ? album.albumColor : 'white';
   }
 
-  openAlbum(album: Album): void {
+  openAlbum(album: IAlbum): void {
     this.selectedAlbum = album;
     this.albumSelected = true;
     this.albumHeader = album.album;

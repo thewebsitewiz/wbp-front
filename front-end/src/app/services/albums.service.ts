@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Album } from '../interfaces/album.interface';
+import { IAlbum } from '../interfaces/album.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -8,7 +8,7 @@ import { Album } from '../interfaces/album.interface';
 export class AlbumsService {
   constructor() {}
 
-  getAlbums(): Observable<Album[]> {
+  getAlbums(): Observable<IAlbum[]> {
     return of([
       {
         album: 'Destinations',

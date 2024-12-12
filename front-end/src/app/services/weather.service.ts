@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment as ENV } from '../../environments/environment';
-import { EnvData, WeatherConfig } from '../interfaces/weather.interface';
+import { IEnvData, IWeatherConfig } from '../interfaces/weather.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -10,13 +10,13 @@ export class WeatherService {
   constructor(private http: HttpClient) {}
   private readonly APIUrl = `${ENV.baseAPIUrl}/${ENV.API}`;
 
-  getWeatherConfig(): Observable<WeatherConfig> {
-    return this.http.get<WeatherConfig>(`/assets/weather.json`);
+  getWeatherConfig(): Observable<IWeatherConfig> {
+    return this.http.get<IWeatherConfig>(`/assets/weather.json`);
   }
 
-  getEnvironmentalData(): Observable<EnvData> {
+  getEnvironmentalData(): Observable<IEnvData> {
     return this.http
-      .get<EnvData>(`${this.APIUrl}/weather/getEnvironmentalData`)
+      .get<IEnvData>(`${this.APIUrl}/weather/getEnvironmentalData`)
       .pipe(
         catchError((error) => {
           console.error(`Error fetching getEnvironmentalData: ${error}`);

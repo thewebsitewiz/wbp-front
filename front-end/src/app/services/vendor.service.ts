@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
-import { Vendor } from '../interfaces/vendor.interface';
-import { update, get } from 'lodash';
+import { IVendor } from '../interfaces/vendor.interface';
 import { VendorsComponent } from '../components/page-elements/vendors/vendors.component';
 
 interface Environment {
@@ -18,7 +17,7 @@ export class VendorService {
   private vendorsAPI = '/api/vendors';
   private vendorAPIUrl = `${this.baseAPIUrl}${this.vendorsAPI}`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   addVendor(vendorData: FormData): Observable<FormData> {
     return this.http.post<FormData>(
@@ -34,14 +33,16 @@ export class VendorService {
     );
   }
 
-  getVendors(): Observable<any> {
-    return this.http.get(`${this.vendorAPIUrl}/get-vendors`);
+  getVendors(): Observable<IVendor[]> {
+    return this.http.get(`${this.vendorAPIUrl}/get-vendors`) as Observable<
+      IVendor[]
+    >;
   }
 
-  getVendor(vendorId: number): Observable<VendorsComponent> {
+  getVendor(vendorId: number): Observable<IVendor> {
     return this.http.get<VendorsComponent>(
       `${this.vendorAPIUrl}/get-vendor/${vendorId}`
-    );
+    ) as Observable<IVendor>;
   }
 
   /*   deleteImage(imageId: string): Observable<Image> {

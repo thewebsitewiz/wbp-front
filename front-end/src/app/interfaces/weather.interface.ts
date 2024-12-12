@@ -1,9 +1,9 @@
-export interface WeatherDayNightIcons {
+export interface IWeatherDayNightIcons {
   day?: string;
   night?: string;
 }
 
-export interface DailyWeather {
+export interface IDailyWeather {
   __v: number;
   _id: string;
   apparent_temperature_max_metric: number;
@@ -40,9 +40,9 @@ export interface DailyWeather {
   wind_speed_10m_max_metric: number;
 }
 
-export interface DailyWeathers extends Array<DailyWeather> {}
+export interface IDailyWeathers extends Array<IDailyWeather> {}
 
-export interface HourlyWeather {
+export interface IHourlyWeather {
   apparent_temperature: number;
   apparent_temperature_metric: number;
   cloud_cover: number;
@@ -78,9 +78,9 @@ export interface HourlyWeather {
   _id: string;
 }
 
-export interface HourlyWeathers extends Array<HourlyWeather> {}
+export interface IHourlyWeathers extends Array<IHourlyWeather> {}
 
-export interface CurrentWeather {
+export interface ICurrentWeather {
   __v: number;
   _id: string;
   apparent_temperature_metric: number;
@@ -116,7 +116,7 @@ export interface CurrentWeather {
   wind_speed_10m: 10;
 }
 
-export interface MoonPhase {
+export interface IMoonPhase {
   Age: number;
   AngularDiameter: number;
   Distance: number;
@@ -131,14 +131,14 @@ export interface MoonPhase {
   TargetDate: string;
 }
 
-export interface EnvData {
-  current: CurrentWeather;
-  daily: DailyWeathers;
-  hourly: HourlyWeathers;
-  moon: MoonPhase;
+export interface IEnvData {
+  current: ICurrentWeather;
+  daily: IDailyWeathers;
+  hourly: IHourlyWeathers;
+  moon: IMoonPhase;
 }
 
-export interface WeatherUnits {
+export interface IWeatherUnits {
   apparent_temperature_max_metric: string;
   apparent_temperature_max: string;
   apparent_temperature_metric: string;
@@ -193,19 +193,19 @@ export interface WeatherUnits {
   wind_speed_10m: string;
 }
 
-export interface WeatherCodes {
+export interface IWeatherCodes {
   [key: string]: {
     description: string;
     icon: { day: string; night: string };
   };
 }
 
-export interface WeatherConfig {
-  weatherCodes: WeatherCodes;
-  weatherUnits: WeatherUnits;
+export interface IWeatherConfig {
+  weatherCodes: IWeatherCodes;
+  weatherUnits: IWeatherUnits;
 }
 
-export interface DailyForecast {
+export interface IDailyForecast {
   date: string;
   description: string;
   icon: string;
@@ -214,7 +214,7 @@ export interface DailyForecast {
   tempUnit: string;
 }
 
-export interface HourlyForecast {
+export interface IHourlyForecast {
   day: string;
   direction: string;
   gusts: number;
@@ -236,7 +236,7 @@ export interface HourlyForecast {
   visibilityDisplay?: number;
   windDisplay?: number;
 }
-export interface HourlyRanges {
+export interface IHourlyRanges {
   gusts: any;
   temp: number[];
   wind: number[];
@@ -247,7 +247,7 @@ export interface HourlyRanges {
   cloudCover: number[];
 }
 
-export interface HourlyRangeValues {
+export interface IHourlyRangeValues {
   cloudCover: number;
   gusts: number;
   humidity: number;
@@ -258,7 +258,7 @@ export interface HourlyRangeValues {
   wind: number;
 }
 
-export enum HourlyDisplayEnum {
+export enum IHourlyDisplayEnum {
   'Temperature' = 'Temperature',
   'Wind' = 'Wind',
   'Humidity' = 'Humidity',

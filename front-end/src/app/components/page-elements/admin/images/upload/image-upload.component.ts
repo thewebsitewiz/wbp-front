@@ -26,8 +26,8 @@ import {
 import { TagService } from '@app/services/tag.service';
 import { ImageService } from '@app/services/image.service';
 
-import { Image } from '@interfaces/image.interface';
-import { Tag } from '@interfaces/tag.interface';
+import { IImage } from '@interfaces/image.interface';
+import { ITag } from '@interfaces/tag.interface';
 
 import { MessageService, FilterService, PrimeNGConfig } from 'primeng/api';
 import { CardModule } from 'primeng/card';
@@ -87,7 +87,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   files: any[] = [];
 
-  tagsLookup: { [key: string]: Tag } = {};
+  tagsLookup: { [key: string]: ITag } = {};
   filteredTags: any[] = [];
   selectedTags: any[] = [];
 
@@ -159,8 +159,8 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   }
 
   private _getTags() {
-    this.tagService.getTags().subscribe((tags: Array<Tag>) => {
-      tags.forEach((tag: Tag) => {
+    this.tagService.getTags().subscribe((tags: Array<ITag>) => {
+      tags.forEach((tag: ITag) => {
         const resultTag = {
           tag: tag.tag,
           _id: tag._id,
@@ -247,7 +247,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     const tempTags = [...this.selectedTags];
     const newSelectedTags: any[] = [];
 
-    tempTags.forEach((tag: Tag) => {
+    tempTags.forEach((tag: ITag) => {
       if (tag.tag !== selectedTag) {
         newSelectedTags.push(tag);
       }
@@ -278,18 +278,18 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   private _addTagToForm() {
     let tags: string[] = [];
-    this.selectedTags.forEach((tag: Tag) => {
+    this.selectedTags.forEach((tag: ITag) => {
       tags.push(tag.tag);
     });
 
-    const tagIdList = this.selectedTags.map((tag: Tag) => tag._id).join(',');
+    const tagIdList = this.selectedTags.map((tag: ITag) => tag._id).join(',');
 
     this.imageForm.patchValue({ tags: tagIdList });
   }
 
   private _addTagsToForm() {
     let tagIdsList: string[] = [];
-    this.selectedTags.forEach((tag: Tag) => {
+    this.selectedTags.forEach((tag: ITag) => {
       tagIdsList.push(tag._id);
     });
 

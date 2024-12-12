@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
-import { Image } from '../interfaces/image.interface';
+import { IImage } from '../interfaces/image.interface';
 
 interface Environment {
   baseAPIUrl: string;
@@ -45,19 +45,19 @@ export class ImageService {
     return this.http.get(`${this.imageAPIUrl}/get-images`);
   }
 
-  getImage(imageId: number): Observable<Image> {
-    return this.http.get<Image>(`${this.imageAPIUrl}/get-image/${imageId}`);
+  getImage(imageId: number): Observable<IImage> {
+    return this.http.get<IImage>(`${this.imageAPIUrl}/get-image/${imageId}`);
   }
 
-  OLDupdateImage(imageData: FormData, imageId: number): Observable<Image> {
-    return this.http.put<Image>(
+  OLDupdateImage(imageData: FormData, imageId: number): Observable<IImage> {
+    return this.http.put<IImage>(
       `${this.imageAPIUrl}/update-image/${imageId}`,
       imageData
     );
   }
 
-  deleteImage(imageId: string): Observable<Image> {
-    return this.http.delete<Image>(
+  deleteImage(imageId: string): Observable<IImage> {
+    return this.http.delete<IImage>(
       `${this.imageAPIUrl}/delete-image/${imageId}`
     );
   }

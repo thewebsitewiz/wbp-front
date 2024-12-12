@@ -1,32 +1,32 @@
 export interface WeatherParams {
-  latitude: number;
-  longitude: number;
-  temperature_unit: string;
-  wind_speed_unit: string;
-  precipitation_unit: string;
-  timezone: string;
-  models: string;
-  forecast_hours?: number;
-  forecast_days?: number;
-  hourly?: string[];
   current?: string[];
   daily?: string[];
+  forecast_days?: number;
+  forecast_hours?: number;
+  hourly?: string[];
+  latitude: number;
+  longitude: number;
+  models: string;
+  precipitation_unit: string;
+  temperature_unit: string;
+  timezone: string;
+  wind_speed_unit: string;
 }
 
 export interface WeatherResponse {
+  current_units: CurrentUnits;
+  current: CurrentWeatherResponse;
+  daily_units: DailyUnits;
+  daily: DailyWeatherResponse;
+  elevation: number;
+  generationtime_ms: number;
+  hourly_units: HourlyUnits;
+  hourly: HourlyWeatherResponse;
   latitude: number;
   longitude: number;
-  generationtime_ms: number;
-  utc_offset_seconds: number;
-  timezone: string;
   timezone_abbreviation: string;
-  elevation: number;
-  current_units: CurrentUnits;
-  hourly_units: HourlyUnits;
-  daily_units: DailyUnits;
-  current: CurrentWeatherResponse;
-  daily: DailyWeatherResponse;
-  hourly: HourlyWeatherResponse;
+  timezone: string;
+  utc_offset_seconds: number;
 }
 
 export interface CurrentUnits {
@@ -50,7 +50,6 @@ export interface CurrentUnits {
   uv_index: string;
   uv_index_clear_sky: string;
   sunshine_duration: string;
-  q;
 }
 
 export interface HourlyUnits {

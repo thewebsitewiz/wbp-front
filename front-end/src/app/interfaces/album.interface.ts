@@ -1,11 +1,11 @@
-export interface PostmarkPosition {
+export interface IPostmarkPosition {
   top?: string;
   right?: string;
   bottom?: string;
   left?: string;
 }
 
-export interface Postmark {
+export interface IPostmark {
   src?: string;
   width?: number;
   top?: number;
@@ -14,17 +14,17 @@ export interface Postmark {
   left?: number;
 }
 
-interface Image {
+interface IImage {
   src: string;
   title: string;
   description: string;
 }
 
-export interface Album {
+export interface IAlbum {
   album: string;
   description?: string;
   albumColor?: string;
   alignment?: string;
-  postmark: Postmark;
-  images: Image[];
+  postmark: IPostmark;
+  images: IImage[];
 }

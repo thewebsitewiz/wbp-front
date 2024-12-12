@@ -1,4 +1,4 @@
-export interface Image {
+export interface IImage {
   title: string;
   description: string;
   caption: string;
