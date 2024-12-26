@@ -8,16 +8,17 @@ const multer = require("multer");
 const imgPathUtils = require("../utils/imagePath.util");
 // const { getColorAnalysis } = require("../utils/pixels.util");
 
+const { Vendor } = require("../models/vendor.model");
+
 import {
   UPLOAD_FILE_SIZE_LIMIT,
   FILE_TYPE_MAP,
   multerFilter,
 } from "../utils/image.util";
 
-const { Vendor } = require("../models/vendor.model");
-
 let newFileName = "";
 let imageDirPath = "";
+
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     imageDirPath = imgPathUtils.getNewDirPath();
@@ -45,6 +46,7 @@ const _getMetadata = async (file) => {
 };
 
 const _addVendor = async (req, res) => {
+  console.log("req.file: ", req.file);
   const file = req.file;
   if (!file) return res.status(400).send("No image in the request");
 
@@ -58,7 +60,7 @@ const _addVendor = async (req, res) => {
     let vendor = new Vendor({
       fileName: newFileName,
       filePath: imageDirPath,
-      name: req.body.title,
+      name: req.body.name,
       description: req.body.description,
       website: req.body.website,
       address: req.body.address,
@@ -72,15 +74,19 @@ const _addVendor = async (req, res) => {
       status: req.body.status,
     });
 
+    console.log("vendor: ", vendor);
+
     if (tagIds.length > 0) vendor.tags = tagIds;
 
     const vendorResult = await vendor.save();
+    console.log("vendorResult: ", vendorResult);
 
     if (!vendorResult)
       return res.status(400).send("The vendor cannot be created");
 
     return res.send(vendorResult);
   } catch (e) {
+    console.log("error in catch for vendor: ", e);
     return res.status(500).json({
       success: false,
       message: `error in catch for vendor: ${e}`,

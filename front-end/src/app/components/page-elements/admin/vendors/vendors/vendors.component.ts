@@ -26,8 +26,8 @@ import {
 import { TagService } from '@app/services/tag.service';
 import { VendorService } from '@app/services/vendor.service';
 
-import { Vendor } from '@interfaces/vendor.interface';
-import { Tag } from '@interfaces/tag.interface';
+import { IVendor } from '@interfaces/vendor.interface';
+import { ITag } from '@interfaces/tag.interface';
 
 import { MessageService, FilterService, PrimeNGConfig } from 'primeng/api';
 import { CardModule } from 'primeng/card';
@@ -59,23 +59,29 @@ import { BadgeModule } from 'primeng/badge';
   templateUrl: './vendors.component.html',
   styleUrls: ['./vendors.component.scss'],
 })
-export class VendorComponent implements OnInit, OnDestroy {
+export class VendorsComponent implements OnInit, OnDestroy {
   editmode: boolean = false;
   isSubmitted: boolean = false;
 
   uploadedFiles: any[] = [];
 
   vendorForm: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    description: new FormControl(''),
-    website: new FormControl(''),
+    name: new FormControl(
+      'Elite Diving Excursions Belize',
+      Validators.required
+    ),
+    description: new FormControl(
+      'Scuba diving tours in Belize',
+      Validators.required
+    ),
+    website: new FormControl('https://www.eliteadventuresbelize.com/'),
     address: new FormControl(''),
-    city: new FormControl(''),
-    phone: new FormControl(''),
-    email: new FormControl(''),
+    city: new FormControl('San Pedro, Ambergris Caye'),
+    phone: new FormControl('+501-226-3483'),
+    email: new FormControl('contact@eliteadventuresbelize.com'),
     comments: new FormControl(''),
     category: new FormControl(''),
-    status: new FormControl(''),
+    status: new FormControl('Active'),
     tags: new FormControl('', Validators.required),
     image: new FormControl<File | null>(null, Validators.required),
   });
@@ -92,7 +98,7 @@ export class VendorComponent implements OnInit, OnDestroy {
 
   files: any[] = [];
 
-  tagsLookup: { [key: string]: Tag } = {};
+  tagsLookup: { [key: string]: ITag } = {};
   filteredTags: any[] = [];
   selectedTags: any[] = [];
 
@@ -164,24 +170,22 @@ export class VendorComponent implements OnInit, OnDestroy {
   }
 
   private _getTags() {
-    this.tagService
-      .getTags({ type: 'vendors' })
-      .subscribe((tags: Array<Tag>) => {
-        tags.forEach((tag: Tag) => {
-          const resultTag = {
-            tag: tag.tag,
-            _id: tag._id,
-            id: tag.id,
-            description: tag.description,
-            count: tag.count,
-          };
-          this.tagsLookup[tag['tag']] = resultTag;
+    this.tagService.getAllTags().subscribe((tags: Array<ITag>) => {
+      tags.forEach((tag: ITag) => {
+        const resultTag = {
+          tag: tag.tag,
+          _id: tag._id,
+          id: tag.id,
+          description: tag.description,
+          count: tag.count,
+        };
+        this.tagsLookup[tag['tag']] = resultTag;
 
-          this.filteredTags.push(resultTag);
-        });
-
-        this._setBadgeSettings();
+        this.filteredTags.push(resultTag);
       });
+
+      this._setBadgeSettings();
+    });
   }
 
   addNewTag(event: any) {
@@ -195,18 +199,8 @@ export class VendorComponent implements OnInit, OnDestroy {
         count: 0,
       };
 
-      console.log('addNewTag - resultTag', resultTag);
       this.tagsLookup[value] = resultTag;
-      console.log('addNewTag - tagsLookup', this.tagsLookup);
-      /*
-      this.filteredTags.push(resultTag);
 
-      this.filteredTags = orderBy(
-        this.filteredTags,
-        ['count', 'tag'],
-        ['desc', 'asc'],
-      );
- */
       this.selectTag(value);
 
       this.newTag.nativeElement.value = '';
@@ -215,13 +209,8 @@ export class VendorComponent implements OnInit, OnDestroy {
   }
 
   selectTag(selectedTag: string) {
-    console.log(
-      'selectTag - selectedTag',
-      selectedTag,
-      this.tagsLookup[selectedTag]
-    );
     this.selectedTags.push(this.tagsLookup[selectedTag]);
-    console.log('selectTag - selectedTags', this.selectedTags);
+
     this.selectedTags = orderBy(
       this.selectedTags,
       ['count', 'tag'],
@@ -230,21 +219,6 @@ export class VendorComponent implements OnInit, OnDestroy {
 
     this._addTagsToForm();
 
-    /*     const tempTags = [...this.filteredTags];
-    const newFilteredTags: any[] = [];
-
-    tempTags.forEach((tag: Tag) => {
-      if (tag.tag !== selectedTag) {
-        newFilteredTags.push(tag);
-      }
-    });
-
-    this.filteredTags = orderBy(
-      newFilteredTags,
-      ['count', 'tag'],
-      ['desc', 'asc'],
-    );
-    */
     this._addTagToForm();
 
     this._setBadgeSettings();
@@ -254,7 +228,7 @@ export class VendorComponent implements OnInit, OnDestroy {
     const tempTags = [...this.selectedTags];
     const newSelectedTags: any[] = [];
 
-    tempTags.forEach((tag: Tag) => {
+    tempTags.forEach((tag: ITag) => {
       if (tag.tag !== selectedTag) {
         newSelectedTags.push(tag);
       }
@@ -285,18 +259,18 @@ export class VendorComponent implements OnInit, OnDestroy {
 
   private _addTagToForm() {
     let tags: string[] = [];
-    this.selectedTags.forEach((tag: Tag) => {
+    this.selectedTags.forEach((tag: ITag) => {
       tags.push(tag.tag);
     });
 
-    const tagIdList = this.selectedTags.map((tag: Tag) => tag._id).join(',');
+    const tagIdList = this.selectedTags.map((tag: ITag) => tag._id).join(',');
 
     this.vendorForm.patchValue({ tags: tagIdList });
   }
 
   private _addTagsToForm() {
     let tagIdsList: string[] = [];
-    this.selectedTags.forEach((tag: Tag) => {
+    this.selectedTags.forEach((tag: ITag) => {
       tagIdsList.push(tag._id);
     });
 
@@ -386,12 +360,17 @@ export class VendorComponent implements OnInit, OnDestroy {
     let skippedFields: any[] = [];
     let vendorFormData: FormData = new FormData();
     for (const field in this.vendorForm.controls) {
+      const value = this.vendorForm.get(field)?.value;
+      console.log('vendorFormData', field, value);
+
       if (
         this.vendorForm.value.hasOwnProperty(field) &&
         !skippedFields.includes(field)
       ) {
-        vendorFormData.append(field, this.vendorForm.get(field)?.value);
-        console.log('vendorFormData', vendorFormData);
+        vendorFormData.append(field, value);
+        console.log(vendorFormData.get(field));
+      } else {
+        console.log('unhandled field', field);
       }
     }
 

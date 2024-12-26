@@ -1,19 +1,33 @@
+<section class="carousel vendor-carousel mt-8 ">
+  <div class="container vendors-background py-5">
+    <div class="row">
+      <div class="col-6"></div>
+      <div class="col-6 text-center">
+        <h2 class="carousel-title">Preferred Vendors</h2>
 
-https://www.eliteadventuresbelize.com/ Diving, Fishing, Snorkelling
+        <div id="vendor-prev" class="header-image-container header-image-hidden"></div>
 
-Secret Beach Waterpark | Bar & Grill This is the place where hopefully ill put up one of the cams and weather stations
-Restaurant, Bar and wedding Venue
+        <div id="vendor-curr" #vendorCurr class="header-image-container header-displayed">
+          <div id="vendor-prev-slide" class="carousel-control slide-prev" (click)="prevSlide()">
+            <i class="pi pi-angle-left" style="color: white;font-size: 7rem"></i>
+          </div>
 
-Twisted_Palm_Villlas This is the same owner as Elite Adventures hotel and wedding venue
+          <div id="vendor-next-slide" class="carousel-control slide-next" (click)="nextSlide()">
+            <i class="pi pi-angle-right" style="color: white;font-size: 7rem"></i>
+          </div>
+        </div>
+        <div id="vendor-next" class="header-image-container header-image-hidden"></div>
 
-https://www.islanddreamtours.com/
+      </div>
+    </div>
+  </div>
+</section>
 
-https://www.playadesala.com/ Hotel, bar restaurant and wedding venue
 
-https://truckstopbz.com/ Restaurant, Bar and wedding Venue
-
+<!--
 https://mangatavillas.com/moon-bar Restaurant, Bar and wedding Venue
 
 https://lasterrazasresort.com/ Hotel, Restaurant, Bar and wedding Venue
 
 Victoria House Resort & Spa ~ Belize | Ambergris Caye Resort Hotel, Restaurant, Bar and wedding Venue
+ -->

@@ -1,10 +1,15 @@
 import { Routes } from '@angular/router';
 import { ImageUploadComponent } from '../../page-elements/admin/images/upload/image-upload.component';
-import { AdminDashboardComponent } from './dashboard/dashboard.component';
+import { VendorsComponent } from '../../page-elements/admin/vendors/vendors/vendors.component';
+import { DashboardComponent } from '../../page-elements/admin/dashboard/dashboard.component';
 
 export const AuthRoutes: Routes = [
-  { path: '', component: AdminDashboardComponent },
+  { path: '', component: DashboardComponent },
   { path: 'images/upload', component: ImageUploadComponent },
   { path: 'images/edit/:id', component: ImageUploadComponent },
-  { path: '**', component: AdminDashboardComponent },
+
+  { path: 'vendors/add', component: VendorsComponent },
+  { path: 'vendors/edit/:id', component: VendorsComponent },
+
+  { path: '**', component: DashboardComponent },
 ];

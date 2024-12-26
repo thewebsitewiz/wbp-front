@@ -1,8 +1,8 @@
 <!-- Flexbox container for aligning the toasts -->
 <p-toast></p-toast>
 <div class="admin-page">
-  <p-card class="main-card" [header]="editmode ? 'Edit Image' : 'Add Image'"
-    subheader="You can add or edit images here">
+  <p-card class="main-card" [header]="editmode ? 'Edit Vendor' : 'Add Vendor'"
+    subheader="You can add or edit vendors here">
     <div class="grid p-mb-5">
       <div class="col-12">
         <p-toolbar>
@@ -18,7 +18,7 @@
     </div>
     <div class="grid">
       <div class="col-12">
-        <form [formGroup]="imageForm" (submit)="onSubmit()">
+        <form [formGroup]="vendorForm" (submit)="onSubmit()">
           <!-- image:  -->
           <div class="grid field-border mt-4">
             <div class="p-field col-12">
@@ -34,7 +34,7 @@
                 </div>
               </div>
               }
-              <small *ngIf="imageForm.get('image')
+              <small *ngIf="vendorForm.get('image')
                                               ?.invalid && isSubmitted" class="p-error">Image is required</small>
             </div>
 
@@ -93,28 +93,17 @@
             </div>
           </div>
 
-          <!-- dateTaken -->
-          <!--           <div class="grid">
-            <div class="p-field col-12 md:col-5">
-              <label class="label calendar-label" for="dateTaken">Date Taken
-                @if(dateTakenRequired) {
-                <sup class="required" aria-hidden="true">*</sup>
-                }
-              </label>
-              <p-calendar [(ngModel)]="defaultDate" formControlName="dateTaken" id="dateTaken" inputId="dateTaken"
-                showButtonBar="true" dateFormat="yy-mm-dd" inline="false" [showIcon]="true" showButtonBar="true"
-                [showIcon]="true" [firstDayOfWeek]="1" [defaultDate]="defaultDate" [showTime]="true"
-                [yearNavigator]="true" [numberOfMonths]="1" selectOtherMonths="true" field="dateTaken" />
-            </div>
-          </div> -->
-          <!-- title -->
+
+          <!-- Vendor Name -->
           <div class="grid">
             <div class="p-field col-12 md:col-5">
-              <label class="label" for="title">Title<span class="required">*</span></label>
-              <input formControlName="title" id="title" type="text" class="inputfield w-full" pInputText />
-              <small *ngIf="imageForm.get('title')?.invalid && isSubmitted" class="p-error">Title is required</small>
+              <label class="label" for="name">Vendor Name<span class="required">*</span></label>
+              <input formControlName="name" id="name" type="text" class="inputfield w-full" pInputText />
+              <small *ngIf="vendorForm.get('name')?.invalid && isSubmitted" class="p-error">Vendor Name is
+                required</small>
             </div>
           </div>
+
           <!-- description -->
           <div class="grid">
             <div class="p-field col-12 md:col-5">
@@ -122,11 +111,45 @@
               <input formControlName="description" id="description" type="text" class="inputfield w-full" pInputText />
             </div>
           </div>
-          <!-- caption -->
+
+          <!-- website -->
           <div class="grid">
             <div class="p-field col-12 md:col-5">
-              <label class="label" for="caption">Caption</label>
-              <input formControlName="caption" id="caption" type="text" class="inputfield w-full" pInputText />
+              <label class="label" for="website">Website</label>
+              <input formControlName="website" id="website" type="text" class="inputfield w-full" pInputText />
+            </div>
+          </div>
+
+          <!-- address -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="address">Address</label>
+              <input formControlName="address" id="address" type="text" class="inputfield w-full" pInputText />
+            </div>
+          </div>
+
+
+          <!-- city -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="city">City</label>
+              <input formControlName="city" id="city" type="text" class="inputfield w-full" pInputText />
+            </div>
+          </div>
+
+          <!-- phone -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="phone">Phone</label>
+              <input formControlName="phone" id="phone" type="text" class="inputfield w-full" pInputText />
+            </div>
+          </div>
+
+          <!-- email -->
+          <div class="grid">
+            <div class="p-field col-12 md:col-5">
+              <label class="label" for="email">Email</label>
+              <input formControlName="email" id="email" type="text" class="inputfield w-full" pInputText />
             </div>
           </div>
           <!-- comments -->

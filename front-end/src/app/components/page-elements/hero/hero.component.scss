@@ -1,13 +1,15 @@
 @import '../../../../assets/scss/1-abstracts/variables';
 
-section.carousel {
+section.hero-carousel {
   height: 100vh;
   font-family: $text-font-sans-cond;
   --bs-body-font-family: $text-font-sans-cond;
 
+
   & .header-image-container {
     height: 100vh;
     width: 100vw;
+    box-shadow: 0 0 32px 32px white inset;
   }
 
   & #hero-curr {
@@ -15,20 +17,6 @@ section.carousel {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-  }
-
-  &>.header-image-container>#typing-text {
-    color: $light-grey;
-    width: 100%;
-    position: absolute;
-    z-index: 10;
-    top: 220px;
-    letter-spacing: 1px;
-    text-shadow: 2px 2px 6px $brand-color;
-    font-weight: 200;
-    text-align: center;
-    font-size: 72px;
-    text-transform: uppercase;
   }
 
   & #slide-animation {
@@ -39,19 +27,5 @@ section.carousel {
 
   & #slide-animation-content {
     padding: 20px;
-
-    & h1#slide-animation-title {
-      margin-top: 0;
-
-      color: green;
-
-    }
-
-    & #slide-animation-body {
-      margin-top: 0 !important;
-      font-weight: 400;
-      font-size: 1.3rem;
-    }
-
   }
 }

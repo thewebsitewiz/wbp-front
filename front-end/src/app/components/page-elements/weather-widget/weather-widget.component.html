@@ -1,4 +1,4 @@
-<div class="weather-widget">
+<div class="weather-widget mt-8">
   <div class="container">
     <!-- Current Weather -->
     <div class="row">
@@ -12,6 +12,7 @@
           <h4>{{currWeatherTime}}</h4>
         </div>
         <div class="weather-widget__description">
+          {{currentCode}} :: {{codes[currentCode] | json}}
           <h4>{{codes[currentCode].description}}</h4>
         </div>
       </div>

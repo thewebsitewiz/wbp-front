@@ -159,7 +159,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   }
 
   private _getTags() {
-    this.tagService.getTags().subscribe((tags: Array<ITag>) => {
+    this.tagService.getAllTags().subscribe((tags: Array<ITag>) => {
       tags.forEach((tag: ITag) => {
         const resultTag = {
           tag: tag.tag,
@@ -191,15 +191,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       console.log('addNewTag - resultTag', resultTag);
       this.tagsLookup[value] = resultTag;
       console.log('addNewTag - tagsLookup', this.tagsLookup);
-      /*
-      this.filteredTags.push(resultTag);
 
-      this.filteredTags = orderBy(
-        this.filteredTags,
-        ['count', 'tag'],
-        ['desc', 'asc'],
-      );
- */
       this.selectTag(value);
 
       this.newTag.nativeElement.value = '';
@@ -223,21 +215,6 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
     this._addTagsToForm();
 
-    /*     const tempTags = [...this.filteredTags];
-    const newFilteredTags: any[] = [];
-
-    tempTags.forEach((tag: Tag) => {
-      if (tag.tag !== selectedTag) {
-        newFilteredTags.push(tag);
-      }
-    });
-
-    this.filteredTags = orderBy(
-      newFilteredTags,
-      ['count', 'tag'],
-      ['desc', 'asc'],
-    );
-    */
     this._addTagToForm();
 
     this._setBadgeSettings();

@@ -7,16 +7,16 @@ const { Tags } = require("../models/tag.model");
 
 router.get(`/get-tags`, async (req, res) => {
   try {
-    await Tag.getTag(req, res);
+    await Tag.getAllTags(req, res);
   } catch (e) {
-    console.error(`error in catch for getEnvironmentalData: ${e}`);
+    console.error(`error in catch for getAllTags: ${e}`);
   }
 });
 router.get(`/get-tags/:type`, async (req, res) => {
   try {
-    await Tag.getTag(req, res);
+    await Tag.getTagsByType(req, res);
   } catch (e) {
-    console.error(`error in catch for getEnvironmentalData: ${e}`);
+    console.error(`error in catch for getTags: ${e}`);
   }
 });
 

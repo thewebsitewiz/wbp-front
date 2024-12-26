@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { WeatherService } from '../../../services/weather.service';
 import {
@@ -26,7 +27,7 @@ import {
 @Component({
   selector: 'wbp-weather-widget',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, NgStyle],
+  imports: [NgIf, NgFor, NgClass, NgStyle, CommonModule],
   templateUrl: './weather-widget.component.html',
   styleUrl: './weather-widget.component.scss',
 })

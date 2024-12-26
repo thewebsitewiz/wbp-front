@@ -14,7 +14,7 @@ export interface IPostmark {
   left?: number;
 }
 
-interface IImage {
+export interface IAlbumImage {
   src: string;
   title: string;
   description: string;
@@ -26,5 +26,7 @@ export interface IAlbum {
   albumColor?: string;
   alignment?: string;
   postmark: IPostmark;
-  images: IImage[];
+  images: IAlbumImage[];
 }
+
+export interface IAlbums extends Array<IAlbum> {}

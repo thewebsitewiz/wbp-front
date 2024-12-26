@@ -4,14 +4,16 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const express = require("express");
 const router = express.Router();
 
+
 const {
   addVendor,
   editVendor,
   editVendors,
   getVendors,
+  uploadMulter,
 } = require("../controllers/vendor.controller");
 
-router.post(`/add-vendor`, async (req, res, next) => {
+router.post(`/add-vendor`, uploadMulter, async (req, res, next) => {
   await addVendor(req, res, next);
 });
 

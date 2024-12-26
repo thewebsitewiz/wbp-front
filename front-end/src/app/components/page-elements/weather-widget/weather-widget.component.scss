@@ -4,14 +4,13 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: top;
   border-radius: 5px;
-  border: solid 2px $brand-color;
-  background-color: rgba(173, 142, 117, .6);
+  border: solid 1px rgb(222, 188, 155);
+  background-color: rgb(218, 203, 189);
   padding: 10px;
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 24px 24px rgba(0, 0, 0, 0.3);
   width: 80%;
   color: black;
 

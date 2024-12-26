@@ -6,8 +6,8 @@ export const routes: Routes = [
   {
     path: 'admin',
     loadComponent: () =>
-      import('./components/pages/admin/dashboard/dashboard.component').then(
-        (m) => m.AdminDashboardComponent
+      import('./components/pages/admin/admin/admin.component').then(
+        (m) => m.AdminComponent
       ),
     // Lazy loading
     loadChildren: () =>

@@ -1,13 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { HeroService } from './../../../services/hero.service';
 import { CarouselService } from '../../../services/carousel.service';
-import { ISlides } from '../../../interfaces/carousel.interface';
+import { ISlides } from '../../../interfaces/slide.interface';
 
 @Component({
   selector: 'wbp-hero',
   standalone: true,
   imports: [CommonModule],
-  providers: [CarouselService],
+  providers: [
+    HeroService,
+    {
+      provide: CarouselService,
+      useFactory: () => new CarouselService(),
+    },
+  ],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.scss',
 })
@@ -16,10 +23,13 @@ export class HeroComponent implements OnInit {
   slides: any[] = [];
   prefix: string = 'hero';
 
-  constructor(private carouselService: CarouselService) {}
+  constructor(
+    private carouselService: CarouselService,
+    private heroService: HeroService
+  ) {}
 
   ngOnInit() {
-    this.carouselService.getSlides().subscribe((slides: ISlides) => {
+    this.heroService.getSlides().subscribe((slides: ISlides) => {
       this.carouselService.initCarousel(this.heroCurr, this.prefix, slides);
     });
   }

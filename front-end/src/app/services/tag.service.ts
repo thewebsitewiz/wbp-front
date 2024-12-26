@@ -10,11 +10,19 @@ import { ITag } from '../interfaces/tag.interface';
 export class TagService {
   private baseAPIUrl: string = environment.baseAPIUrl;
   private tagsAPI = `${environment.API}/tags`;
-  private tagsAPIUrl = `${this.baseAPIUrl}${this.tagsAPI}`;
+  private tagsAPIUrl = `${this.baseAPIUrl}/${this.tagsAPI}`;
 
   constructor(private http: HttpClient) {}
 
-  getTags(options: { type: string } = { type: 'all' }): Observable<ITag[]> {
+  getAllTags(): Observable<ITag[]> {
+    const url = `${this.tagsAPIUrl}/get-tags`;
+    console.log('url: ', url);
+    return this.http.get(url) as Observable<ITag[]>;
+  }
+
+  getTagsByType(
+    options: { type: string } = { type: 'all' }
+  ): Observable<ITag[]> {
     const url = `${this.tagsAPIUrl}/get-tags/${
       options.type === 'all' ? '' : `${options.type}`
     }`;

@@ -1,13 +1,8 @@
-import { CarouselService } from './../../../services/carousel.service';
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  ElementRef,
-  Inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, Host, OnInit, ViewChild } from '@angular/core';
+
 import { AlbumsService } from '../../../services/albums.service';
+import { CarouselService } from './../../../services/carousel.service';
 
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -31,7 +26,12 @@ import {
     DialogModule,
     ButtonModule,
   ],
-  providers: [CarouselService, AlbumsService],
+  providers: [
+    {
+      provide: CarouselService,
+      useFactory: () => new CarouselService(),
+    },
+  ],
   templateUrl: './albums.component.html',
   styleUrl: './albums.component.scss',
 })
@@ -96,7 +96,6 @@ export class AlbumsComponent implements OnInit {
     this.albumSelected = true;
     this.albumHeader = album.album;
 
-    console.log('openAlbum: ', this.albumCurr, this.prefix, album.images);
     this.carouselService.initCarousel(
       this.albumCurr,
       this.prefix,
