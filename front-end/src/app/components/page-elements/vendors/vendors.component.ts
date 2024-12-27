@@ -28,8 +28,12 @@ export class VendorsComponent implements OnInit {
 
   ngOnInit() {
     this.vendorService.getVendors().subscribe((vendors: ISlides) => {
-      console.log('vendors', vendors);
-      this.carouselService.initCarousel(this.vendorCurr, this.prefix, vendors);
+      this.carouselService.initCarousel(
+        this.vendorCurr,
+        this.prefix,
+        vendors,
+        5
+      );
     });
   }
 

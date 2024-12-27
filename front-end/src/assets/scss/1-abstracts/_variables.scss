@@ -1,18 +1,28 @@
 // -----------------------------------------------------------------------------
 // This file contains all application-wide Sass variables.
 // -----------------------------------------------------------------------------
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 100 to 900
+
+/* .montserrat-<uniquifier> {
+  font-family: "Montserrat", serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+} */
 
 /// Regular font family
 /// @type List
-$text-font-sans: "Fira Sans", "Helvetica Neue Light", "Helvetica Neue",
+$text-font-sans: "Montserrat", "Fira Sans", "Helvetica Neue Light", "Helvetica Neue",
   "Helvetica", "Arial", sans-serif !default;
 
-$text-font-sans-cond: "Fira Sans Condensed", "Helvetica Neue Light",
+$text-font-sans-cond: "Montserrat", "Fira Sans Condensed", "Helvetica Neue Light",
   "Helvetica Neue", "Helvetica", "Arial", sans-serif !default;
 
-$text-font-sans-ex-cond: "Fira Sans Extra Condensed", "Helvetica Neue Light",
+$text-font-sans-ex-cond: "Montserrat", "Fira Sans Extra Condensed", "Helvetica Neue Light",
   "Helvetica Neue", "Helvetica", "Arial", sans-serif !default;
 
+$heading-font-sans: "Fira Sans", "Helvetica Neue Light", "Helvetica Neue";
 /// Code (monospace) font family
 /// @type List
 $code-font-stack: "Courier New", "DejaVu Sans Mono", "Bitstream Vera Sans Mono",
@@ -50,6 +60,11 @@ $dark-grey: rgb(68, 68, 68) !default;
 /// "black"
 /// @type Color
 $black: rgb(22, 21, 23) !default;
+
+// Section box shadow
+$box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.4) !default;
+// 0 0 18px 18px rgba(0, 0, 0, 0.4) !default;
+
 
 /// Container's maximum width
 /// @type Length

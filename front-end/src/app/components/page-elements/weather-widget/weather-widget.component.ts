@@ -83,7 +83,6 @@ export class WeatherWidgetComponent implements OnInit {
 
   ngOnInit() {
     this.weatherConfig = weatherConfig as IWeatherConfig;
-    console.log('weatherConfig: ', weatherConfig);
 
     this.codes = this.weatherConfig.weatherCodes;
     this.units = this.weatherConfig.weatherUnits;
@@ -96,7 +95,6 @@ export class WeatherWidgetComponent implements OnInit {
     this.weatherService
       .getEnvironmentalData()
       .subscribe((envData: IEnvData) => {
-        console.log('envData: ', envData);
         this.envData = envData;
         this.currWeather = this.envData.current;
 
@@ -281,8 +279,6 @@ export class WeatherWidgetComponent implements OnInit {
       0
     );
 
-    console.log('ranges: ', this.hourlyMinWind, this.hourlyRangeValues['wind']);
-
     this.hourlyFC.forEach((hour: IHourlyForecast) => {
       hour.tempDisplay = Math.round(
         (hour.temp / (this.hourlyRangeValues['temp'] + this.hourlyMinTemp)) *
@@ -311,8 +307,6 @@ export class WeatherWidgetComponent implements OnInit {
           100
       );
     });
-
-    console.log('hourlyFC: ', this.hourlyFC);
   }
 
   changeHourlyDisplay(display: string): void {

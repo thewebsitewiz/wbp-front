@@ -5,12 +5,8 @@
   width: 100vw;
   height: 80px;
   background-color: rgba(255, 255, 255, 0.3);
-  font-family: "Fira Sans Condensed",
-    "Helvetica Neue Light",
-    "Helvetica Neue",
-    "Helvetica",
-    "Arial",
-    sans-serif !important;
+  font-family: $heading-font-sans !important;
+
 
   & .nav-animation {
     animation: navBarDrop 0.8s ease-in-out;

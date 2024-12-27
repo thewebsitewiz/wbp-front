@@ -2,7 +2,7 @@ import { IVendor } from '../../app/interfaces/vendor.interface';
 
 export const Vendors: IVendor[] = [
   {
-    src: 'logos/logotop.png',
+    src: 'logos/elite.png',
     name: 'Elite Diving Excursions Belize',
     description: 'Scuba diving tours in Belize',
     website: 'https://www.eliteadventuresbelize.com/',
@@ -44,7 +44,7 @@ export const Vendors: IVendor[] = [
     tags: [],
   },
   {
-    src: 'logos/island-dream-tours.jpg',
+    src: 'logos/island-dream-tours.png',
     name: 'Island Dream Tours',
     description:
       'Vacation Like You Never Have Before Because... " You Only Live Once"',
@@ -59,7 +59,7 @@ export const Vendors: IVendor[] = [
     tags: [],
   },
   {
-    src: 'logos/playa-del-sala.jpg',
+    src: 'logos/playa-del-sala.png',
     name: 'Playa De Sala',
     description:
       'Experience a romantic escape at Playa De Sala, Belize&#rsquo;s exclusive adults-only boutique hotel.',
@@ -74,7 +74,7 @@ export const Vendors: IVendor[] = [
     tags: [],
   },
   {
-    src: 'logos/the-truck-stop.jpg',
+    src: 'logos/the-truck-stop.png',
     name: 'Twisted Palm Villas',
     description:
       'San Pedro&#rsquo;s Entertainment Destination and 1st & Only Beer Garden',
@@ -89,7 +89,7 @@ export const Vendors: IVendor[] = [
     tags: [],
   },
   {
-    src: 'logos/moon-bar.jpg',
+    src: 'logos/moon-bar.png',
     name: 'Moon Bar',
     description:
       'an exclusive, adults-only (18+) beachside bar and pizzeria with a relaxed and inviting atmosphere',
@@ -104,7 +104,7 @@ export const Vendors: IVendor[] = [
     tags: [],
   },
   {
-    src: 'logos/secret-beach.png',
+    src: 'logos/terrazas.png',
     name: 'Las Terrazas Belize Resort',
     description: 'Luxury Boutique Resort in Ambergris Caye',
     website: 'https://lasterrazasresort.com',
