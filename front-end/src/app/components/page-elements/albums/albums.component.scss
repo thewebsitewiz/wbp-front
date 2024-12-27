@@ -4,13 +4,13 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
-
+  margin-left: 20px;
+  margin-right: 20px;
   position: relative;
 
   gap: 10px;
   border-radius: 5px;
+
 
 }
 
@@ -31,7 +31,46 @@
   vertical-align: top;
 }
 
+.album-carousel {
 
+  & #album-curr {
+    background-image: var(--album-curr);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    height: 70vh;
+    width: 50vw;
+
+  }
+
+
+
+  & .carousel-control {
+    color: white;
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: 40%;
+    cursor: pointer;
+
+    &.slide-prev {
+      left: 10px;
+    }
+
+    &.slide-next {
+      right: 30px;
+    }
+  }
+
+  & .p-dialog-title {
+    font: 500 4rem / 0.5 "Allura", cursive !important;
+  }
+
+  & .p-dialog-content {
+    height: 90%;
+  }
+
+}
 
 
 ///////////////////////////////////////////////////////////////
@@ -47,7 +86,7 @@
 
 @mixin fancy-border-text() {
   // container settings
-  $container-width: 32vw;
+  $container-width: 30vw;
   $container-height: calc($container-width / 1.6);
 
   // border settings
@@ -70,10 +109,15 @@
   .album {
     &-container {
       position: relative;
-      width: $container-width; // allow the box to shrink if the window gets smaller than the container width
+      // allow the box to shrink if the window gets
+      // smaller than the container width
+      width: $container-width;
       max-width: $container-width;
       height: $container-height;
-      // margin: 5rem auto; // add some spacing and center container for display purposes
+
+      // add some spacing and center container
+      // for display purposes
+      // margin: 5rem auto;
       background-color: #333;
       background-size: cover;
       background-position: center;
