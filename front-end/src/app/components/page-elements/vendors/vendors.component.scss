@@ -5,7 +5,6 @@ section.vendor-carousel {
   font-family: $heading-font-sans;
   --bs-body-font-family: $heading-font-sans;
 
-
   & .vendors-background {
     height: 100%;
     width: 80%;
@@ -23,38 +22,76 @@ section.vendor-carousel {
     // background: linear-gradient(to top left, #4facfe, #00f2fe);=
   }
 
-  h2 {
-    display: inline-block;
+  & h2 {
+    //display: inline-block;
     font-size: 32px;
     line-height: 1;
     font-weight: black;
     color: $brand-color;
     /*     background: linear-gradient(180deg, #141A6B 20%, #29DBD8 60%, #141A6B 75%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent; */
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent; */
   }
 
-  & .header-image-container {
-    height: 250px;
-    min-height: 250px;
+  & .vendor-display {
     width: 100%;
-    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
 
+    & .header-image-container {
+      height: 250px;
+      min-height: 250px;
+      width: 60%;
+      position: relative;
+    }
+
+    & .hidden-container {
+      display: none;
+    }
+
+    & #vendor-curr {
+      display: inline-block;
+      background-image: var(--vendor-curr);
+      background-repeat: no-repeat;
+
+      background-position: center;
+    }
+
+    & .header-image-hidden {
+      display: none;
+    }
+
+    & .current-slide {
+      display: inline-block;
+      background-image: var(--curr);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    & .carousel-control {
+      //display: inline;
+      height: 50px;
+      width: 50px;
+      position: relative;
+      top: 40%;
+      cursor: pointer;
+
+      &.slide-prev {
+        left: 5px;
+      }
+
+      &.slide-next {
+        right: 25px;
+      }
+    }
   }
 
-  & .hidden-container {
-    display: none;
-  }
 
-  & #vendor-curr {
-    background-image: var(--vendor-curr);
-    background-repeat: no-repeat;
-    //background-size: contain;
 
-    //background-size: 100% 100%;
-    background-position: center;
-  }
 
   & #slide-animation {
     background-color: rgba(255, 255, 255, 0.9);
@@ -80,32 +117,9 @@ section.vendor-carousel {
 
   }
 
-  & .header-image-hidden {
-    display: none;
-  }
 
-  & .current-slide {
-    background-image: var(--curr);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
 
-  & .carousel-control {
-    height: 50px;
-    width: 50px;
-    //position: relative;
-    top: 40%;
-    cursor: pointer;
 
-    &.slide-prev {
-      left: 5px;
-    }
-
-    &.slide-next {
-      right: 0px;
-    }
-  }
 
   & .p-dialog-header-close-icon {
     height: 20px !important;

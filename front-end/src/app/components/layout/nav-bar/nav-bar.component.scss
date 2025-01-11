@@ -7,6 +7,16 @@
   background-color: rgba(255, 255, 255, 0.6);
   font-family: $heading-font-sans !important;
 
+  & .container {
+    position: relative;
+    top: 34px;
+  }
+
+  & .navbar-collapse {
+    position: relative;
+    top: -30px;
+  }
+
   & .nav-animation {
     animation: navBarDrop 0.8s ease-in-out;
   }
@@ -32,77 +42,34 @@
 }
 
 
-// Generate series of `.navbar-expand-*` responsive classes for configuring
-// where your navbar collapses.
-.navbar-expand {
-  @each $breakpoint in map-keys($grid-breakpoints) {
-    $next: breakpoint-next($breakpoint, $grid-breakpoints);
-    $infix: breakpoint-infix($next, $grid-breakpoints);
-
-    // stylelint-disable-next-line scss/selector-no-union-class-name
-    &#{$infix} {
-      @include media-breakpoint-up($next) {
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-
-        .navbar-nav {
-          flex-direction: row;
-
-          .dropdown-menu {
-            position: absolute;
-          }
-
-          .nav-link {
-            padding-right: $navbar-nav-link-padding-x;
-            padding-left: $navbar-nav-link-padding-x;
-          }
-        }
-
-        .navbar-nav-scroll {
-          overflow: visible;
-        }
-
-        .navbar-collapse {
-          display: flex !important; // stylelint-disable-line declaration-no-important
-          flex-basis: auto;
-        }
-
-        .navbar-toggler {
-          display: none;
-        }
-      }
-    }
-  }
-}
-// ???
-@media (min-width: 800px) {
+@media (max-width:991px) {
   .navbar {
-    &>.container {
+
+    & .container {
       position: relative;
-      top: 34px;
+      top: 0;
     }
 
     & .navbar-collapse {
       position: relative;
-      top: -30px;
+      top: -70px;
+
+      & .navbar-nav {
+        width: 200px;
+        text-align: right;
+        background-color: rgba(255, 255, 255, 0.6);
+      }
     }
 
-  }
 
-}
 
-@media (max-width: 800px) {
-  .navbar {
-    &>.container {
-      flex-wrap: nowrap;
-    }
-
-    &__logo {
-      align-self: flex-start;
-
+    & .navbar-toggler {
+      position: relative;
+      top: -35px;
     }
   }
 }
+
 
 @keyframes navBarDrop {
   from {

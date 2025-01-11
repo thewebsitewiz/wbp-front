@@ -79,7 +79,7 @@ $breakpoints: (
   "large": 1024px,
   ) !default;
 
-/*   $grid-breakpoints: (
+/* $grid-breakpoints: (
   xs: 0,
   sm: 576px,
   md: 768px,
@@ -87,6 +87,7 @@ $breakpoints: (
   xl: 1200px,
   xxl: 1400px
 ); */
+
 /// Relative or absolute URL where all assets are served from
 /// @type String
 /// @example scss - When using a CDN

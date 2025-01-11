@@ -4,20 +4,25 @@
       <div class="col-6"></div>
       <div class="col-6 text-center">
         <h2 class="carousel-title">Preferred Vendors</h2>
-
-        <div id="vendor-prev" class="header-image-container header-image-hidden"></div>
-
-        <div id="vendor-curr" #vendorCurr class="header-image-container header-displayed">
+        <div class="vendor-display">
+          <!--  <div id="vendor-prev" class="header-image-container header-image-hidden"></div>
           <div id="vendor-prev-slide" class="carousel-control slide-prev" (click)="prevSlide()">
             <i class="pi pi-angle-left" style="color: white;font-size: 7rem"></i>
           </div>
 
+
+
+          <div id="vendor-next" class="header-image-container header-image-hidden"></div>
+ -->
+          <div id="vendor-prev-slide" class="carousel-control slide-prev" (click)="prevSlide()">
+            <i class="pi pi-angle-left" style="color: white;font-size: 7rem"></i>
+          </div>
+          <div id="vendor-curr" #vendorCurr class="header-image-container header-displayed">
+          </div>
           <div id="vendor-next-slide" class="carousel-control slide-next" (click)="nextSlide()">
             <i class="pi pi-angle-right" style="color: white;font-size: 7rem"></i>
           </div>
         </div>
-        <div id="vendor-next" class="header-image-container header-image-hidden"></div>
-
       </div>
     </div>
   </div>
