@@ -31,6 +31,8 @@
   vertical-align: top;
 }
 
+
+
 .album-carousel {
 
   & #album-curr {
@@ -38,15 +40,13 @@
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
-    height: 70vh;
+    height: 308px;
     width: 50vw;
-
   }
 
 
 
   & .carousel-control {
-    color: white;
     height: 50px;
     width: 50px;
     position: absolute;
@@ -62,27 +62,15 @@
     }
   }
 
-  & .p-dialog-title {
-    font: 500 4rem / 0.5 "Allura", cursive !important;
-  }
-
-  & .p-dialog-content {
-    height: 90%;
-  }
 
 }
 
 
-///////////////////////////////////////////////////////////////
-//
-//   Fancy Border Text Styles
-//
-///////////////////////////////////////////////////////////////
-//
-//   About: This styling method creates borders that are not
-//          "hard-coded", meaning they will respond to the text
-//          size or length of text used in the title.
-//
+
+.p-dialog-content {
+  height: 90%;
+}
+
 
 @mixin fancy-border-text() {
   // container settings

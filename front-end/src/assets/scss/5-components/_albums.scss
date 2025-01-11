@@ -39,3 +39,15 @@
     height: 70vh;
   }
 } */
+@import "../1-abstracts/variables";
+
+.album-carousel {
+  .p-dialog .p-dialog-header .p-dialog-title {
+    font-family: "Allura", cursive;
+    font-weight: 500;
+    font-size: 4rem;
+    line-height: .7;
+    color: $text-color;
+    padding-left: 10px;
+  }
+}

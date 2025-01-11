@@ -4,9 +4,8 @@
 
   width: 100vw;
   height: 80px;
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.6);
   font-family: $heading-font-sans !important;
-
 
   & .nav-animation {
     animation: navBarDrop 0.8s ease-in-out;
@@ -25,21 +24,74 @@
   & .nav-item {
     padding: 0 1.8rem;
   }
-
-
 }
 
-@media (min-width: 993px) {
+.navbar-scrolled {
+  background-color: rgba(255, 255, 255, .8);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+
+// Generate series of `.navbar-expand-*` responsive classes for configuring
+// where your navbar collapses.
+.navbar-expand {
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    $next: breakpoint-next($breakpoint, $grid-breakpoints);
+    $infix: breakpoint-infix($next, $grid-breakpoints);
+
+    // stylelint-disable-next-line scss/selector-no-union-class-name
+    &#{$infix} {
+      @include media-breakpoint-up($next) {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+
+        .navbar-nav {
+          flex-direction: row;
+
+          .dropdown-menu {
+            position: absolute;
+          }
+
+          .nav-link {
+            padding-right: $navbar-nav-link-padding-x;
+            padding-left: $navbar-nav-link-padding-x;
+          }
+        }
+
+        .navbar-nav-scroll {
+          overflow: visible;
+        }
+
+        .navbar-collapse {
+          display: flex !important; // stylelint-disable-line declaration-no-important
+          flex-basis: auto;
+        }
+
+        .navbar-toggler {
+          display: none;
+        }
+      }
+    }
+  }
+}
+// ???
+@media (min-width: 800px) {
   .navbar {
     &>.container {
       position: relative;
       top: 34px;
     }
 
+    & .navbar-collapse {
+      position: relative;
+      top: -30px;
+    }
+
   }
+
 }
 
-@media (max-width: 992px) {
+@media (max-width: 800px) {
   .navbar {
     &>.container {
       flex-wrap: nowrap;

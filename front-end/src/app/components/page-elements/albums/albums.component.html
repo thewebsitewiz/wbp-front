@@ -13,17 +13,17 @@
 </div>
 
 <p-dialog class="carousel album-carousel" [header]="albumHeader" [(visible)]="albumSelected" [modal]="true"
-  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [draggable]="true" [resizable]="true">
+  [breakpoints]="{ '1199px': '492px', '575px': '90vw' }" [draggable]="true" [resizable]="true">
   <section class="carousel">
     <div id="album-prev"></div>
     <div id="album-curr" #albumCurr>
       <div id="album-prev-slide" class="carousel-control slide-prev" (click)="prevSlide()">
         <!-- <img src="assets/images/arrow-left.png" alt="" class="carousel-control" /> -->
-        <i class="pi pi-angle-left" style="color: white;font-size: 7rem"></i>
+        <i class="pi pi-angle-left" style="color: white;font-size:7rem;"></i>
       </div>
       <div id="album-next-slide" class="carousel-control slide-next" (click)="nextSlide()">
         <!--  <img src="assets/images/arrow-right.png" alt="" class="carousel-control" /> -->
-        <i class="pi pi-angle-right" style="color: white;font-size: 7rem"></i>
+        <i class="pi pi-angle-right" style="color: white;font-size:7rem;"></i>
       </div>
     </div>
     <div id="album-next"></div>
