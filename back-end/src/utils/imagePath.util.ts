@@ -9,12 +9,13 @@ module.exports.getNewDirPath = () => {
   const currentScriptPath = path.join(__dirname);
   const srcPath = currentScriptPath.replace(/src\/utils/, "");
   const imgPath = `${srcPath}public/images`;
-  const currentImgPath = getCurrentDirPath(imgPath);
+  const currentImgPath = _getCurrentDirPath(imgPath);
+  console.log("currentImgPath: ", currentImgPath);
   return currentImgPath;
 };
 
-function getCurrentDirPath(imgPath) {
-  const lastImgDirPath = getLastDirectoryInDirectory(imgPath);
+function _getCurrentDirPath(imgPath) {
+  const lastImgDirPath = _getLastDirectoryInDirectory(imgPath);
 
   const filesInLastDirectory = fs.readdirSync(lastImgDirPath).length;
 
@@ -35,7 +36,7 @@ function getCurrentDirPath(imgPath) {
   return nextDirectoryPath;
 }
 
-function getLastDirectoryInDirectory(dirPath) {
+function _getLastDirectoryInDirectory(dirPath) {
   let contents = fs.readdirSync(dirPath);
   let directories = [];
 

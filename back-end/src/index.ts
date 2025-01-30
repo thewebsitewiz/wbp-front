@@ -1,7 +1,8 @@
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 
-import { gracefulExit, dbConnect } from "./config/dbConnect";
+const { dbConnect, gracefulExit } = require("./config/dbConnect");
+
 const ENV = process.env.WBP_ENV;
 
 const express = require("express");
@@ -13,7 +14,7 @@ const cors = require("cors");
 // const authJwt = require("./helpers/jwt");
 // const errorHandler = require("./helpers/error-handler");
 
-dbConnect();
+const conn = dbConnect();
 
 let domain = "http://localhost:4200";
 let hostname = "localhost";

@@ -376,6 +376,8 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       this._updateImage(imageFormData, this.id);
     }
     this.imageForm.reset();
+    this.imagePreview = null;
+    this.selectedTags = [];
   }
 
   onCancel() {

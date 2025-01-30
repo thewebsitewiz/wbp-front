@@ -10,13 +10,13 @@ const {
 } = require("../controllers/image.controller");
 
 router.post(`/upload-image`, uploadMulter, async (req, res, next) => {
-  await imageUpload(req, res, next);
-});
-
-router.post(`/upload-file`, uploadMulter, async (req, res, next) => {
   console.log("file uploaded: ", req.file);
+  try {
+    await imageUpload(req, res, next);
+  } catch (error) {
+    console.log("imageUpload error: ", error);
+  }
 });
-
 
 router.get(`/get-images`, async (req, res) => {});
 

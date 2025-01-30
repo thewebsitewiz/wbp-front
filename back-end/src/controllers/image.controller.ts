@@ -6,42 +6,42 @@ const ExifReader = require("exifreader");
 const multer = require("multer");
 
 const imgPathUtils = require("../utils/imagePath.util");
-// const { getColorAnalysis } = require("../utils/pixels.util");
 
 const { Image } = require("../models/image.model");
 const { Tag } = require("../models/tag.model");
 const { Color } = require("../models/color.model");
 
-import {
-  UPLOAD_FILE_SIZE_LIMIT,
-  FILE_TYPE_MAP,
-  multerFilter,
-} from "../utils/image.util";
+const FILE_TYPE_MAP = {
+  "image/png": "png",
+  "image/jpeg": "jpeg",
+  "image/jpg": "jpg",
+};
 
 let newFileName = "";
-let imageDirPath = "";
+const imageDirPath = imgPathUtils.getNewDirPath();
 
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    imageDirPath = imgPathUtils.getNewDirPath();
-    cb(null, imageDirPath);
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const isValid = FILE_TYPE_MAP[file.mimetype];
+    let uploadError = new Error("invalid image type");
+
+    if (isValid) uploadError = null;
+
+    cb(uploadError, imageDirPath);
   },
-  filename: (req, file, cb) => {
-    const ext = file.mimetype.split("/")[1];
-    newFileName = path.parse(file.originalname).name;
-    newFileName = newFileName.replaceAll(" ", "-");
-    newFileName = `${newFileName}-${Date.now()}.${ext}`.toLowerCase();
+  filename: function (req, file, cb) {
+    const fileName = file.originalname.toLowerCase().split(" ").join("-");
+    const extension = FILE_TYPE_MAP[file.mimetype];
+    newFileName = `${fileName}-${Date.now()}.${extension}`;
     cb(null, newFileName);
   },
 });
 
-const upload = multer({
-  storage: multerStorage,
-  fileFilter: multerFilter,
-  limits: { fileSize: UPLOAD_FILE_SIZE_LIMIT },
+const uploadOptions = multer({
+  storage: storage,
 });
 
-module.exports.uploadMulter = upload.single("image");
+module.exports.uploadMulter = uploadOptions.single("image");
 
 const _getMetadata = async (file) => {
   return await ExifReader.load(file);
@@ -49,6 +49,8 @@ const _getMetadata = async (file) => {
 
 const _imageUpload = async (req, res) => {
   const file = req.file;
+  console.log("image file: ", file);
+
   if (!file) return res.status(400).send("No image in the request");
 
   let tagIds = [];
@@ -76,6 +78,7 @@ const _imageUpload = async (req, res) => {
     if (tagIds.length > 0) image.tags = tagIds;
 
     const imageResult = await image.save();
+    console.log("imageResult: ", imageResult);
 
     if (!imageResult)
       return res.status(400).send("The image cannot be created");

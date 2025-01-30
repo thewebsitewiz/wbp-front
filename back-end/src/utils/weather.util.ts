@@ -6,7 +6,7 @@ import moment from "moment";
 const { dbConnect, gracefulExit } = require("../config/dbConnect");
 const mongoose = require("mongoose");
 const WBP_MONGO_PROD_URI = `mongodb+srv://dennis:DradReqOsISwet1PhubR@cluster0.hzr1z7m.mongodb.net/wbp-dev?retryWrites=true&w=majority&appName=Cluster0`;
-dbConnect(WBP_MONGO_PROD_URI);
+const conn = dbConnect(WBP_MONGO_PROD_URI);
 
 import {
   WeatherResponse,
@@ -21,7 +21,7 @@ import { CurrWeather } from "../models/currentWeather.model";
 import { DlyWeather } from "../models/dailyWeather.model";
 import { HrlyWeather } from "../models/hourlyWeather.model";
 
-process.on("SIGINT", gracefulExit).on("SIGTERM", gracefulExit);
+process.on("SIGINT", gracefulExit(conn)).on("SIGTERM", gracefulExit(conn));
 
 const utcOffset = -1;
 let uploads = 0;
@@ -232,9 +232,8 @@ const _retrieveWeatherData = async (url: string) => {
       while (uploads > 0) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
       }
-      gracefulExit();
-
-      process.exit(0);
+      gracefulExit(conn);
+      process.exit(0);              
     }
   } catch (error) {
     console.error(error.message);
@@ -316,11 +315,11 @@ const _getParams = () => {
 
 const params = _getParams();
 
-const url = `https://api.open-meteo.com/v1/forecast?latitude=17.5711&longitude=-87.5859&
-current=${params.currentParams.join(",")}&daily=${params.dailyParams.join(
+const url = `https://api.open-meteo.com/v1/forecast?latitude=17.5711&longitude=-87.5859&current=${params.currentParams.join(
   ","
-)}&hourly=${params.hourlyParams.join(",")}&
-temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FChicago&forecast_days=14&forecast_hours=24&models=best_match`;
+)}&daily=${params.dailyParams.join(",")}&hourly=${params.hourlyParams.join(
+  ","
+)}&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America%2FChicago&forecast_days=14&forecast_hours=24&models=best_match`;
 
 const weatherData = _retrieveWeatherData(url);
 
