@@ -11,6 +11,7 @@ import { routes } from './app.routes';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+// import { providePrimeNG } from 'primeng/config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,5 +27,6 @@ export const appConfig: ApplicationConfig = {
       //withDebugTracing(),
       withViewTransitions()
     ),
+    // providePrimeNG({}),
   ],
 };

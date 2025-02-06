@@ -11,22 +11,17 @@ const { Image } = require("../models/image.model");
 const { Tag } = require("../models/tag.model");
 const { Color } = require("../models/color.model");
 
-const FILE_TYPE_MAP = {
-  "image/png": "png",
-  "image/jpeg": "jpeg",
-  "image/jpg": "jpg",
-};
+import { FILE_TYPE_MAP } from "../config/imageConstants";
 
 let newFileName = "";
-const imageDirPath = imgPathUtils.getNewDirPath();
+let imageDirPath = "";
 
-const storage = multer.diskStorage({
+/* const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const isValid = FILE_TYPE_MAP[file.mimetype];
     let uploadError = new Error("invalid image type");
-
     if (isValid) uploadError = null;
-
+    imageDirPath = imgPathUtils.getNewDirPath();
     cb(uploadError, imageDirPath);
   },
   filename: function (req, file, cb) {
@@ -42,7 +37,7 @@ const uploadOptions = multer({
 });
 
 module.exports.uploadMulter = uploadOptions.single("image");
-
+ */
 const _getMetadata = async (file) => {
   return await ExifReader.load(file);
 };
@@ -61,10 +56,11 @@ const _imageUpload = async (req, res) => {
 
   const md = await _getMetadata(`${imageDirPath}/${newFileName}`);
 
+  const dbImgDirPath = imageDirPath.split("public/images")[1];
+
   try {
     let image = new Image({
-      fileName: newFileName,
-      filePath: imageDirPath,
+      src: `${dbImgDirPath}/${newFileName}`,
       title: req.body.title,
       description: req.body.description,
       caption: req.body.caption,
@@ -81,13 +77,15 @@ const _imageUpload = async (req, res) => {
     console.log("imageResult: ", imageResult);
 
     if (!imageResult)
-      return res.status(400).send("The image cannot be created");
+      return res.status(400).send("The image data is not inserted");
 
     return res.send(imageResult);
   } catch (e) {
+    console.log("error in catch for image data insert: ", e);
+    console.log(imageDirPath, dbImgDirPath);
     return res.status(500).json({
       success: false,
-      message: `error in catch for images: ${e}`,
+      message: `error in catch for image data insert: ${e}`,
     });
   }
 };

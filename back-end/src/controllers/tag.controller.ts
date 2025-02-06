@@ -31,6 +31,7 @@ module.exports.addTag = async (req, res) => {
   try {
     await Tag.find({ tag: req.body.tag }).then((tags) => {
       if (tags.length > 0) {
+        console.log(`Tag: ${req.body.tag} already exists`);
         res.status(304).send({
           status: 304,
           tag: req.body.tag,
@@ -51,6 +52,15 @@ module.exports.addTag = async (req, res) => {
               success: true,
               msg: "tag added",
               err: false,
+            });
+          } else {
+            console.log(`error saving tag: ${result}`);
+            res.status(500).send({
+              status: 500,
+              tag: req.body.tag,
+              success: false,
+              msg: result,
+              err: true,
             });
           }
         });

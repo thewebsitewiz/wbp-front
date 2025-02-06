@@ -4,17 +4,14 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 const express = require("express");
 const router = express.Router();
 
-const {
-  imageUpload,
-  uploadMulter,
-} = require("../controllers/image.controller");
+const { uploadPhoto } = require("../middleware/uploadImages");
+const { imageUpload } = require("../controllers/image.controller");
 
-router.post(`/upload-image`, uploadMulter, async (req, res, next) => {
-  console.log("file uploaded: ", req.file);
+router.post(`/upload-image`, uploadPhoto, async (req, res, next) => {
   try {
     await imageUpload(req, res, next);
   } catch (error) {
-    console.log("imageUpload error: ", error);
+    console.log("imageUpload route error: ", error);
   }
 });
 

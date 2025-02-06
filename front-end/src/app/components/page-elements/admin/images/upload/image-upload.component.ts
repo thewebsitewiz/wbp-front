@@ -21,6 +21,7 @@ import {
   ReactiveFormsModule,
   FormGroup,
   Validators,
+  FormsModule,
 } from '@angular/forms';
 
 import { TagService } from '@app/services/tag.service';
@@ -38,16 +39,19 @@ import { ToastModule } from 'primeng/toast';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TagModule } from 'primeng/tag';
 import { BadgeModule } from 'primeng/badge';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @Component({
   selector: 'wbp-image-upload',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     CardModule,
     ToolbarModule,
     ButtonModule,
+    SelectButtonModule,
     InputTextModule,
     ToastModule,
     FileUploadModule,
@@ -55,7 +59,7 @@ import { BadgeModule } from 'primeng/badge';
     BadgeModule,
   ],
 
-  providers: [MessageService, FilterService, TagService],
+  providers: [MessageService, FilterService],
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.scss'],
 })
@@ -90,6 +94,8 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   tagsLookup: { [key: string]: ITag } = {};
   filteredTags: any[] = [];
   selectedTags: any[] = [];
+
+  sortTagsBy: string = 'count';
 
   badgeValue: any = {};
   badgeSeverity: any = {};
@@ -128,12 +134,97 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     this.checkEditMode();
   }
 
+  checkEditMode() {
+    if (this.id !== null && this.id !== undefined) {
+      this.editmode = true;
+    } else {
+      this.editmode = false;
+    }
+  }
+
+  private _getTags() {
+    this.tagService.getAllTags().subscribe((tags: Array<ITag>) => {
+      tags.forEach((tag: ITag) => {
+        this.tagsLookup[tag['tag']] = tag;
+        this.filteredTags.push(tag);
+      });
+
+      // Set the badge settings
+      this._setBadgeSettings();
+
+      this._sortTags();
+    });
+  }
+
+  tagSortSelected(sortBy: string) {
+    this.sortTagsBy = sortBy;
+    this._sortTags();
+  }
+
+  selectTag(selectedTag: string) {
+    // Remove Selected Tag from the filteredTags
+    this.filteredTags = this.filteredTags.filter(
+      (tag: ITag) => tag.tag !== selectedTag // filter out the selected tag
+    );
+
+    // Update the count of the selected tag
+    this.tagsLookup[selectedTag].count += 1;
+    this._setBadgeSettings();
+
+    // Add Selected Tag to the selectedTags
+    this.selectedTags.push(this.tagsLookup[selectedTag]);
+
+    // Sort the filtered and selected tags
+    this._sortTags();
+
+    // Add the selected tags to the form
+    this._addTagToForm();
+  }
+
+  deSelectTag(selectedTag: string) {
+    const currentlySelectedTags = [...this.selectedTags];
+
+    // Remove Selected Tag from the selectedTags
+    this.selectedTags = currentlySelectedTags.filter(
+      (tag: ITag) => tag.tag !== selectedTag // filter out the selected tag
+    );
+
+    // Update the count of the deselected tag
+    this.tagsLookup[selectedTag].count > 0
+      ? (this.tagsLookup[selectedTag].count -= 1)
+      : (this.tagsLookup[selectedTag].count = 0);
+    this._setBadgeSettings();
+
+    // Add Selected Tag back into the filteredTags
+    this.filteredTags.push(this.tagsLookup[selectedTag]);
+
+    // Order the filtered and selected tags
+    this._sortTags();
+  }
+
+  private _sortTags() {
+    if (this.sortTagsBy === 'tag') {
+      this.selectedTags = orderBy(this.selectedTags, ['tag'], ['asc']);
+      this.filteredTags = orderBy(this.filteredTags, ['tag'], ['asc']);
+    } else {
+      this.selectedTags = orderBy(
+        this.selectedTags,
+        ['count', 'tag'],
+        ['desc', 'asc']
+      );
+      this.filteredTags = orderBy(
+        this.filteredTags,
+        ['count', 'tag'],
+        ['desc', 'asc']
+      );
+    }
+  }
+
   private _setBadgeSettings() {
     for (let tag in this.tagsLookup) {
       if (
-        this.tagsLookup[tag] !== undefined ||
-        this.tagsLookup[tag]['count'] !== undefined ||
-        null
+        this.tagsLookup[tag] !== undefined &&
+        (this.tagsLookup[tag]['count'] !== undefined || null)
       ) {
         const tagCount = this.tagsLookup[tag]['count'] || 0;
         this.badgeValue[this.tagsLookup[tag].tag] = this.tagsLookup[tag].count;
@@ -150,127 +241,48 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkEditMode() {
-    if (this.id !== null && this.id !== undefined) {
-      this.editmode = true;
-    } else {
-      this.editmode = false;
-    }
-  }
-
-  private _getTags() {
-    this.tagService.getAllTags().subscribe((tags: Array<ITag>) => {
-      tags.forEach((tag: ITag) => {
-        const resultTag = {
-          tag: tag.tag,
-          _id: tag._id,
-          id: tag.id,
-          description: tag.description,
-          count: tag.count,
-        };
-        this.tagsLookup[tag['tag']] = resultTag;
-
-        this.filteredTags.push(resultTag);
-      });
-
-      this._setBadgeSettings();
-    });
-  }
-
-  addNewTag(event: any) {
-    const value = event.value;
-    console.log('addNewTag - value', value);
-    this.tagService.addTag(value).subscribe((result: any) => {
-      const resultTag = {
-        tag: value,
-        _id: result._id,
-        id: result.id,
-        count: 0,
-      };
-
-      console.log('addNewTag - resultTag', resultTag);
-      this.tagsLookup[value] = resultTag;
-      console.log('addNewTag - tagsLookup', this.tagsLookup);
-
-      this.selectTag(value);
-
-      this.newTag.nativeElement.value = '';
-      this._setBadgeSettings();
-    });
-  }
-
-  selectTag(selectedTag: string) {
-    console.log(
-      'selectTag - selectedTag',
-      selectedTag,
-      this.tagsLookup[selectedTag]
-    );
-    this.selectedTags.push(this.tagsLookup[selectedTag]);
-    console.log('selectTag - selectedTags', this.selectedTags);
-    this.selectedTags = orderBy(
-      this.selectedTags,
-      ['count', 'tag'],
-      ['desc', 'asc']
-    );
-
-    this._addTagsToForm();
-
-    this._addTagToForm();
-
-    this._setBadgeSettings();
-  }
-
-  deSelectTag(selectedTag: string) {
-    const tempTags = [...this.selectedTags];
-    const newSelectedTags: any[] = [];
-
-    tempTags.forEach((tag: ITag) => {
-      if (tag.tag !== selectedTag) {
-        newSelectedTags.push(tag);
-      }
-    });
-
-    this.selectedTags = orderBy(
-      newSelectedTags,
-      ['count', 'tag'],
-      ['desc', 'asc']
-    );
-
-    this._addTagsToForm();
-
-    this.filteredTags.push(this.tagsLookup[selectedTag]);
-    this.filteredTags = orderBy(
-      this.filteredTags,
-      ['count', 'tag'],
-      ['desc', 'asc']
-    );
-    this.filteredTags = orderBy(
-      this.filteredTags,
-      ['count', 'tag'],
-      ['desc', 'asc']
-    );
-
-    this._setBadgeSettings();
-  }
-
   private _addTagToForm() {
-    let tags: string[] = [];
-    this.selectedTags.forEach((tag: ITag) => {
-      tags.push(tag.tag);
-    });
-
     const tagIdList = this.selectedTags.map((tag: ITag) => tag._id).join(',');
 
     this.imageForm.patchValue({ tags: tagIdList });
   }
 
-  private _addTagsToForm() {
-    let tagIdsList: string[] = [];
-    this.selectedTags.forEach((tag: ITag) => {
-      tagIdsList.push(tag._id);
-    });
+  addNewTag(event: any) {
+    const value = event.value;
+    this.tagService.addTag(value).subscribe((tag: any) => {
+      console.log('tag: ', tag);
+      if (tag.status !== '200') {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Tag Exists',
+          detail: `Tag ${value} exists already!`,
+        });
+      } else {
+        const resultTag = {
+          tag: value,
+          _id: tag._id,
+          id: tag.id,
+          count: 0,
+        };
 
-    this.imageForm.patchValue({ tags: tagIdsList.join(',') });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Tag added successfully!',
+        });
+
+        this.tagsLookup[value] = resultTag;
+
+        // Add tag to selected tags
+        this.selectTag(value);
+
+        // Order the filtered and selected tags
+        this._sortTags();
+      }
+
+      // Clear new tag field
+      this.newTag.nativeElement.value = '';
+    });
   }
 
   onImagePicked(event: Event) {
@@ -349,10 +361,15 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log('this.imageForm -  submit', this.imageForm.value);
-    if (this.imageForm.invalid) return;
+    if (this.imageForm.invalid) {
+      this.isSubmitted = false;
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Form Submission Error!',
+      });
+    }
 
-    //this.isLoading = true;
     let skippedFields: any[] = [];
     let imageFormData: FormData = new FormData();
     for (const field in this.imageForm.controls) {
@@ -361,12 +378,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
         !skippedFields.includes(field)
       ) {
         imageFormData.append(field, this.imageForm.get(field)?.value);
-        console.log('imageFormData', imageFormData);
       }
-    }
-
-    if (this.selectedTags.length > 0) {
-      this._addTagsToForm();
     }
 
     if (this.editmode === false) {
@@ -378,6 +390,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     this.imageForm.reset();
     this.imagePreview = null;
     this.selectedTags = [];
+    this._getTags();
   }
 
   onCancel() {

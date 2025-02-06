@@ -28,6 +28,7 @@ export class ImageService {
   }
 
   createImage(imageData: FormData): Observable<FormData> {
+    console.log('imageData: ', imageData);
     return this.http.post<FormData>(
       `${this.imageAPIUrl}/upload-image`,
       imageData

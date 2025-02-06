@@ -22,7 +22,11 @@ router.get(`/get-tags/:type`, async (req, res) => {
 
 router.post(`/add-tag`, (req, res) => {
   console.log(req.body);
-  Tag.addTag(req, res);
+  try {
+    Tag.addTag(req, res);
+  } catch (e) {
+    console.error(`error in router catch for addTags: ${e}`);
+  }
 });
 
 module.exports = router;

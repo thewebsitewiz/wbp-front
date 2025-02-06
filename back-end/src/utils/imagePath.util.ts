@@ -10,7 +10,7 @@ module.exports.getNewDirPath = () => {
   const srcPath = currentScriptPath.replace(/src\/utils/, "");
   const imgPath = `${srcPath}public/images`;
   const currentImgPath = _getCurrentDirPath(imgPath);
-  console.log("currentImgPath: ", currentImgPath);
+  console.log("old currentImgPath: ", currentImgPath);
   return currentImgPath;
 };
 

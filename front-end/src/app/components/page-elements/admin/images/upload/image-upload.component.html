@@ -18,7 +18,7 @@
     </div>
     <div class="grid">
       <div class="col-12">
-        <form [formGroup]="imageForm" (submit)="onSubmit()">
+        <form [formGroup]="imageForm">
           <!-- image:  -->
           <div class="grid field-border mt-4">
             <div class="p-field col-12">
@@ -67,13 +67,20 @@
                   @if (selectedTags && selectedTags.length > 0) {
                   <button *ngFor="let tag of selectedTags" class="pill selected-pill" role="button"
                     (click)="deSelectTag(tag['tag'])"><i class="pi pi-times mr-2"></i>
-                    {{tag['tag']}} <p-badge [value]="badgeValue[tag.tag]" [severity]="badgeSeverity[tag.tag]"
+                    {{tag['tag']}}<p-badge [value]="badgeValue[tag.tag]" [severity]="badgeSeverity[tag.tag]"
                       severity="success"></p-badge></button>
                   }
                 </div>
               </div>
 
               <div class="grid mb-4">
+                <div class="tagSortControls">
+                  <div>sort tags by:</div>
+                  <div [ngClass]="['tagSortControl',sortTagsBy === 'count' ? 'sortSelected': 'sortUnSelected']"
+                    (click)="tagSortSelected('count')">count</div>|<div
+                    [ngClass]="['tagSortControl',sortTagsBy === 'tag' ? 'sortSelected': 'sortUnSelected']"
+                    (click)="tagSortSelected('tag')">tag</div>
+                </div>
                 <div class="p-field col-12 md:col-5 field-border tag-field" id="tag-list">
                   @if (filteredTags && filteredTags.length > 0) {
                   <button *ngFor="let tag of filteredTags" class="pill" role="button" (click)="selectTag(tag['tag'])">

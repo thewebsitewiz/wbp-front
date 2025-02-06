@@ -1,6 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { catchError, Observable, of, retry, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ITag } from '../interfaces/tag.interface';
 
@@ -16,7 +20,6 @@ export class TagService {
 
   getAllTags(): Observable<ITag[]> {
     const url = `${this.tagsAPIUrl}/get-tags`;
-    console.log('url: ', url);
     return this.http.get(url) as Observable<ITag[]>;
   }
 
@@ -36,6 +39,28 @@ export class TagService {
   }
 
   addTag(tag: string): Observable<any> {
-    return this.http.post(`${this.tagsAPIUrl}/add-tag`, { tag });
+    return this.http
+      .post(`${this.tagsAPIUrl}/add-tag`, { tag })
+      .pipe(retry(3), catchError(this.handleError));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage;
+    if (error.status === 304) {
+      console.warn('Request to server was not modified: ', error.url);
+      // Here you should emit no value or the old cached value.
+      return of({});
+    } else if (error.error instanceof ErrorEvent) {
+      // Client-side or network error
+      console.error('An error occurred:', error);
+    } else {
+      // Backend returned an unsuccessful response code
+      console.error(
+        `Backend returned code ${error.status}, body was: ${error}`
+      );
+    }
+    // Return an observable with a user-facing error message
+    const err = new Error(`Unknown error occurred: ${JSON.stringify(error)}`);
+    return throwError(() => err);
   }
 }

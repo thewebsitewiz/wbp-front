@@ -4,11 +4,7 @@ const mongoose = require("mongoose");
 
 const imagesSchema = mongoose.Schema(
   {
-    fileName: {
-      type: String,
-      required: true,
-    },
-    filePath: {
+    src: {
       type: String,
       required: true,
     },
