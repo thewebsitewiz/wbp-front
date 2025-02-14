@@ -2,17 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
+const { dbConnect, gracefulExit } = require("./config/dbConnect");
 const ENV = process.env.WBP_ENV;
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
-const dbConnect = require("./config/dbConnect");
-const { Tags } = require("./models/tag.model");
 // const authJwt = require("./helpers/jwt");
 // const errorHandler = require("./helpers/error-handler");
-dbConnect();
+const conn = dbConnect();
 let domain = "http://localhost:4200";
 let hostname = "localhost";
 if (ENV === "PROD") {
@@ -40,6 +39,7 @@ app.use(cors({
 const weatherRouter = require("./routes/weather.routes");
 const imageRouter = require("./routes/image.routes");
 const tagsRouter = require("./routes/tag.routes");
+const vendorsRouter = require("./routes/vendor.routes");
 const api = process.env.API_URL;
 app.get("/", function (req, res) {
     res.json({
@@ -49,6 +49,7 @@ app.get("/", function (req, res) {
 app.use("/api/weather", weatherRouter);
 app.use("/api/images", imageRouter);
 app.use("/api/tags", tagsRouter);
+app.use("/api/vendors", vendorsRouter);
 //Server
 const port = 3000;
 app.listen(3000, hostname, () => {

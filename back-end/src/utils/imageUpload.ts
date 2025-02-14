@@ -1,3 +1,5 @@
+import { get } from "http";
+
 const path = require("path");
 const fs = require("fs");
 
@@ -18,6 +20,7 @@ const ObjectIds = {
 main();
 
 function main() {
+  console.log("main");
   const imgFolders = fs.readdirSync(imageSrcDir);
 
   imgFolders.forEach((folder) => {
@@ -28,8 +31,11 @@ function main() {
 
       imgFiles.forEach((imgFile) => {
         const imgPath = path.join(folderPath, imgFile);
-        console.log(imgPath);
-        const img = new Image({});
+        const imgSrc = getNewDirPath();
+        console.log(imgSrc, imgFile);
+        const img = new Image({
+          tags: [ObjectIds[folder]],
+        });
       });
     }
   });
