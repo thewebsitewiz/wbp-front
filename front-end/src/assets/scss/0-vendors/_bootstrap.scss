@@ -56,11 +56,23 @@ $headings-font-weight: bold;
   --bs-navbar-color: none !important
 }
 
+.p-button-success {
+  background-color: $leaves !important;
+}
+
 :root {
   --bs-body-font-size: 62.5%;
 }
 
+// top right bottom left
+.p-tag {
+  padding-top: 1px !important;
+  padding-right: 2px !important;
+  padding-bottom: 1px !important;
+  padding-left: 2px !important;
+}
 
+/*
 .navbar {
 
   & .nav-item {
@@ -77,3 +89,4 @@ $headings-font-weight: bold;
     font-size: 1.8rem !important;
   }
 }
+*/

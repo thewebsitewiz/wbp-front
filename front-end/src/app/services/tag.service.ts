@@ -13,20 +13,18 @@ import { ITag } from '../interfaces/tag.interface';
 })
 export class TagService {
   private baseAPIUrl: string = environment.baseAPIUrl;
-  private tagsAPI = `${environment.API}/tags`;
-  private tagsAPIUrl = `${this.baseAPIUrl}/${this.tagsAPI}`;
 
   constructor(private http: HttpClient) {}
 
   getAllTags(): Observable<ITag[]> {
-    const url = `${this.tagsAPIUrl}/get-tags`;
+    const url = `${this.baseAPIUrl}/get-tags`;
     return this.http.get(url) as Observable<ITag[]>;
   }
 
   getTagsByType(
     options: { type: string } = { type: 'all' }
   ): Observable<ITag[]> {
-    const url = `${this.tagsAPIUrl}/get-tags/${
+    const url = `${this.baseAPIUrl}/get-tags/${
       options.type === 'all' ? '' : `${options.type}`
     }`;
     return this.http.get(url) as Observable<ITag[]>;
@@ -34,13 +32,13 @@ export class TagService {
 
   getTag(id: string): Observable<ITag> {
     return this.http.get(
-      `${this.tagsAPIUrl}/get-tag/:${id}`
+      `${this.baseAPIUrl}/get-tag/:${id}`
     ) as Observable<ITag>;
   }
 
   addTag(tag: string): Observable<any> {
     return this.http
-      .post(`${this.tagsAPIUrl}/add-tag`, { tag })
+      .post(`${this.baseAPIUrl}/add-tag`, { tag })
       .pipe(retry(3), catchError(this.handleError));
   }
 

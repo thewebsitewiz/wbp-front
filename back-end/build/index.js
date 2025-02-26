@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 const { dbConnect, gracefulExit } = require("./config/dbConnect");
+// Handle process termination signals
+process.on("SIGINT", gracefulExit); // Ctrl+C
+process.on("SIGTERM", gracefulExit); // Termination signal (e.g., from Docker)
 const ENV = process.env.WBP_ENV;
 const express = require("express");
 const app = express();

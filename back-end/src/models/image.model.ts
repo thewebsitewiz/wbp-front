@@ -32,6 +32,11 @@ const imagesSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+      required: true,
+    },
     dateTaken: {
       type: Date,
       required: false,

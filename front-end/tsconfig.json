@@ -25,6 +25,9 @@
       "dom"
     ],
     "paths": {
+      "@anchor": [
+        "src/app/anchor.ts"
+      ],
       "@app/*": [
         "src/app/*"
       ],

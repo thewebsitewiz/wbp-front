@@ -129,7 +129,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
     this._getTags();
 
-    this.fileInfos = this.imageService.getImages();
+    this.fileInfos = this.imageService.getAllImages();
 
     this.checkEditMode();
   }

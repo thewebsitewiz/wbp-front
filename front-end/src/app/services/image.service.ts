@@ -18,8 +18,6 @@ interface Environment {
 })
 export class ImageService {
   private baseAPIUrl = (env as Environment).baseAPIUrl;
-  private imagesAPI = '/api/images';
-  private imageAPIUrl = `${this.baseAPIUrl}${this.imagesAPI}`;
 
   // private _headers = new HttpHeaders();
 
@@ -30,36 +28,44 @@ export class ImageService {
   createImage(imageData: FormData): Observable<FormData> {
     console.log('imageData: ', imageData);
     return this.http.post<FormData>(
-      `${this.imageAPIUrl}/upload-image`,
+      `${this.baseAPIUrl}/images/upload-image`,
       imageData
     );
   }
 
   updateImage(imageUpdateData: FormData, id: string) {
     return this.http.put(
-      `${this.imageAPIUrl}/update-image/${id}`,
+      `${this.baseAPIUrl}/images/update-image/${id}`,
       imageUpdateData
     );
   }
 
-  getImages(): Observable<any> {
-    return this.http.get(`${this.imageAPIUrl}/get-images`);
+  getAllImages(): Observable<any> {
+    return this.http.get(`${this.baseAPIUrl}/images/get-all-images`);
+  }
+
+  getImagesWithTags(tagList: string[]): Observable<any> {
+    return this.http.get(`${this.baseAPIUrl}/images/get-images-with-tags`, {
+      params: { tags: tagList.join(',') },
+    });
   }
 
   getImage(imageId: number): Observable<IImage> {
-    return this.http.get<IImage>(`${this.imageAPIUrl}/get-image/${imageId}`);
+    return this.http.get<IImage>(
+      `${this.baseAPIUrl}/images/get-image/${imageId}`
+    );
   }
 
   OLDupdateImage(imageData: FormData, imageId: number): Observable<IImage> {
     return this.http.put<IImage>(
-      `${this.imageAPIUrl}/update-image/${imageId}`,
+      `${this.baseAPIUrl}/images/update-image/${imageId}`,
       imageData
     );
   }
 
   deleteImage(imageId: string): Observable<IImage> {
     return this.http.delete<IImage>(
-      `${this.imageAPIUrl}/delete-image/${imageId}`
+      `${this.baseAPIUrl}/images/delete-image/${imageId}`
     );
   }
 }

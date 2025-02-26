@@ -91,3 +91,47 @@ const _imageUpload = async (req, res) => {
 };
 
 module.exports.imageUpload = _imageUpload;
+
+const _getAllImages = async (req, res) => {
+  const tagList = await Tag.find();
+  const tagLookup = {};
+  tagList.forEach((tag) => {
+    tagLookup[tag._id.toString()] = tag;
+  });
+
+  const imageList = await Image.find();
+
+  const newImageList = [];
+  let count = 0;
+  imageList.forEach((image) => {
+    const imageObj = image.toObject();
+    imageObj["tagInfo"] = [];
+    image.tags.forEach((tag) => {
+      imageObj["tagInfo"].push(tagLookup[tag._id.toString()]);
+    });
+    newImageList.push(imageObj);
+
+    count++;
+  });
+
+  if (!newImageList) {
+    res.status(500).json({ success: false });
+  }
+
+  res.status(200).json({ success: true, data: newImageList });
+};
+
+module.exports.getAllImages = _getAllImages;
+/* 
+const _getImagesWithTags = async (req, res) => {
+  const imageList = await Image.find().populate("tags");
+
+  if (!imageList) {
+    res.status(500).json({ success: false });
+  }
+  res.status(200).json({ success: true, data: imageList });
+  // res.send(imageList);
+};
+
+module.exports.getAllImages = _getAllImages;
+*/

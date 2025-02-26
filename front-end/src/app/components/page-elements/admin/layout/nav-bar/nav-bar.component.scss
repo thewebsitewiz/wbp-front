@@ -1,0 +1,29 @@
+.navbar {
+
+
+  & .nav-link {
+    font-size: 1.3rem !important;
+  }
+
+  & .navbar-brand {
+    & img {
+      height: 30px;
+      width: 30px;
+    }
+  }
+}
+
+.navbar-expand-md {
+  background-color: #f8f9fa;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+ul.navbar-nav {
+  margin-bottom: 0 !important;
+}
+
+
+ul.dropdown-menu>li>a.dropdown-item {
+  font-size: 1.2rem !important;
+}

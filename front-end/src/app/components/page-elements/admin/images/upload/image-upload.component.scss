@@ -1,4 +1,3 @@
-@import '../../../../../../assets/scss/1-abstracts/variables';
 
 :host ::ng-deep {
   & .p-autocomplete {
@@ -54,12 +53,7 @@
     .image-preview img {
       height: 100%;
     }
-
-
-
   }
-
-
 }
 
 .tagSortControls {

@@ -1,0 +1,23 @@
+@import '../../../../../../assets/scss/1-abstracts/variables';
+
+.table-button {
+  margin-right: 8px;
+}
+
+.pi-pencil {
+  color: $leaves;
+}
+
+.pi-trash {
+  color: $red;
+}
+
+.pi-check {
+  color: $leaves;
+  font-size: 2rem;
+}
+
+.pi-times {
+  color: $leaves;
+  font-size: 2rem;
+}

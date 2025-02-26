@@ -54,12 +54,10 @@ export class CarouselService {
       );
     }
 
-    console.log('c: ', this.c, this.prefix, this.slides[this.c].src);
     if (
       this.slides[this.c]?.src !== undefined &&
       this.slides[this.c]?.src !== null
     ) {
-      console.log('c: if');
       this.ref.nativeElement.style.setProperty(
         `--${this.prefix}-curr`,
         `url(assets/images/${this.slides[this.c].src})`

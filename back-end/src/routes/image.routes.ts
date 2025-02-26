@@ -5,7 +5,10 @@ const express = require("express");
 const router = express.Router();
 
 const { uploadPhoto } = require("../middleware/uploadImages");
-const { imageUpload } = require("../controllers/image.controller");
+const {
+  imageUpload,
+  getAllImages,
+} = require("../controllers/image.controller");
 
 router.post(`/upload-image`, uploadPhoto, async (req, res, next) => {
   try {
@@ -15,7 +18,13 @@ router.post(`/upload-image`, uploadPhoto, async (req, res, next) => {
   }
 });
 
-router.get(`/get-images`, async (req, res) => {});
+router.get(`/get-all-images`, async (req, res, next) => {
+  try {
+    await getAllImages(req, res, next);
+  } catch (error) {
+    console.log("getAllImages route error: ", error);
+  }
+});
 
 router.get(`/get-image`, async (req, res) => {});
 
