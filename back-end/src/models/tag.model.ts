@@ -11,6 +11,10 @@ const tagSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    tagColor: {
+      type: String, // '255, 0, 0'
+      required: false,
+    },
     count: {
       type: Number,
       required: false,

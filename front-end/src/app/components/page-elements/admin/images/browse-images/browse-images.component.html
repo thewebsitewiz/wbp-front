@@ -1,23 +1,33 @@
 <p-toast></p-toast>
-<div class="admin-page">
-  <p-card class="main-card" header="Products" subheader="List of all products">
-    <div class="grid">
-      <div class="col-12">
-        <p-toolbar>
+
+<p-card class="main-card" header="Images" subheader="List of all images">
+  <div class="grid">
+    <div class="col-12">
+      <p-toolbar>
+        <ng-template pTemplate="start">
           <div class="p-toolbar-group-left">
             <p-button styleClass="p-button-success" label="New" icon="pi pi-plus" routerLink="form"></p-button>
           </div>
-        </p-toolbar>
-      </div>
+        </ng-template>
+        <ng-template pTemplate="end">
+          <!-- List of tags -->
+          <p-tag styleClass="p-mr-2" [style]="{'background-color': getTagColor('All')}" [value]="'All'" [rounded]="true"
+            (click)="toggleTag('All')"></p-tag>
+          @for (tag of tagList; track tag) {
+          <p-tag [style]="{'background-color': getTagColor(tag)}" styleClass="p-mr-2" [value]="tag" [rounded]="true"
+            (click)="toggleTag(tag)"></p-tag>
+          }
+        </ng-template>
+      </p-toolbar>
     </div>
-    <div class="grid">
-      <div class="col-12">
-        <p-table #dt [value]="images" [paginator]="true" [rowsPerPageOptions]="[10, 20, 30,{ showAll: 'All' }]"
-          [totalRecords]="totalRecords" [(first)]="first" [rows]="10" [rowHover]="true"
-          styleClass="p-datatable-gridlines"
-          currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-          [globalFilterFields]="['title','isActive']" paginatorPosition="bottom">
-          <!-- <ng-template pTemplate="caption">
+  </div>
+  <div class="grid">
+    <div class="col-12">
+      <p-table #dt [value]="imageList" [paginator]="true" [rowsPerPageOptions]="[10, 20, 30,{ showAll: 'All' }]"
+        [totalRecords]="totalRecords" [(first)]="first" [rows]="10" [rowHover]="true" styleClass="p-datatable-gridlines"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['title','isActive']" paginatorPosition="bottom">
+        <!-- <ng-template pTemplate="caption">
             <div class="flex">
               <span class="p-input-icon-left p-ml-auto">
                 <i class="pi pi-search"></i>
@@ -26,51 +36,53 @@
               </span>
             </div>
           </ng-template> -->
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Image</th>
-              <th [pSortableColumn]="'title'">
-                <div class="p-d-flex p-jc-between p-ai-center">
-                  Title <p-sortIcon field="title"></p-sortIcon>
-                  <p-columnFilter type="text" field="title" display="menu"></p-columnFilter>
-                </div>
-              </th>
-              <th>Tags</th>
-              <th [pSortableColumn]="'isActive'">
-                <div class="p-d-flex p-jc-between p-ai-center">
-                  Active<p-sortIcon field="category.nam"></p-sortIcon>
-                  <p-columnFilter type="text" field="isActive" display="menu"></p-columnFilter>
-                </div>
-              </th>
-              <th>Actions</th>
-            </tr>
-          </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Image</th>
+            <th [pSortableColumn]="'title'">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Title <p-sortIcon field="title"></p-sortIcon>
+                <p-columnFilter type="text" field="title" display="menu"></p-columnFilter>
+              </div>
+            </th>
+            <th>Tags</th>
+            <th [pSortableColumn]="'isActive'">
+              <div class="p-d-flex p-jc-between p-ai-center">
+                Active<p-sortIcon field="category.nam"></p-sortIcon>
+                <p-columnFilter type="text" field="isActive" display="menu"></p-columnFilter>
+              </div>
+            </th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
 
-          <ng-template pTemplate="body" let-image>
-            <tr>
-              <!-- Image -->
-              <td><img [src]="image.src" style="max-width: 75px" alt="" /></td>
-              <!-- Title -->
-              <td class="product-name">{{ image.title }}</td>
-              <!-- Tags -->
-              <td>
-                <p-tag *ngFor="let tag of image.tagList" styleClass="p-mr-2" [value]="tag" [rounded]="true"></p-tag>
-                <!-- Active -->
-              <td>
-                @if (image.isActive) {
-                <i class="pi pi-check"></i>
-                }
-                @else {
-                <i class="pi pi-times"></i>
-                }
-              </td>
-              <!-- Actions -->
-              <td>
-                <i class="pi pi-pencil table-button" (click)="updateImage(image._id)"></i>
-                <i class="pi pi-trash" (click)="deleteImage(image.id)"></i>
-
-              </td>
-              <!--
+        <ng-template pTemplate="body" let-image>
+          <tr>
+            <!-- Image -->
+            <td><img [src]="image.src" style="max-width: 75px" alt="" /></td>
+            <!-- Title -->
+            <td class="product-name">{{ image.title }}</td>
+            <!-- Tags -->
+            <td>
+              @for (tag of image.tagInfo; track tag) {
+              <p-tag styleClass="p-mr-2" [value]="tag.tag" (click)="toggleTag(tag.tag)" [rounded]="true"></p-tag>
+              }
+            </td>
+            <!-- Active -->
+            <td>
+              @if (image.isActive) {
+              <i class="pi pi-check" (click)="setStatus(image._id)"></i>
+              }
+              @else {
+              <i class="pi pi-times" (click)="setStatus(image._id)"></i>
+              }
+            </td>
+            <!-- Actions -->
+            <td>
+              <i class="pi pi-pencil table-button" (click)="editImage(image._id)"></i>
+              <i class="pi pi-trash" (click)="deleteImage(image.id)"></i>
+            </td>
+            <!--
               <td><img [src]="image.src" style="max-width: 75px" alt="" /></td>
               <td class="product-name">{{ image.title }}</td>
               <td>
@@ -87,12 +99,12 @@
 
               </td>
               -->
-            </tr>
-          </ng-template>
-          <ng-template let-item pTemplate="paginatordropdownitem">
-            {{item.value}} - per page
-          </ng-template>
-          <!--
+          </tr>
+        </ng-template>
+        <ng-template let-item pTemplate="paginatordropdownitem">
+          {{item.value}} - per page
+        </ng-template>
+        <!--
           <ng-template pTemplate="paginatorleft" let-state>
             {{state.first}}
             <button type="button" pButton icon="pi-refresh"></button>
@@ -105,10 +117,10 @@
           </ng-template> -->
 
 
-        </p-table>
-      </div>
+      </p-table>
     </div>
-  </p-card>
-</div>
+  </div>
+</p-card>
+
 <p-confirmDialog [style]="{ width: '50vw' }" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text">
 </p-confirmDialog>

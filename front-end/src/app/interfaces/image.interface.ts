@@ -1,21 +1,12 @@
-import { IImageTags } from './tag.interface';
+import { ITags } from './tag.interface';
 
 export interface IImage {
-  [x: string]:
-    | string
-    | number
-    | boolean
-    | Date
-    | IImageTags
-    | any[]
-    | undefined;
+  [x: string]: string | number | boolean | Date | ITags | any[] | undefined;
   title: string;
   description?: string | undefined;
   caption?: string;
   comments?: string;
-  tags: IImageTags | undefined;
-  tagInfo?: any[];
-  tagList?: any[];
+  tags: ITags | undefined;
   src: string;
   fileSize?: number;
   mimeType?: string;

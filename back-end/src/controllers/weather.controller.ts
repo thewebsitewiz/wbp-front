@@ -171,10 +171,7 @@ const _getSunriseSunset = async (req, res) => {
 
   try {
     const response = await fetch(url);
-    const data = await response.json();
-
-    // console.log("Sunrise Sunset: ", data);
-    return data;
+    return await response.json();
   } catch (e) {
     console.error(`Error fetching JSON data: ${e}`);
   }
@@ -187,10 +184,7 @@ const _getAstro = async (req, res) => {
 
   try {
     const response = await fetch(url);
-    const data = await response.json();
-
-    // console.log("getAstro: ", data);
-    return data;
+    return await response.json();
   } catch (e) {
     console.error(`Error fetching JSON data: ${e}`);
   }
@@ -230,7 +224,7 @@ Waxing Crescent: 59403867651
 1st Quarter: 59666674651
 Waning Crescent: 5998374651
 New Moon: 5993902651
-31% Waxing Cresecnet: 5900002651
+31% Waxing Crescent: 5900002651
 30% Waxing Crescent: 6900115651
 3% Waning Crescent: 88379867651
 */
@@ -263,8 +257,3 @@ const _getEnvironmentalData = async (req, res) => {
 };
 
 module.exports.getEnvironmentalData = _getEnvironmentalData;
-function takeAll(
-  arg0: number
-): import("rxjs").OperatorFunction<[unknown, unknown, unknown], unknown> {
-  throw new Error("Function not implemented.");
-}

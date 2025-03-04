@@ -33,10 +33,20 @@ export class ImageService {
     );
   }
 
-  updateImage(imageUpdateData: FormData, id: string) {
+  editImage(imageUpdateData: FormData, id: string) {
     return this.http.put(
       `${this.baseAPIUrl}/images/update-image/${id}`,
       imageUpdateData
+    );
+  }
+
+  updateImage(
+    id: string,
+    updateValue: { [key: string]: string | boolean }
+  ): Observable<any> {
+    return this.http.patch(
+      `${this.baseAPIUrl}/images/update-image/${id}`,
+      updateValue
     );
   }
 

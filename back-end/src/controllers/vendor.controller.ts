@@ -46,9 +46,10 @@ const _getMetadata = async (file) => {
 };
 
 const _addVendor = async (req, res) => {
-  console.log("req.file: ", req.file);
-  const file = req.file;
-  if (!file) return res.status(400).send("No image in the request");
+  const {file} = req;
+  if (!file) {
+    return res.status(400).send("No image in the request");
+  }
 
   let tagIds = [];
   if (req.body.tags !== undefined || null) {
@@ -74,15 +75,16 @@ const _addVendor = async (req, res) => {
       status: req.body.status,
     });
 
-    console.log("vendor: ", vendor);
-
-    if (tagIds.length > 0) vendor.tags = tagIds;
+    if (tagIds.length > 0) {
+      vendor.tags = tagIds;
+    }
 
     const vendorResult = await vendor.save();
     console.log("vendorResult: ", vendorResult);
 
-    if (!vendorResult)
+    if (!vendorResult) {
       return res.status(400).send("The vendor cannot be created");
+    }
 
     return res.send(vendorResult);
   } catch (e) {

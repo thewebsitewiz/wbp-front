@@ -8,6 +8,7 @@ const { uploadPhoto } = require("../middleware/uploadImages");
 const {
   imageUpload,
   getAllImages,
+  updateImage,
 } = require("../controllers/image.controller");
 
 router.post(`/upload-image`, uploadPhoto, async (req, res, next) => {
@@ -29,5 +30,13 @@ router.get(`/get-all-images`, async (req, res, next) => {
 router.get(`/get-image`, async (req, res) => {});
 
 router.get(`/delete-images`, async (req, res) => {});
+
+router.patch(`/update-image/:id`, async (req, res) => {
+  try {
+    await updateImage(req, res);
+  } catch (error) {
+    console.log("updateImage route error: ", error);
+  }
+});
 
 module.exports = router;

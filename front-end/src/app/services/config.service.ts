@@ -11,34 +11,32 @@ import { ITag } from '../interfaces/tag.interface';
 @Injectable({
   providedIn: 'root',
 })
-export class TagService {
-  private baseAPIUrl: string = `${environment.baseAPIUrl}/tags`;
+export class ConfigService {
+  private baseAPIUrl: string = `${environment.baseAPIUrl}/config`;
 
   constructor(private http: HttpClient) {}
 
-  getAllTags(): Observable<ITag[]> {
-    const url = `${this.baseAPIUrl}/get-tags`;
+  getAllConfigs(): Observable<ITag[]> {
+    const url = `${this.baseAPIUrl}/get-all-configs`;
     return this.http.get(url) as Observable<ITag[]>;
   }
 
-  getTagsByType(
-    options: { type: string } = { type: 'all' }
-  ): Observable<ITag[]> {
-    const url = `${this.baseAPIUrl}/get-tags/${
+  getConfig(options: { type: string } = { type: 'all' }): Observable<ITag[]> {
+    const url = `${this.baseAPIUrl}/get-config/${
       options.type === 'all' ? '' : `${options.type}`
     }`;
     return this.http.get(url) as Observable<ITag[]>;
   }
 
-  getTag(id: string): Observable<ITag> {
-    return this.http.get(
-      `${this.baseAPIUrl}/get-tag/:${id}`
-    ) as Observable<ITag>;
+  addConfig(config: string, value: string): Observable<any> {
+    return this.http
+      .post(`${this.baseAPIUrl}/add-config`, { config, value })
+      .pipe(retry(3), catchError(this.handleError));
   }
 
-  addTag(tag: string): Observable<any> {
+  updateConfig(config: string, value: string): Observable<any> {
     return this.http
-      .post(`${this.baseAPIUrl}/add-tag`, { tag })
+      .patch(`${this.baseAPIUrl}/add-config`, { config, value })
       .pipe(retry(3), catchError(this.handleError));
   }
 

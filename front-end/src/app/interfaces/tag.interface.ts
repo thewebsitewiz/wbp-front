@@ -5,6 +5,10 @@ export interface ITag {
   description?: string;
   id: string;
   tag: string;
+  color?: string;
+  status?: ITagStatusEnum;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ITags extends Array<ITag> {}
@@ -13,11 +17,8 @@ export interface TagsByType {
   [key: string]: { tag: ITag; count: number };
 }
 
-export interface IImageTag {
-  _id?: string;
-  description?: string;
-  id?: string;
-  tag: string;
+export enum ITagStatusEnum {
+  'ACTIVE' = 'Active',
+  'SELECTED' = 'Selected',
+  'INACTIVE' = 'Inactive',
 }
-
-export interface IImageTags extends Array<IImageTag> {}

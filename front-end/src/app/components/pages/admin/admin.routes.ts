@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ImageUploadComponent } from '../../page-elements/admin/images/upload/image-upload.component';
+import { ImageUploadComponent } from '../../page-elements/admin/images/image-upload/image-upload.component';
 import { VendorsComponent } from '../../page-elements/admin/vendors/vendors/vendors.component';
 import { DashboardComponent } from '../../page-elements/admin/dashboard/dashboard.component';
 import { BrowseImagesComponent } from '../../page-elements/admin/images/browse-images/browse-images.component';

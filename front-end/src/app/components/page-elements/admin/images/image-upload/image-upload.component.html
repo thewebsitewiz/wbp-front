@@ -65,10 +65,12 @@
               <div class="grid mb-4">
                 <div class="p-field col-12 md:col-5 field-border tag-field" id="selected-tags">
                   @if (selectedTags && selectedTags.length > 0) {
-                  <button *ngFor="let tag of selectedTags" class="pill selected-pill" role="button"
-                    (click)="deSelectTag(tag['tag'])"><i class="pi pi-times mr-2"></i>
+                  @for(tag of selectedTags; track tag) {
+                  <button class="pill selected-pill" role="button" (click)="deSelectTag(tag['tag'])"><i
+                      class="pi pi-times mr-2"></i>
                     {{tag['tag']}}<p-badge [value]="badgeValue[tag.tag]" [severity]="badgeSeverity[tag.tag]"
                       severity="success"></p-badge></button>
+                  }
                   }
                 </div>
               </div>
@@ -82,9 +84,11 @@
                 </div>
                 <div class="p-field col-12 md:col-5 field-border tag-field" id="tag-list">
                   @if (filteredTags && filteredTags.length > 0) {
-                  <button *ngFor="let tag of filteredTags" class="pill" role="button" (click)="selectTag(tag['tag'])">
-                    {{tag.tag}}<p-badge [value]="badgeValue[tag.tag]" [severity]="badgeSeverity[tag.tag]"
+                  @for(tag of filteredTags; track tag) {
+                  <button class="pill" role="button" (click)="selectTag(tag['tag'])">
+                    {{tag.tag}} <p-badge [value]="badgeValue[tag.tag]" [severity]="badgeSeverity[tag.tag]"
                       severity="success"></p-badge></button>
+                  }
                   }
                 </div>
               </div>

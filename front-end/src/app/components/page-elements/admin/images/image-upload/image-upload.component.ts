@@ -28,7 +28,7 @@ import { TagService } from '@app/services/tag.service';
 import { ImageService } from '@app/services/image.service';
 
 import { IImage } from '@interfaces/image.interface';
-import { ITag } from '@interfaces/tag.interface';
+import { ITag, ITagStatusEnum } from '@interfaces/tag.interface';
 
 import { MessageService, FilterService, PrimeNGConfig } from 'primeng/api';
 import { CardModule } from 'primeng/card';
@@ -145,7 +145,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   private _getTags() {
     this.tagService.getAllTags().subscribe((tags: Array<ITag>) => {
       tags.forEach((tag: ITag) => {
-        this.tagsLookup[tag['tag']] = tag;
+        this.tagsLookup[tag.tag] = tag;
         this.filteredTags.push(tag);
       });
 
@@ -163,12 +163,20 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   selectTag(selectedTag: string) {
     // Remove Selected Tag from the filteredTags
-    this.filteredTags = this.filteredTags.filter(
+    this.filteredTags.filter(
       (tag: ITag) => tag.tag !== selectedTag // filter out the selected tag
     );
 
     // Update the count of the selected tag
-    this.tagsLookup[selectedTag].count += 1;
+    if (
+      selectedTag &&
+      this.tagsLookup &&
+      this.tagsLookup[selectedTag] &&
+      this.tagsLookup[selectedTag].count
+    ) {
+      this.tagsLookup[selectedTag].count += 1;
+    }
+
     this._setBadgeSettings();
 
     // Add Selected Tag to the selectedTags
@@ -185,14 +193,22 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     const currentlySelectedTags = [...this.selectedTags];
 
     // Remove Selected Tag from the selectedTags
+    // filter out the selected tag
     this.selectedTags = currentlySelectedTags.filter(
-      (tag: ITag) => tag.tag !== selectedTag // filter out the selected tag
+      (tag: ITag) => tag.tag !== selectedTag
     );
 
-    // Update the count of the deselected tag
-    this.tagsLookup[selectedTag].count > 0
-      ? (this.tagsLookup[selectedTag].count -= 1)
-      : (this.tagsLookup[selectedTag].count = 0);
+    // Update the count of the selected tag
+    if (
+      selectedTag &&
+      this.tagsLookup &&
+      this.tagsLookup[selectedTag] &&
+      this.tagsLookup[selectedTag].count &&
+      this.tagsLookup[selectedTag].count > 0
+    ) {
+      this.tagsLookup[selectedTag].count -= 1;
+    }
+
     this._setBadgeSettings();
 
     // Add Selected Tag back into the filteredTags
@@ -248,21 +264,22 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
   }
 
   addNewTag(event: any) {
-    const value = event.value;
+    const { value } = event;
     this.tagService.addTag(value).subscribe((tag: any) => {
-      console.log('tag: ', tag);
-      if (tag.status !== '200') {
+      if (tag.status !== null && tag.status !== '200') {
         this.messageService.add({
           severity: 'error',
           summary: 'Tag Exists',
           detail: `Tag ${value} exists already!`,
         });
       } else {
-        const resultTag = {
+        const resultTag: ITag = {
           tag: value,
           _id: tag._id,
           id: tag.id,
           count: 0,
+          createdAt: tag.createdAt,
+          updatedAt: tag.updatedAt,
         };
 
         this.messageService.add({
@@ -356,8 +373,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     date = date.replaceAll(':', '-');
 
     let stringDate = `${date}T${time}`;
-    let dateObj = new Date(stringDate);
-    return dateObj;
+    return new Date(stringDate);
   }
 
   onSubmit() {
@@ -426,7 +442,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   private _updateImage(imageData: FormData, id: string) {
     this.imageService
-      .updateImage(imageData, id)
+      .editImage(imageData, id)
       .pipe(takeUntil(this.endsubs$))
       .subscribe(
         () => {

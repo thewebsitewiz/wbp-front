@@ -43,15 +43,16 @@ const _getMetadata = async (file) => {
 };
 
 const _imageUpload = async (req, res) => {
-  const file = req.file;
+  const { file } = req;
   console.log("image file: ", file);
 
-  if (!file) return res.status(400).send("No image in the request");
+  if (!file) {
+    return res.status(400).send("No image in the request");
+  }
 
   let tagIds = [];
   if (req.body.tags !== undefined || null) {
     tagIds = req.body.tags.split(",");
-    console.log("tagIds: ", tagIds);
   }
 
   const md = await _getMetadata(`${imageDirPath}/${newFileName}`);
@@ -102,7 +103,6 @@ const _getAllImages = async (req, res) => {
   const imageList = await Image.find();
 
   const newImageList = [];
-  let count = 0;
   imageList.forEach((image) => {
     const imageObj = image.toObject();
     imageObj["tagInfo"] = [];
@@ -110,8 +110,6 @@ const _getAllImages = async (req, res) => {
       imageObj["tagInfo"].push(tagLookup[tag._id.toString()]);
     });
     newImageList.push(imageObj);
-
-    count++;
   });
 
   if (!newImageList) {
@@ -122,6 +120,30 @@ const _getAllImages = async (req, res) => {
 };
 
 module.exports.getAllImages = _getAllImages;
+
+const _updateImage = async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+
+  console.log("id: ", id, updates);
+
+  try {
+    const updatedImage = await Image.findByIdAndUpdate(id, updates, {
+      new: true, // Return updated document
+      runValidators: true, // Ensure updates follow schema rules
+    });
+
+    if (!updatedImage) {
+      return res.status(404).json({ message: "Image not found" });
+    }
+
+    res.status(200).json({ success: true, data: updatedImage });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+module.exports.updateImage = _updateImage;
 /* 
 const _getImagesWithTags = async (req, res) => {
   const imageList = await Image.find().populate("tags");

@@ -178,6 +178,8 @@ export class VendorsComponent implements OnInit, OnDestroy {
           id: tag.id,
           description: tag.description,
           count: tag.count,
+          createdAt: tag.createdAt,
+          updatedAt: tag.updatedAt,
         };
         this.tagsLookup[tag['tag']] = resultTag;
 
@@ -189,7 +191,7 @@ export class VendorsComponent implements OnInit, OnDestroy {
   }
 
   addNewTag(event: any) {
-    const value = event.value;
+    const { value } = event.value;
     console.log('addNewTag - value', value);
     this.tagService.addTag(value).subscribe((result: any) => {
       const resultTag = {
@@ -197,6 +199,8 @@ export class VendorsComponent implements OnInit, OnDestroy {
         _id: result._id,
         id: result.id,
         count: 0,
+        createdAt: result.createdAt,
+        updatedAt: result.updatedAt,
       };
 
       this.tagsLookup[value] = resultTag;

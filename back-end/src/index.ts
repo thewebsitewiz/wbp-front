@@ -59,6 +59,7 @@ const weatherRouter = require("./routes/weather.routes");
 const imageRouter = require("./routes/image.routes");
 const tagsRouter = require("./routes/tag.routes");
 const vendorsRouter = require("./routes/vendor.routes");
+const configRouter = require("./routes/config.routes");
 
 const api = process.env.API_URL;
 
@@ -72,6 +73,7 @@ app.use("/api/weather", weatherRouter);
 app.use("/api/images", imageRouter);
 app.use("/api/tags", tagsRouter);
 app.use("/api/vendors", vendorsRouter);
+app.use("/api/config", configRouter);
 
 //Server
 const port = 3000;

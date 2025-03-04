@@ -26,8 +26,6 @@ const getTagsFromCollection = [
   },
 ];
 module.exports.addTag = async (req, res) => {
-  console.log("controller: ", req.body);
-
   try {
     await Tag.find({ tag: req.body.tag }).then((tags) => {
       if (tags.length > 0) {

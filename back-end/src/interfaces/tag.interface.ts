@@ -1,7 +1,8 @@
 export interface ITag {
   __v: number;
   _id: string;
-  count: number;
+  count?: number;
+  color?: string;
   description?: string;
   id: string;
   tag: string;
