@@ -221,9 +221,16 @@ export class BrowseImagesComponent implements OnInit {
       .pipe(takeUntil(this.endsubs$))
       .subscribe(
         () => {
-          this.imageList.find((image) => image['_id'] === imageId)?.[
+          /*  this.imageList.find((image) => image['_id'] === imageId)?.[
             'isActive'
-          ];
+          ]; */
+
+          const index = this.images.findIndex(
+            (image) => image['_id'] === imageId
+          );
+          this.images[index].isActive = !status;
+          this.imageList = [...this.images];
+          this.getFilteredImageList();
           const fields = Object.keys(updateValue).join(', ');
           let verb = 'has';
           if (fields.length > 1) {
