@@ -6,7 +6,8 @@ export interface IImage {
   description?: string | undefined;
   caption?: string;
   comments?: string;
-  tags: ITags | undefined;
+  tags: string[] | undefined;
+  tagInfo?: ITags | undefined;
   src: string;
   fileSize?: number;
   mimeType?: string;
@@ -15,4 +16,10 @@ export interface IImage {
   dateTaken?: Date;
   height?: number;
   width?: number;
+}
+
+export interface IImageResponse {
+  data: IImage[];
+  message: string;
+  success: boolean;
 }

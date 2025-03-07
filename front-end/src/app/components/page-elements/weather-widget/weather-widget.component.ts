@@ -27,7 +27,7 @@ import {
 @Component({
   selector: 'wbp-weather-widget',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, NgStyle, CommonModule],
+  imports: [NgClass, NgStyle, CommonModule],
   templateUrl: './weather-widget.component.html',
   styleUrl: './weather-widget.component.scss',
 })
@@ -169,15 +169,17 @@ export class WeatherWidgetComponent implements OnInit {
       ranges.visibility.push(hour.visibility / 5260);
       ranges.cloudCover.push(hour.cloud_cover);
       count++;
-      avgTemp = avgTemp + hour.temperature_2m;
-      avgPrecipitation = avgPrecipitation + hour.precipitation;
-      avgPrecipitationProbability =
-        avgPrecipitationProbability + hour.precipitation_probability;
-      avgWindSpeed = avgWindSpeed + hour.wind_speed_10m;
-      avgWindGusts = avgWindGusts + hour.wind_gusts_10m;
-      avgWindDirection = avgWindDirection + hour.wind_direction_10m;
-      avgHumidity = avgHumidity + hour.relative_humidity_2m;
-      avgVisibility = avgVisibility + hour.visibility;
+      /* `avgTemp += hour.temperature_2m` is adding the value of `hour.temperature_2m` to the `avgTemp`
+      variable. This operation is accumulating the temperature values of each hour in order to
+      calculate the average temperature later on in the code. */
+      avgTemp += hour.temperature_2m;
+      avgPrecipitation += hour.precipitation;
+      avgPrecipitationProbability += hour.precipitation_probability;
+      avgWindSpeed += hour.wind_speed_10m;
+      avgWindGusts += hour.wind_gusts_10m;
+      avgWindDirection += hour.wind_direction_10m;
+      avgHumidity += hour.relative_humidity_2m;
+      avgVisibility += hour.visibility;
       const date = new Date(hour.time);
       date.setUTCHours(date.getUTCHours() + 6);
       if (count % 3 === 0) {

@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../environments/environment';
-import { IImage } from '../interfaces/image.interface';
+import { IImage, IImageResponse } from '../interfaces/image.interface';
 
 interface Environment {
   baseAPIUrl: string;
@@ -60,8 +60,8 @@ export class ImageService {
     });
   }
 
-  getImage(imageId: number): Observable<IImage> {
-    return this.http.get<IImage>(
+  getImage(imageId: string): Observable<IImageResponse> {
+    return this.http.get<IImageResponse>(
       `${this.baseAPIUrl}/images/get-image/${imageId}`
     );
   }

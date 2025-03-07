@@ -22,7 +22,6 @@ import {
     NgClass,
     NgForOf,
     NgStyle,
-    NgIf,
     DialogModule,
     ButtonModule,
   ],

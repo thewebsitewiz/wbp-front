@@ -28,9 +28,10 @@ import { ToolbarModule } from 'primeng/toolbar';
 
 import { ImageService } from '../../../../../services/image.service';
 import { TagService } from '../../../../../services/tag.service';
+import { ITag, ITagStatusEnum } from '../../../../../interfaces/tag.interface';
+
 import { IImage } from '../../../../../interfaces/image.interface';
 
-import { ITag, ITagStatusEnum } from '../../../../../interfaces/tag.interface';
 @Component({
   selector: 'wbp-browse-images',
   standalone: true,
@@ -173,7 +174,6 @@ export class BrowseImagesComponent implements OnInit {
       backgroundColor = 'blue';
     }
 
-    console.log(tag, this.tagStatus[tag], backgroundColor);
     return backgroundColor;
   }
 
@@ -253,7 +253,11 @@ export class BrowseImagesComponent implements OnInit {
   }
 
   editImage(imageID: string) {
-    this.router.navigateByUrl(`admin/images/edit/${imageID}`);
+    console.log('Edit Image', imageID);
+    const route = `admin/images/edit/${imageID}`;
+
+    console.log('Edit Image route', route);
+    this.router.navigateByUrl(route);
   }
 
   deleteImage(imageID: string) {

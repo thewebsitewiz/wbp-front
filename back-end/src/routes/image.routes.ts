@@ -9,6 +9,7 @@ const {
   imageUpload,
   getAllImages,
   updateImage,
+  getImageById,
 } = require("../controllers/image.controller");
 
 router.post(`/upload-image`, uploadPhoto, async (req, res, next) => {
@@ -27,7 +28,13 @@ router.get(`/get-all-images`, async (req, res, next) => {
   }
 });
 
-router.get(`/get-image`, async (req, res) => {});
+router.get(`/get-image/:id`, async (req, res, next) => {
+  try {
+    await getImageById(req, res, next);
+  } catch (error) {
+    console.log("getImageById route error: ", error);
+  }
+});
 
 router.get(`/delete-images`, async (req, res) => {});
 

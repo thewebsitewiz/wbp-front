@@ -6,10 +6,12 @@
 
 .pi-pencil {
   color: $leaves;
+  cursor: pointer;
 }
 
 .pi-trash {
   color: $red;
+  cursor: pointer;
 }
 
 .pi-check {
@@ -20,7 +22,7 @@
 }
 
 .pi-times {
-  color: red;
+  color: $red;
   font-size: 2rem;
   font-weight: 500;
   cursor: pointer;

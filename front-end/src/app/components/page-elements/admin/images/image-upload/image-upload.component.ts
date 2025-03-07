@@ -1,3 +1,4 @@
+import { tagColor } from './../../../../../../assets/json/tagColor.data';
 import {
   Component,
   Inject,
@@ -11,6 +12,8 @@ import {
 import { CommonModule, Location } from '@angular/common';
 
 import { Observable, Subject, pipe, takeUntil, timer } from 'rxjs';
+
+import { environment } from '@env/environment';
 
 import { orderBy } from 'lodash';
 
@@ -27,7 +30,7 @@ import {
 import { TagService } from '@app/services/tag.service';
 import { ImageService } from '@app/services/image.service';
 
-import { IImage } from '@interfaces/image.interface';
+import { IImage, IImageResponse } from '@interfaces/image.interface';
 import { ITag, ITagStatusEnum } from '@interfaces/tag.interface';
 
 import { MessageService, FilterService, PrimeNGConfig } from 'primeng/api';
@@ -40,6 +43,7 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { TagModule } from 'primeng/tag';
 import { BadgeModule } from 'primeng/badge';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'wbp-image-upload',
@@ -78,8 +82,8 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     tags: new FormControl('', Validators.required),
     image: new FormControl<File | null>(null, Validators.required),
   });
-  @Input() id!: string;
 
+  imageButtonLabel: string = 'Choose Image';
   imagePreview!: string | ArrayBuffer | null | undefined;
   currentImageId!: number;
   endsubs$: Subject<any> = new Subject();
@@ -91,7 +95,9 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   files: any[] = [];
 
+  getTags$!: Observable<ITag[]>;
   tagsLookup: { [key: string]: ITag } = {};
+  tagsLookupById: { [key: string]: ITag } = {};
   filteredTags: any[] = [];
   selectedTags: any[] = [];
 
@@ -104,6 +110,11 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
 
   defaultDate!: Date;
 
+  imageId!: string | undefined;
+  image: IImage | null = null;
+
+  imageDisplay!: string | ArrayBuffer | null | undefined;
+
   @ViewChild('tagInput', { static: false })
   tagInput!: ElementRef<HTMLInputElement>;
   @ViewChild('newTag', { static: false }) newTag!: ElementRef<HTMLInputElement>;
@@ -113,6 +124,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     private location: Location,
     private messageService: MessageService,
     private filterService: FilterService,
+    private route: ActivatedRoute,
     @Inject(ImageService) private imageService: ImageService,
     @Inject(TagService) private tagService: TagService
   ) {}
@@ -127,25 +139,12 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       tooltip: 1100, // tooltip
     };
 
-    this._getTags();
+    this.getTags$ = this._getTags();
 
-    this.fileInfos = this.imageService.getAllImages();
-
-    this.checkEditMode();
-  }
-
-  checkEditMode() {
-    if (this.id !== null && this.id !== undefined) {
-      this.editmode = true;
-    } else {
-      this.editmode = false;
-    }
-  }
-
-  private _getTags() {
-    this.tagService.getAllTags().subscribe((tags: Array<ITag>) => {
+    this.getTags$.subscribe((tags: Array<ITag>) => {
       tags.forEach((tag: ITag) => {
         this.tagsLookup[tag.tag] = tag;
+        this.tagsLookupById[tag._id] = tag;
         this.filteredTags.push(tag);
       });
 
@@ -153,6 +152,71 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       this._setBadgeSettings();
 
       this._sortTags();
+
+      this.checkEditMode();
+    });
+
+    // this.fileInfos = this.imageService.getAllImages();
+  }
+
+  private _getTags() {
+    return this.tagService.getAllTags().pipe(takeUntil(this.endsubs$));
+  }
+
+  checkEditMode(): void {
+    this.route.params.pipe(takeUntil(this.endsubs$)).subscribe((params) => {
+      this.imageId = params['id'] || undefined;
+      if (!this.imageId) {
+        return;
+      }
+      this.editmode = true;
+      this.imageButtonLabel = 'Choose New Image';
+      this.imageService
+        .getImage(this.imageId)
+        .pipe(takeUntil(this.endsubs$))
+        .subscribe((image: IImageResponse) => {
+          console.log(`image! ${image.success} : ${image.data}`);
+          if (image.success !== true || image.data === undefined) {
+            this.image = null;
+            this.messageService.add({
+              summary: 'Error',
+              detail: `No image found! :  ${image.success} :  ${image.data} : ${this.imageId}`,
+            });
+            return;
+          }
+
+          this.image = null;
+          if (Array.isArray(image.data)) {
+            this.image = image.data[0];
+          } else {
+            this.image = image.data;
+          }
+          if (
+            this.image &&
+            this.image.tags !== undefined &&
+            this.image.tags.length > 0
+          ) {
+            console.log(' this.image', this.image);
+            this.image.tags.forEach((tagId: string) => {
+              const tag = this.tagsLookupById[tagId];
+              this.selectTag(tag.tag);
+            });
+          }
+
+          this.imageForm.patchValue({
+            title: this.image.title,
+            description: this.image.description,
+            caption: this.image.caption,
+            comments: this.image.comments,
+            dateTaken: this.image.dateTaken,
+            tags: this.selectedTags,
+            image: this.image.src,
+          });
+
+          this.imagePreview = `${environment.imageUrl}/${this.image.src}`;
+          console.log('this.imagePreview', this.imagePreview);
+          this.imageForm.controls['image'].updateValueAndValidity();
+        });
     });
   }
 
@@ -397,11 +461,19 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       }
     }
 
+    // sourcery skip: merge-else-if
     if (this.editmode === false) {
-      console.log('imageFormData - final', imageFormData);
       this._addImage(imageFormData);
     } else {
-      this._updateImage(imageFormData, this.id);
+      if (this.imageId !== undefined) {
+        this._updateImage(imageFormData, this.imageId);
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No image loaded for editing!',
+        });
+      }
     }
     this.imageForm.reset();
     this.imagePreview = null;

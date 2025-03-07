@@ -25,6 +25,11 @@ const getTagsFromCollection = [
     },
   },
 ];
+
+let tagsLastUpdatedInDB = new Date(0);
+let tagsInfoLastUpdated = new Date(0);
+let tagsInfo: ITags = [];
+
 module.exports.addTag = async (req, res) => {
   try {
     await Tag.find({ tag: req.body.tag }).then((tags) => {
@@ -42,8 +47,10 @@ module.exports.addTag = async (req, res) => {
           tag: req.body.tag,
         });
 
-        newTag.save().then((result) => {
+        newTag.save().then((result: ITag) => {
           if (result._id) {
+            tagsLastUpdatedInDB = new Date();
+            tagsInfo.push(result);
             res.status(201).send({
               status: 201,
               tag: req.body.tag,
@@ -77,11 +84,28 @@ module.exports.addTag = async (req, res) => {
 
 module.exports.getAllTags = async (req, res) => {
   try {
-    await Tag.find()
-      .sort({ count: -1, tag: 1 })
-      .then((tags: ITags) => {
-        return res.status(200).send(tags);
-      });
+    console.log("tagsLastUpdatedInDB: ", tagsLastUpdatedInDB);
+    console.log("tagsInfoLastUpdated: ", tagsInfoLastUpdated);
+    console.log(tagsInfoLastUpdated.getTime() <= tagsLastUpdatedInDB.getTime());
+    if (tagsInfoLastUpdated.getTime() <= tagsLastUpdatedInDB.getTime()) {
+      await Tag.find()
+        .sort({ count: -1, tag: 1 })
+        .then((tags: ITags) => {
+          tagsInfo = tags;
+          tagsInfoLastUpdated = new Date();
+          if (res !== undefined) {
+            console.log("res tags: ");
+            return res.status(200).send(tags);
+          } else {
+            console.log("ret tags: ", tags.length);
+            return tags;
+          }
+        });
+    } else if (res !== undefined) {
+      return res.status(200).send(tagsInfo);
+    } else {
+      return tagsInfo;
+    }
   } catch (e) {
     return res.status(500).json({
       success: false,
@@ -89,7 +113,7 @@ module.exports.getAllTags = async (req, res) => {
     });
   }
 };
-
+/* 
 module.exports.getTagsByType = async (req, res) => {
   const type = decodeURI(req.params.type);
   const tagsByType: TagsByType = {};
@@ -134,3 +158,4 @@ function _addToTagsByType(tagsByType: TagsByType, tag: ITag) {
     tagsByType[tag.tag] = { tag: tag, count: 1 };
   }
 }
+ */

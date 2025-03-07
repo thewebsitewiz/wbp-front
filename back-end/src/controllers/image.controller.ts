@@ -7,8 +7,10 @@ const multer = require("multer");
 
 const imgPathUtils = require("../utils/imagePath.util");
 
+const { getAllTags } = require("./tag.controller");
+
 const { Image } = require("../models/image.model");
-const { Tag } = require("../models/tag.model");
+//const { Tag } = require("../models/tag.model");
 const { Color } = require("../models/color.model");
 
 import { FILE_TYPE_MAP } from "../config/imageConstants";
@@ -72,13 +74,16 @@ const _imageUpload = async (req, res) => {
       width: md["Image Width"]["value"],
     });
 
-    if (tagIds.length > 0) image.tags = tagIds;
+    if (tagIds.length > 0) {
+      image.tags = tagIds;
+    }
 
     const imageResult = await image.save();
     console.log("imageResult: ", imageResult);
 
-    if (!imageResult)
+    if (!imageResult) {
       return res.status(400).send("The image data is not inserted");
+    }
 
     return res.send(imageResult);
   } catch (e) {
@@ -93,16 +98,30 @@ const _imageUpload = async (req, res) => {
 
 module.exports.imageUpload = _imageUpload;
 
+async function _getTagLookup() {
+  try {
+    const tagList = await getAllTags();
+    console.log("tagList???: ", tagList.lenght);
+    const tagLookup = {};
+    if (!tagList) {
+      return tagLookup;
+    }
+    tagList.forEach((tag) => {
+      tagLookup[tag._id.toString()] = tag;
+    });
+    return tagLookup;
+  } catch (error) {
+    console.log("error in catch for _getTagLookup: ", error);
+    return {};
+  }
+}
+
 const _getAllImages = async (req, res) => {
-  const tagList = await Tag.find();
-  const tagLookup = {};
-  tagList.forEach((tag) => {
-    tagLookup[tag._id.toString()] = tag;
-  });
-
+  const tagLookup = await _getTagLookup();
+  console.log("tagLookup (_getAllImages): ", tagLookup);
   const imageList = await Image.find();
-
   const newImageList = [];
+
   imageList.forEach((image) => {
     const imageObj = image.toObject();
     imageObj["tagInfo"] = [];
@@ -112,6 +131,7 @@ const _getAllImages = async (req, res) => {
     newImageList.push(imageObj);
   });
 
+  console.log("newImageList: ", newImageList.length);
   if (!newImageList) {
     res.status(500).json({ success: false });
   }
@@ -124,8 +144,6 @@ module.exports.getAllImages = _getAllImages;
 const _updateImage = async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
-
-  console.log("id: ", id, updates);
 
   try {
     const updatedImage = await Image.findByIdAndUpdate(id, updates, {
@@ -144,6 +162,37 @@ const _updateImage = async (req, res) => {
 };
 
 module.exports.updateImage = _updateImage;
+
+const _getImageById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const image = await Image.findById(id);
+    if (!image) {
+      console.log("no image ");
+      res
+        .status(404)
+        .json({ success: false, message: `Image not found: ${id}` });
+    }
+
+    const tagLookup = await _getTagLookup();
+    console.log("tagLookup (in _getImageById): ", tagLookup);
+    const imageList = await Image.find();
+
+    const imageObj = image.toObject();
+    imageObj["tagInfo"] = [];
+    image.tags.forEach((tag) => {
+      imageObj["tagInfo"].push(tagLookup[tag._id.toString()]);
+    });
+
+    res.status(200).json({ success: true, data: imageObj });
+  } catch (error) {
+    console.log("image error: ", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+module.exports.getImageById = _getImageById;
+
 /* 
 const _getImagesWithTags = async (req, res) => {
   const imageList = await Image.find().populate("tags");
