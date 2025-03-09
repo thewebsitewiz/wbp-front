@@ -217,14 +217,10 @@ export class BrowseImagesComponent implements OnInit {
       isActive: !status,
     };
     this.imageService
-      .updateImage(imageId, updateValue)
+      .patchImage(imageId, updateValue)
       .pipe(takeUntil(this.endsubs$))
       .subscribe(
         () => {
-          /*  this.imageList.find((image) => image['_id'] === imageId)?.[
-            'isActive'
-          ]; */
-
           const index = this.images.findIndex(
             (image) => image['_id'] === imageId
           );

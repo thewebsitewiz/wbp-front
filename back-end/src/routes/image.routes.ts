@@ -8,17 +8,10 @@ const { uploadPhoto } = require("../middleware/uploadImages");
 const {
   imageUpload,
   getAllImages,
-  updateImage,
+  patchImage,
+  putImage,
   getImageById,
 } = require("../controllers/image.controller");
-
-router.post(`/upload-image`, uploadPhoto, async (req, res, next) => {
-  try {
-    await imageUpload(req, res, next);
-  } catch (error) {
-    console.log("imageUpload route error: ", error);
-  }
-});
 
 router.get(`/get-all-images`, async (req, res, next) => {
   try {
@@ -38,11 +31,27 @@ router.get(`/get-image/:id`, async (req, res, next) => {
 
 router.get(`/delete-images`, async (req, res) => {});
 
-router.patch(`/update-image/:id`, async (req, res) => {
+router.post(`/upload-image`, uploadPhoto, async (req, res, next) => {
   try {
-    await updateImage(req, res);
+    await imageUpload(req, res, next);
   } catch (error) {
-    console.log("updateImage route error: ", error);
+    console.log("imageUpload route error: ", error);
+  }
+});
+
+router.put(`/put-image/:id`, uploadPhoto, async (req, res, next) => {
+  try {
+    await putImage(req, res, next);
+  } catch (error) {
+    console.log("putImage route error: ", error);
+  }
+});
+
+router.patch(`/patch-image/:id`, async (req, res) => {
+  try {
+    await patchImage(req, res);
+  } catch (error) {
+    console.log("patchImage route error: ", error);
   }
 });
 

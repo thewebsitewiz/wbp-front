@@ -375,6 +375,7 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       file = element.files[0];
     }
     this.imageForm.patchValue({ image: file });
+
     if (
       this.formControls !== undefined &&
       this.formControls['image'] !== undefined
@@ -453,20 +454,27 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
     let skippedFields: any[] = [];
     let imageFormData: FormData = new FormData();
     for (const field in this.imageForm.controls) {
+      console.log('field', field);
       if (
         this.imageForm.value.hasOwnProperty(field) &&
         !skippedFields.includes(field)
       ) {
-        imageFormData.append(field, this.imageForm.get(field)?.value);
+        console.log('\t', this.imageForm.get(field)?.value);
+        try {
+          imageFormData.append(field, this.imageForm.get(field)?.value);
+        } catch (e) {
+          console.log('error', e);
+        }
       }
     }
 
+    console.log('imageFormData', imageFormData);
     // sourcery skip: merge-else-if
     if (this.editmode === false) {
       this._addImage(imageFormData);
     } else {
       if (this.imageId !== undefined) {
-        this._updateImage(imageFormData, this.imageId);
+        this._putImage(imageFormData, this.imageId);
       } else {
         this.messageService.add({
           severity: 'error',
@@ -512,9 +520,10 @@ export class ImageUploadComponent implements OnInit, OnDestroy {
       });
   }
 
-  private _updateImage(imageData: FormData, id: string) {
+  private _putImage(imageData: FormData, id: string) {
+    console.log('imageData', imageData);
     this.imageService
-      .editImage(imageData, id)
+      .putImage(imageData, id)
       .pipe(takeUntil(this.endsubs$))
       .subscribe(
         () => {

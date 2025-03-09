@@ -34,12 +34,11 @@ module.exports.addTag = async (req, res) => {
   try {
     await Tag.find({ tag: req.body.tag }).then((tags) => {
       if (tags.length > 0) {
-        console.log(`Tag: ${req.body.tag} already exists`);
         res.status(304).send({
           status: 304,
           tag: req.body.tag,
           success: false,
-          msg: "tag exists",
+          msg: `tag ${req.body.tag} already exists`,
           err: false,
         });
       } else {
@@ -82,28 +81,32 @@ module.exports.addTag = async (req, res) => {
   }
 };
 
+const _fetchTagsFromDB = async () => {
+  await Tag.find()
+    .sort({ count: -1, tag: 1 })
+    .then((tags: ITags) => {
+      tagsInfo = tags;
+      tagsInfoLastUpdated = new Date();
+      return tags;
+    });
+  return [];
+};
+
 module.exports.getAllTags = async (req, res) => {
   try {
-    console.log("tagsLastUpdatedInDB: ", tagsLastUpdatedInDB);
-    console.log("tagsInfoLastUpdated: ", tagsInfoLastUpdated);
-    console.log(tagsInfoLastUpdated.getTime() <= tagsLastUpdatedInDB.getTime());
+    let tags = [];
     if (tagsInfoLastUpdated.getTime() <= tagsLastUpdatedInDB.getTime()) {
-      await Tag.find()
-        .sort({ count: -1, tag: 1 })
-        .then((tags: ITags) => {
-          tagsInfo = tags;
-          tagsInfoLastUpdated = new Date();
-          if (res !== undefined) {
-            console.log("res tags: ");
-            return res.status(200).send(tags);
-          } else {
-            console.log("ret tags: ", tags.length);
-            return tags;
-          }
-        });
-    } else if (res !== undefined) {
+      tags = await _fetchTagsFromDB();
+    }
+
+    if (res !== undefined && tagsInfo.length > 0) {
+      console.log(
+        "Cache return res.status(200).send(tagsInfo)",
+        tagsInfo.length
+      );
       return res.status(200).send(tagsInfo);
     } else {
+      console.log("Cache return tags", tagsInfo.length);
       return tagsInfo;
     }
   } catch (e) {
