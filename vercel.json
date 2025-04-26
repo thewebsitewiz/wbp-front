@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "rootDirectory": "/",
   "builds": [{ "src": "dist/wbp-front/browser/**", "use": "@vercel/static" }],
   "routes": [
     { "handle": "filesystem" },
