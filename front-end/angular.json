@@ -44,7 +44,7 @@
             "namedChunks": false,
             "optimization": true,
             "outputHashing": "all",
-            "outputPath": "dist/front-end",
+            "outputPath": "dist/wbp",
             "polyfills": ["zone.js"],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"

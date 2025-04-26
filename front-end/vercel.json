@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "rootDirectory": "front-end",
+  "rootDirectory": "/",
   "builds": [
     {
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/front-end",
+        "distDir": "dist/wbp/browser",
         "buildCommand": "npm run build --configuration production"
       }
     }
