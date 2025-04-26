@@ -1,4 +1,11 @@
-import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  Inject,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 
 import { CommonModule, Location, NgIf } from '@angular/common';
 // import { NgClass, NgForOf, NgStyle, NgIf } from '@angular/common';
@@ -20,6 +27,7 @@ import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
 import { MessagesModule } from 'primeng/messages';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -33,7 +41,7 @@ import { ITag, ITagStatusEnum } from '../../../../../interfaces/tag.interface';
 import { IImage } from '../../../../../interfaces/image.interface';
 
 @Component({
-  selector: 'wbp-browse-images',
+  selector: 'wbp-images-list',
   standalone: true,
   imports: [
     CommonModule,
@@ -41,6 +49,7 @@ import { IImage } from '../../../../../interfaces/image.interface';
     ButtonModule,
     CardModule,
     ConfirmDialogModule,
+    DialogModule,
     MessagesModule,
     TableModule,
     TagModule,
@@ -48,10 +57,10 @@ import { IImage } from '../../../../../interfaces/image.interface';
     ToolbarModule,
   ],
   providers: [ConfirmationService, MessageService, FilterService],
-  templateUrl: './browse-images.component.html',
-  styleUrl: './browse-images.component.scss',
+  templateUrl: './images-list.component.html',
+  styleUrl: './images-list.component.scss',
 })
-export class BrowseImagesComponent implements OnInit {
+export class ImageListComponent implements OnInit {
   images: IImage[] = [];
 
   endsubs$: Subject<any> = new Subject();
@@ -69,20 +78,22 @@ export class BrowseImagesComponent implements OnInit {
   showAll: boolean = true;
   imageList: IImage[] = [];
 
+  showPreview: boolean = false;
+  previewUrl: string = '';
+  previewImageTitle: string = '';
+
   @ViewChild('dt') dt: Table | undefined;
 
-  constructor(
-    private router: Router,
-    private primengConfig: PrimeNGConfig,
-    private location: Location,
-    private filterService: FilterService,
-    @Inject(MessageService)
-    private messageService: MessageService,
-    @Inject(ConfirmationService)
-    private confirmationService: ConfirmationService,
-    @Inject(ImageService) private imageService: ImageService,
-    @Inject(TagService) private tagService: TagService
-  ) {}
+  private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService);
+  private filterService = inject(FilterService);
+  private primengConfig = inject(PrimeNGConfig);
+  private imageService = inject(ImageService);
+  private tagService = inject(TagService);
+  private router = inject(Router);
+  private location = inject(Location);
+
+  constructor() {}
 
   ngOnInit(): void {
     this._getAllImages();
@@ -108,6 +119,7 @@ export class BrowseImagesComponent implements OnInit {
         });
 
         this.imageList = [...this.images];
+        this.totalRecords = this.imageList.length;
 
         // Convert tags set to array
         this.tagList = Array.from(this.tags);
@@ -216,11 +228,12 @@ export class BrowseImagesComponent implements OnInit {
     const updateValue: { [key: string]: string | boolean } = {
       isActive: !status,
     };
+
     this.imageService
-      .patchImage(imageId, updateValue)
+      .updateImageFields(imageId, updateValue)
       .pipe(takeUntil(this.endsubs$))
-      .subscribe(
-        () => {
+      .subscribe({
+        next: () => {
           const index = this.images.findIndex(
             (image) => image['_id'] === imageId
           );
@@ -238,21 +251,18 @@ export class BrowseImagesComponent implements OnInit {
             detail: `${fields} ${verb} been updated`,
           });
         },
-        (err) => {
+        error: (err: any) => {
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
             detail: `Image was not updated! ${err.message}`,
           });
-        }
-      );
+        },
+      });
   }
 
   editImage(imageID: string) {
-    console.log('Edit Image', imageID);
-    const route = `admin/images/edit/${imageID}`;
-
-    console.log('Edit Image route', route);
+    const route = `admin/images/form/${imageID}`;
     this.router.navigateByUrl(route);
   }
 
@@ -286,6 +296,15 @@ export class BrowseImagesComponent implements OnInit {
     });
   }
 
+  openPreview(url: string, title: string): void {
+    this.previewUrl = url;
+    this.showPreview = true;
+    this.previewImageTitle = title;
+  }
+
+  closeAlbum(): void {
+    this.showPreview = false;
+  }
   ngOnDestroy() {
     this.endsubs$.next(null);
     this.endsubs$.complete();

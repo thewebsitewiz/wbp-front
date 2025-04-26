@@ -3,7 +3,7 @@ const protocol: { [key: string]: string } = {
   dev: 'http://',
 };
 const host: { [key: string]: string } = {
-  prod: 'wbp.websitewizardry.com',
+  prod: 'wbp.thewebsitewiz.com',
   dev: 'localhost',
 };
 const port: { [key: string]: number } = {

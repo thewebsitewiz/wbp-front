@@ -22,7 +22,8 @@
     "resolveJsonModule": true,
     "lib": [
       "ES2022",
-      "dom"
+      "dom",
+      "dom.iterable"
     ],
     "paths": {
       "@anchor": [

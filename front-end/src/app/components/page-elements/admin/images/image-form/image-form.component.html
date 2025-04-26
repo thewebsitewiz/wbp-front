@@ -23,9 +23,10 @@
           <div class="grid field-border mt-4">
             <div class="p-field col-12">
               <div>
+                @if (!editmode){
                 <button class="button btn mb-2" type="button" (click)="filePicker.click()"><i class="pi pi-upload"></i>
                   {{imageButtonLabel}}</button>
-                <input type="file" #filePicker (change)="onImagePicked($event)">
+                <input type="file" #filePicker (change)="onImagePicked($event)">}
               </div>
 
               @if (imagePreview) {
@@ -60,64 +61,9 @@
           }
 
           <!-- tags:  -->
-          <div class="grid mt-4 ">
-            <div class="p-field col-12 md:col-5">
-              <label class="label" for="tags" style="margin-bottom: 6px;">Tags</label>
-              <div class="grid mb-4">
-                <div class="p-field col-12 md:col-5 field-border tag-field" id="selected-tags">
-                  @if (selectedTags && selectedTags.length > 0) {
-                  @for(tag of selectedTags; track tag) {
-                  <button class="pill selected-pill" role="button" (click)="deSelectTag(tag['tag'])"><i
-                      class="pi pi-times mr-2"></i>
-                    {{tag['tag']}}<p-badge [value]="badgeValue[tag.tag]" [severity]="badgeSeverity[tag.tag]"
-                      severity="success"></p-badge></button>
-                  }
-                  }
-                </div>
-              </div>
-              <div class="grid mb-4">
-                <div class="tagSortControls">
-                  <div>sort tags by:</div>
-                  <div [ngClass]="['tagSortControl',sortTagsBy === 'count' ? 'sortSelected': 'sortUnSelected']"
-                    (click)="tagSortSelected('count')">count</div>|<div
-                    [ngClass]="['tagSortControl',sortTagsBy === 'tag' ? 'sortSelected': 'sortUnSelected']"
-                    (click)="tagSortSelected('tag')">tag</div>
-                </div>
-                <div class="p-field col-12 md:col-5 field-border tag-field" id="tag-list">
-                  @if (filteredTags && filteredTags.length > 0) {
-                  @for(tag of filteredTags; track tag) {
-                  <button class="pill" role="button" (click)="selectTag(tag['tag'])">
-                    {{tag.tag}} <p-badge [value]="badgeValue[tag.tag]" [severity]="badgeSeverity[tag.tag]"
-                      severity="success"></p-badge></button>
-                  }
-                  }
-                </div>
-              </div>
+          <wbp-select-tags *ngIf="image$ | async" [editMode]="editmode" [selectedTags]="selectedTags"
+            (selectedTagIds)="updateTagsInForm($event)"></wbp-select-tags>
 
-              <div class="grid mb-4">
-                <div class="p-field col-12 md:col-5 field-border tag-field" id="selected-tags">
-                  <input type="text" class="new-tag mr-2" #newTag><button class="button" role="button"
-                    (click)="addNewTag(newTag)">Add
-                    Tag</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- dateTaken -->
-          <!--           <div class="grid">
-            <div class="p-field col-12 md:col-5">
-              <label class="label calendar-label" for="dateTaken">Date Taken
-                @if(dateTakenRequired) {
-                <sup class="required" aria-hidden="true">*</sup>
-                }
-              </label>
-              <p-calendar [(ngModel)]="defaultDate" formControlName="dateTaken" id="dateTaken" inputId="dateTaken"
-                showButtonBar="true" dateFormat="yy-mm-dd" inline="false" [showIcon]="true" showButtonBar="true"
-                [showIcon]="true" [firstDayOfWeek]="1" [defaultDate]="defaultDate" [showTime]="true"
-                [yearNavigator]="true" [numberOfMonths]="1" selectOtherMonths="true" field="dateTaken" />
-            </div>
-          </div> -->
           <!-- title -->
           <div class="grid">
             <div class="p-field col-12 md:col-5">

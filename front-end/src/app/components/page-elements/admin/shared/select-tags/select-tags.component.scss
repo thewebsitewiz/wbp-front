@@ -1,0 +1,41 @@
+@import '../../../../../../assets/scss/1-abstracts/variables';
+
+.tag-field {
+  min-height: 28px;
+}
+
+.tagSortControls {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.tagSortControl {
+  cursor: pointer;
+  font-size: 10px;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.sortSelected {
+  font-weight: 700;
+  color: $brand-color;
+}
+
+.sortUnSelected {
+  font-weight: 300;
+  color: $med-grey;
+}
+
+p-badge {
+  margin-left: 4px;
+}
+
+.pill {
+  background-color: $med-grey;
+  padding: 3px 7px !important;
+}
+
+.selected-pill {
+  background-color: $leaves;
+}

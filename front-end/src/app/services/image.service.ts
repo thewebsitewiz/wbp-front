@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpRequest,
@@ -21,9 +21,9 @@ export class ImageService {
 
   // private _headers = new HttpHeaders();
 
-  constructor(private http: HttpClient) {
-    // this._headers.set('Content-Type', 'application/json; charset=utf-8');
-  }
+  private http = inject(HttpClient);
+
+  constructor() {}
 
   createImage(imageData: FormData): Observable<FormData> {
     console.log('imageData: ', imageData);
@@ -33,14 +33,17 @@ export class ImageService {
     );
   }
 
-  putImage(updateValue: FormData, id: string) {
-    return this.http.put(
-      `${this.baseAPIUrl}/images/put-image/${id}`,
+  updateImage(
+    id: string,
+    updateValue: { [key: string]: string | number | boolean }
+  ) {
+    return this.http.patch(
+      `${this.baseAPIUrl}/images/patch-image/${id}`,
       updateValue
     );
   }
 
-  patchImage(
+  updateImageFields(
     id: string,
     updateValue: { [key: string]: string | number | boolean }
   ): Observable<any> {

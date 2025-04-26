@@ -1,0 +1,47 @@
+<div class="grid mt-4 ">
+  <div class="p-field col-12 md:col-5">
+    <label class="label" for="tags" style="margin-bottom: 6px;">Tags</label>
+    <!-- Selected Tags -->
+    <div class="grid mb-4">
+      <div class="p-field col-12 md:col-5 field-border tag-field" id="selected-tags">
+        <ng-container *ngIf="(getTags$ | async) as tags">
+          @if (selectedTags && selectedTags.length > 0) {
+          @for(id of selectedTags; track id) {
+          <button class="pill selected-pill" role="button"><i class="pi pi-times mr-2" (click)="deSelectTag(id)"></i>
+            {{tagsLookupById[id]['tag']}} <p-badge [value]="badgeValue[tagsLookupById[id]['count']]"
+              [severity]="badgeSeverity[tagsLookupById[id]['tag']]"></p-badge></button>
+          }
+          }
+        </ng-container>
+      </div>
+    </div>
+    <div class="grid mb-4">
+      <div class="tagSortControls">
+        <div>sort tags by:</div>
+        <div [ngClass]="['tagSortControl',sortTagsBy === 'count' ? 'sortSelected': 'sortUnSelected']"
+          (click)="tagSortMethod('count')">count</div>|<div
+          [ngClass]="['tagSortControl',sortTagsBy === 'tag' ? 'sortSelected': 'sortUnSelected']"
+          (click)="tagSortMethod('tag')">tag</div>
+      </div>
+
+      <!-- Filtered Tags -->
+      <div class="p-field col-12 md:col-5 field-border tag-field" id="tag-list">
+        @if (filteredTags && filteredTags.length > 0) {
+        @for(id of filteredTags; track id) {
+        <button class="pill" role="button" (click)="selectTag(id)">
+          {{tagsLookupById[id]['tag']}} <p-badge [value]="badgeValue[tagsLookupById[id]['count']]"
+            [severity]="badgeSeverity[tagsLookupById[id]['tag']]" severity="success"></p-badge></button>
+        }
+        }
+      </div>
+    </div>
+
+    <div class="grid mb-4">
+      <div class="p-field col-12 md:col-5 field-border tag-field" id="selected-tags">
+        <input type="text" class="new-tag mr-2" #newTag><button class="button" role="button"
+          (click)="addNewTag(newTag)">Add
+          Tag</button>
+      </div>
+    </div>
+  </div>
+</div>

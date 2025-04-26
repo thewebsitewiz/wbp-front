@@ -169,17 +169,19 @@ const _getImageById = async (req, res) => {
 
 module.exports.getImageById = _getImageById;
 
-const _putImage = async (req, res) => {
+//Updates a resource by replacing it entirely. If the resource does not exist, it may create a new one.
+//A PUT request is idempotent. If you PUT a resource more than once, it has no effect.
+/* const _putImage = async (req, res) => {
   const { file } = req;
   let metaData: unknown = {};
   if (file) {
     metaData = await _getMetadata(`${imageDirPath}/${newFileName}`);
   }
 
-  let fileSize = req.body.fileSize || file.size;
-  let mimeType = req.body.mimeType || file.mimeType;
-  let height = req.body.height || metaData["Image Height"]["value"];
-  let width = req.body.width || metaData["Image Width"]["value"];
+  let fileSize = req.body.fileSize || file.size || null;
+  let mimeType = req.body.mimeType || file.mimeType || null;
+  let height = req.body.height || metaData["Image Height"]["value"] || null;
+  let width = req.body.width || metaData["Image Width"]["value"] || null;
 
   let tagIds = [];
   if (req.body.tags !== undefined || null) {
@@ -207,6 +209,7 @@ const _putImage = async (req, res) => {
       image.tags = tagIds;
     }
 
+    console.log("image: ", image);
     const imageResult = await image.save();
 
     if (!imageResult) {
@@ -226,12 +229,21 @@ const _putImage = async (req, res) => {
   }
 };
 
-module.exports.putImage = _putImage;
+module.exports.putImage = _putImage; */
 
 const _patchImage = async (req, res) => {
   const { id } = req.params;
   const updates = req.body;
 
+  /*  if (updates.tags !== null) {
+    const tagList = [];
+    updates.tags.split(",").forEach((tag) => {
+      tagList.push(tag);
+    });
+    updates.tags = tagList;
+  } */
+
+  console.log("updates: ", id, updates);
   try {
     const updatedImage = await Image.findByIdAndUpdate(id, updates, {
       new: true, // Return updated document
@@ -242,8 +254,10 @@ const _patchImage = async (req, res) => {
       return res.status(404).json({ message: "Image not found" });
     }
 
+    console.log("updatedImage: ", updatedImage);
     res.status(200).json({ success: true, data: updatedImage });
   } catch (error) {
+    console.log("error in catch for patchImage: ", error);
     res.status(500).json({ success: false, error: error.message });
   }
 };

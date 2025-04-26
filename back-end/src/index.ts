@@ -15,11 +15,15 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 
+// Uncomment if JWT auth is needed
 // const authJwt = require("./helpers/jwt");
-// const errorHandler = require("./helpers/error-handler");
+const { errorHandler, notFound } = require("./middleware/errorHandler");
+console.log(errorHandler);
 
+// Connect to the database
 const conn = dbConnect();
 
+// Determine domain and hostname based on environment
 let domain = "http://localhost:4200";
 let hostname = "localhost";
 if (ENV === "PROD") {
@@ -27,26 +31,15 @@ if (ENV === "PROD") {
   hostname = "0.0.0.0";
 }
 
-//middleware
+console.log("domain: ", ENV, domain);
+
+// Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(morgan("combined"));
+// app.use(authJwt()); // Enable JWT auth if needed
 
-// app.use(morgan('combined'));
-app.use(morgan("tiny"));
-// app.use(authJwt());
-
-app.use(express.static(__dirname + "/public"));
-// app.use(errorHandler);
-
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});
-
+// Enable CORS without manual header setting
 app.use(
   cors({
     origin: [domain],
@@ -54,19 +47,18 @@ app.use(
   })
 );
 
-//Routes
+// Serve static files
+app.use(express.static(path.join(__dirname, "public")));
+
+// Routes
 const weatherRouter = require("./routes/weather.routes");
 const imageRouter = require("./routes/image.routes");
 const tagsRouter = require("./routes/tag.routes");
 const vendorsRouter = require("./routes/vendor.routes");
 const configRouter = require("./routes/config.routes");
 
-const api = process.env.API_URL;
-
-app.get("/", function (req, res) {
-  res.json({
-    message: "hello world",
-  });
+app.get("/", (req, res) => {
+  res.json({ message: "hello world" });
 });
 
 app.use("/api/weather", weatherRouter);
@@ -75,8 +67,14 @@ app.use("/api/tags", tagsRouter);
 app.use("/api/vendors", vendorsRouter);
 app.use("/api/config", configRouter);
 
-//Server
-const port = 3000;
-app.listen(3000, hostname, () => {
-  console.log(`Server is running on  ${port}`);
+// Error handling middleware (should be last)
+if (errorHandler) {
+  console.log("errorHandler in use")
+  app.use(errorHandler);
+}
+
+// Server
+const port = process.env.PORT || 3000;
+app.listen(port, hostname, () => {
+  console.log(`Server is running on port ${port}`);
 });
