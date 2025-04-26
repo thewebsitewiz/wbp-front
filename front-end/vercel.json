@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "angular.json",
+      "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist/front-end"
@@ -11,14 +11,11 @@
   ],
   "routes": [
     { "handle": "filesystem" },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+    { "src": "/(.*)", "dest": "/index.html" }
   ],
   "headers": [
     {
-      "source": "/(.*).(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)",
+      "source": "/(.*)\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)",
       "headers": [
         {
           "key": "Cache-Control",
