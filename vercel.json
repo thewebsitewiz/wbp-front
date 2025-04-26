@@ -1,19 +1,10 @@
 {
   "version": 2,
   "rootDirectory": "/",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist/wbp/browser",
-        "buildCommand": "npm run build --configuration production"
-      }
-    }
-  ],
+  "builds": [{ "src": "dist/wbp-front/browser/**", "use": "@vercel/static" }],
   "routes": [
     { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/.*", "dest": "/index.html" }
   ],
   "headers": [
     {
