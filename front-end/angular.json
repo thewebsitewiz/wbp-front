@@ -1,29 +1,55 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "front-end": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "",
-      "sourceRoot": "src",
-      "prefix": "wbp",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
+          "configurations": {
+            "development": {
+              "extractLicenses": false,
+              "optimization": false,
+              "sourceMap": true
+            },
+            "production": {
+              "budgets": [
+                {
+                  "maximumError": "5mb",
+                  "maximumWarning": "500kb",
+                  "type": "initial"
+                },
+                {
+                  "maximumError": "10kb",
+                  "maximumWarning": "2kb",
+                  "type": "anyComponentStyle"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            }
+          },
+          "defaultConfiguration": "production",
           "options": {
-            "outputPath": "dist/front-end",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
-            "polyfills": ["zone.js"],
-            "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
+            "browser": "src/main.ts",
+            "extractLicenses": true,
+            "index": "src/index.html",
+            "inlineStyleLanguage": "scss",
+            "namedChunks": false,
+            "optimization": true,
+            "outputHashing": "all",
+            "outputPath": "dist/front-end",
+            "polyfills": ["zone.js"],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
+            "sourceMap": false,
             "styles": [
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -33,51 +59,18 @@
               "node_modules/primeflex/primeflex.css",
               "src/styles.scss"
             ],
-            "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "10kb"
-                }
-              ],
-              "outputHashing": "all",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "production"
+            "tsConfig": "tsconfig.app.json"
+          }
         },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "front-end:build:production"
-            },
-            "development": {
-              "buildTarget": "front-end:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "browserTarget": "front-end:build",
+            "compodoc": true,
+            "compodocArgs": ["-e", "json", "-d", "."],
+            "configDir": ".storybook",
+            "outputDir": "storybook-static"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -85,38 +78,50 @@
             "buildTarget": "front-end:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
-            "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss"],
-            "scripts": []
-          }
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "development": {
+              "buildTarget": "front-end:build:development"
+            },
+            "production": {
+              "buildTarget": "front-end:build:production"
+            }
+          },
+          "defaultConfiguration": "development"
         },
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
           "options": {
-            "configDir": ".storybook",
             "browserTarget": "front-end:build",
             "compodoc": true,
             "compodocArgs": ["-e", "json", "-d", "."],
+            "configDir": ".storybook",
             "port": 6006
           }
         },
-        "build-storybook": {
-          "builder": "@storybook/angular:build-storybook",
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "configDir": ".storybook",
-            "browserTarget": "front-end:build",
-            "compodoc": true,
-            "compodocArgs": ["-e", "json", "-d", "."],
-            "outputDir": "storybook-static"
+            "assets": ["src/favicon.ico", "src/assets"],
+            "inlineStyleLanguage": "scss",
+            "polyfills": ["zone.js", "zone.js/testing"],
+            "scripts": [],
+            "styles": ["src/styles.scss"],
+            "tsConfig": "tsconfig.spec.json"
           }
         }
-      }
+      },
+      "prefix": "wbp",
+      "projectType": "application",
+      "root": "",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "sourceRoot": "src"
     }
-  }
+  },
+  "version": 1
 }
