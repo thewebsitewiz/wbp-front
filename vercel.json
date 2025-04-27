@@ -1,10 +1,7 @@
 {
   "version": 2,
   "builds": [{ "src": "dist/wbp-front/browser/**", "use": "@vercel/static" }],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/index.html" }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/(.*)\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)",
