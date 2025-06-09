@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
-import { WeatherService } from '../../../services/weather.service';
+import { WeatherService } from '../../../../../services/weather.service';
 import {
   IEnvData,
   IWeatherCodes,
@@ -15,20 +15,20 @@ import {
   IHourlyDisplayEnum,
   IHourlyRanges,
   IHourlyRangeValues,
-} from '../../../interfaces/weather.interface';
-import { weatherConfig } from '../../../../assets/json/weather.data';
+} from '../../../../../interfaces/weather.interface';
+import { weatherConfig } from '../../../../../../assets/json/weather.data';
 import moment from 'moment';
 import {
   round,
   nextHighestIncrementOf10,
   nextLowestIncrementOf10,
-} from '../../../utilities/shared.util';
+} from '../../../../../utilities/shared.util';
 
 @Component({
-    selector: 'wbp-weather-widget',
-    imports: [NgClass, NgStyle, CommonModule],
-    templateUrl: './weather-widget.component.html',
-    styleUrl: './weather-widget.component.scss'
+  selector: 'wbp-weather-widget',
+  imports: [NgClass, NgStyle, CommonModule],
+  templateUrl: './weather-widget.component.html',
+  styleUrl: './weather-widget.component.scss',
 })
 export class WeatherWidgetComponent implements OnInit {
   icons!: any;

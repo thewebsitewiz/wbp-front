@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { HeroService } from './../../../services/hero.service';
-import { CarouselService } from '../../../services/carousel.service';
-import { ISlides } from '../../../interfaces/slide.interface';
+import { HeroService } from '../../../../../services/hero.service';
+import { CarouselService } from '../../../../../services/carousel.service';
+import { ISlides } from '../../../../../interfaces/slide.interface';
 
 @Component({
-    selector: 'wbp-hero',
-    imports: [CommonModule],
-    providers: [
-        HeroService,
-        {
-            provide: CarouselService,
-            useFactory: () => new CarouselService(),
-        },
-    ],
-    templateUrl: './hero.component.html',
-    styleUrl: './hero.component.scss'
+  selector: 'wbp-hero',
+  imports: [CommonModule],
+  providers: [
+    HeroService,
+    {
+      provide: CarouselService,
+      useFactory: () => new CarouselService(),
+    },
+  ],
+  templateUrl: './hero.component.html',
+  styleUrl: './hero.component.scss',
 })
 export class HeroComponent implements OnInit {
   @ViewChild('heroCurr', { static: true }) heroCurr!: ElementRef;

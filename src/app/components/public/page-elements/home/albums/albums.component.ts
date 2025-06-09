@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Host, OnInit, ViewChild } from '@angular/core';
 
-import { AlbumsService } from '../../../services/albums.service';
-import { CarouselService } from './../../../services/carousel.service';
+import { AlbumsService } from '../../../../../services/albums.service';
+import { CarouselService } from '../../../../../services/carousel.service';
 
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -12,26 +12,26 @@ import {
   IPostmark,
   IPostmarkPosition,
   IAlbum,
-} from '../../../interfaces/album.interface';
+} from '../../../../../interfaces/album.interface';
 
 @Component({
-    selector: 'wbp-albums',
-    imports: [
-        CommonModule,
-        NgClass,
-        NgForOf,
-        NgStyle,
-        DialogModule,
-        ButtonModule,
-    ],
-    providers: [
-        {
-            provide: CarouselService,
-            useFactory: () => new CarouselService(),
-        },
-    ],
-    templateUrl: './albums.component.html',
-    styleUrl: './albums.component.scss'
+  selector: 'wbp-albums',
+  imports: [
+    CommonModule,
+    NgClass,
+    NgForOf,
+    NgStyle,
+    DialogModule,
+    ButtonModule,
+  ],
+  providers: [
+    {
+      provide: CarouselService,
+      useFactory: () => new CarouselService(),
+    },
+  ],
+  templateUrl: './albums.component.html',
+  styleUrl: './albums.component.scss',
 })
 export class AlbumsComponent implements OnInit {
   @ViewChild('albumCurr', { static: true }) albumCurr!: ElementRef;
