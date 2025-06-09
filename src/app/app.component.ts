@@ -6,11 +6,10 @@ import { HomePageComponent } from './components/pages/home-page/home-page.compon
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'wbp-root',
-  standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+    selector: 'wbp-root',
+    imports: [RouterOutlet],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'front-end';

@@ -55,26 +55,24 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { SelectTagsComponent } from '../../shared/select-tags/select-tags.component';
 
 @Component({
-  selector: 'wbp-image-form',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CardModule,
-    ToolbarModule,
-    ButtonModule,
-    SelectButtonModule,
-    InputTextModule,
-    ToastModule,
-    FileUploadModule,
-    TagModule,
-    SelectTagsComponent,
-  ],
-
-  providers: [MessageService],
-  templateUrl: './image-form.component.html',
-  styleUrls: ['./image-form.component.scss'],
+    selector: 'wbp-image-form',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CardModule,
+        ToolbarModule,
+        ButtonModule,
+        SelectButtonModule,
+        InputTextModule,
+        ToastModule,
+        FileUploadModule,
+        TagModule,
+        SelectTagsComponent,
+    ],
+    providers: [MessageService],
+    templateUrl: './image-form.component.html',
+    styleUrls: ['./image-form.component.scss']
 })
 export class ImageFormComponent implements OnInit, OnDestroy {
   editmode: boolean = false;

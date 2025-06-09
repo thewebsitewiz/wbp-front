@@ -25,11 +25,10 @@ import {
 } from '../../../utilities/shared.util';
 
 @Component({
-  selector: 'wbp-weather-widget',
-  standalone: true,
-  imports: [NgClass, NgStyle, CommonModule],
-  templateUrl: './weather-widget.component.html',
-  styleUrl: './weather-widget.component.scss',
+    selector: 'wbp-weather-widget',
+    imports: [NgClass, NgStyle, CommonModule],
+    templateUrl: './weather-widget.component.html',
+    styleUrl: './weather-widget.component.scss'
 })
 export class WeatherWidgetComponent implements OnInit {
   icons!: any;

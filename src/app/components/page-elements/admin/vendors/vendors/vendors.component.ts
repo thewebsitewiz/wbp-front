@@ -40,24 +40,22 @@ import { TagModule } from 'primeng/tag';
 import { BadgeModule } from 'primeng/badge';
 
 @Component({
-  selector: 'wbp-vendors',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    CardModule,
-    ToolbarModule,
-    ButtonModule,
-    InputTextModule,
-    ToastModule,
-    FileUploadModule,
-    TagModule,
-    BadgeModule,
-  ],
-
-  providers: [MessageService, FilterService, TagService],
-  templateUrl: './vendors.component.html',
-  styleUrls: ['./vendors.component.scss'],
+    selector: 'wbp-vendors',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        CardModule,
+        ToolbarModule,
+        ButtonModule,
+        InputTextModule,
+        ToastModule,
+        FileUploadModule,
+        TagModule,
+        BadgeModule,
+    ],
+    providers: [MessageService, FilterService, TagService],
+    templateUrl: './vendors.component.html',
+    styleUrls: ['./vendors.component.scss']
 })
 export class VendorsComponent implements OnInit, OnDestroy {
   editmode: boolean = false;

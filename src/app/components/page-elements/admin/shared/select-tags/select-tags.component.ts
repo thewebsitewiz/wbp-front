@@ -16,11 +16,10 @@ import { BadgeModule } from 'primeng/badge';
 import { ITag } from '../../../../../interfaces/tag.interface';
 
 @Component({
-  selector: 'wbp-select-tags',
-  standalone: true,
-  imports: [CommonModule, BadgeModule],
-  templateUrl: './select-tags.component.html',
-  styleUrl: './select-tags.component.scss',
+    selector: 'wbp-select-tags',
+    imports: [CommonModule, BadgeModule],
+    templateUrl: './select-tags.component.html',
+    styleUrl: './select-tags.component.scss'
 })
 export class SelectTagsComponent {
   @Input() selectedTags: string[] = []; // tagids

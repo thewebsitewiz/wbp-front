@@ -12,18 +12,17 @@ import { WeatherWidgetComponent } from '../../page-elements/weather-widget/weath
 import { VendorsComponent } from '../../page-elements/vendors/vendors.component';
 
 @Component({
-  selector: 'wbp-home-page',
-  standalone: true,
-  imports: [
-    NavBarComponent,
-    FooterComponent,
-    HeroComponent,
-    WillsBioComponent,
-    AlbumsComponent,
-    WeatherWidgetComponent,
-    VendorsComponent,
-  ],
-  templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.scss',
+    selector: 'wbp-home-page',
+    imports: [
+        NavBarComponent,
+        FooterComponent,
+        HeroComponent,
+        WillsBioComponent,
+        AlbumsComponent,
+        WeatherWidgetComponent,
+        VendorsComponent,
+    ],
+    templateUrl: './home-page.component.html',
+    styleUrl: './home-page.component.scss'
 })
 export class HomePageComponent {}

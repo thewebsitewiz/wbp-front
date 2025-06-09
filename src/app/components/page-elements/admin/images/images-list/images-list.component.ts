@@ -41,24 +41,23 @@ import { ITag, ITagStatusEnum } from '../../../../../interfaces/tag.interface';
 import { IImage } from '../../../../../interfaces/image.interface';
 
 @Component({
-  selector: 'wbp-images-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    BadgeModule,
-    ButtonModule,
-    CardModule,
-    ConfirmDialogModule,
-    DialogModule,
-    MessagesModule,
-    TableModule,
-    TagModule,
-    ToastModule,
-    ToolbarModule,
-  ],
-  providers: [ConfirmationService, MessageService, FilterService],
-  templateUrl: './images-list.component.html',
-  styleUrl: './images-list.component.scss',
+    selector: 'wbp-images-list',
+    imports: [
+        CommonModule,
+        BadgeModule,
+        ButtonModule,
+        CardModule,
+        ConfirmDialogModule,
+        DialogModule,
+        MessagesModule,
+        TableModule,
+        TagModule,
+        ToastModule,
+        ToolbarModule,
+    ],
+    providers: [ConfirmationService, MessageService, FilterService],
+    templateUrl: './images-list.component.html',
+    styleUrl: './images-list.component.scss'
 })
 export class ImageListComponent implements OnInit {
   images: IImage[] = [];

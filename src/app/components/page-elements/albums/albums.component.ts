@@ -15,24 +15,23 @@ import {
 } from '../../../interfaces/album.interface';
 
 @Component({
-  selector: 'wbp-albums',
-  standalone: true,
-  imports: [
-    CommonModule,
-    NgClass,
-    NgForOf,
-    NgStyle,
-    DialogModule,
-    ButtonModule,
-  ],
-  providers: [
-    {
-      provide: CarouselService,
-      useFactory: () => new CarouselService(),
-    },
-  ],
-  templateUrl: './albums.component.html',
-  styleUrl: './albums.component.scss',
+    selector: 'wbp-albums',
+    imports: [
+        CommonModule,
+        NgClass,
+        NgForOf,
+        NgStyle,
+        DialogModule,
+        ButtonModule,
+    ],
+    providers: [
+        {
+            provide: CarouselService,
+            useFactory: () => new CarouselService(),
+        },
+    ],
+    templateUrl: './albums.component.html',
+    styleUrl: './albums.component.scss'
 })
 export class AlbumsComponent implements OnInit {
   @ViewChild('albumCurr', { static: true }) albumCurr!: ElementRef;

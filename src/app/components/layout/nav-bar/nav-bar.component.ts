@@ -1,11 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 
 @Component({
-  selector: 'wbp-nav-bar',
-  standalone: true,
-  imports: [],
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss'],
+    selector: 'wbp-nav-bar',
+    imports: [],
+    templateUrl: './nav-bar.component.html',
+    styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent {
   @HostListener('window:scroll', ['$event'])
